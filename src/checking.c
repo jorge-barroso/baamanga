@@ -1,14 +1,6 @@
 #include <stdio.h>
 #include <string.h>
 
-char checking (char[]);
-
-int main(){
-char url_check[] = "http://submanga.com/Kuroshitsuji/completa";
-	checking(url_check);
-	return 0;
-}
-
 char checking (char url_check[]){
 char check = "y";
 char check1[5], domain[20];
