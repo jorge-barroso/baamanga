@@ -13,8 +13,8 @@ detect_indent_width=false
 indent_mode=2
 
 [project]
-name=Baamanga
-base_path=/home/jorge/Documentos/Baamanga/
+name=baamanga
+base_path=/home/jorge/Documentos/baamanga/
 
 [long line marker]
 long_line_behaviour=1
