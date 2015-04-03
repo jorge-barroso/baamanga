@@ -1,0 +1,15 @@
+#include <stdio.h>
+#include <string.h>
+
+void checking(char url_check[100], char domain[20], char check){
+char protocol[5];
+
+strcpy(protocol, url_check);
+strtok(protocol, ":");
+if (strcmp(protocol, "http") == 0 || strcmp(protocol, "https") == 0){
+	strcpy(domain, strtok(NULL, "/"));
+} 
+//return check;
+//return domain;
+return;
+}
