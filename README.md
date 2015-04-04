@@ -7,12 +7,12 @@ Baamanga is yet under development so this is just a skell that is going to grow 
 Once baamanga works properly, it will get your url, parse it and download the content you want. You just have to copy, past and relax while it goes to your folder ready for you, on image format or with all of those images put together on a single pdf.
 
 ## To do
-Obviously this is the beginning, once baamanga is fully functional, GUI's development will start giving to you a beauty interface to make what you can do on the terminal with the amenity of your mouse.
+Obviously this is the beginning, once baamanga is fully functional, GUI's development will start giving to you a beauty interface to make what you can do on the terminal with the simplicity of your mouse.
 
 #Dependencies
 Eventually, baamanga's dependencies are thought to be:
 * Curl
-* Gtk
+* Gtk //NOT YET
 
 # Developers
 Baamanga is a free/open source project, so feel free to collaborate, with issues, comments and pull requests. Join us, you're welcome ;) 
