@@ -10,7 +10,7 @@
 #include "mangafox.c"
 #include "mangareader.c"
 #include "mangashare.c"
-#include "mcanime.c"
+//#include "mcanime.c" due to copyright issues is not possible to read Manga on mcanime 
 #include "pown.c"
 #include "submanga.c"
 #include "zerochan.c"
@@ -68,13 +68,13 @@ strcpy (protocol, strtok(url, ":"));
 	strcpy(domain, strtok(NULL,"/"));
 if (strcmp(domain, "submanga.com") == 0 )
 	submanga(url_orig, protocol, name);
-	else if (strcmp(domain, "www.mcanime.net") == 0)
-			mcanime(url_orig, protocol, name);
+	/*else if (strcmp(domain, "www.mcanime.net") == 0)
+			mcanime(url_orig, protocol, name);*/
 	else if (strcmp(domain, "mangafox.me") == 0)
 			mangafox(url_orig, protocol, name);
-	else if (strcmp(domain, "mangashare.com") == 0)
+	else if (strcmp(domain, "www.mangashare.com") == 0)
 			mangashare(url_orig, protocol, name);
-	else if (strcmp(domain, "mangareader.net") == 0)
+	else if (strcmp(domain, "read.mangareader.net") == 0)
 			mangareader(url_orig, protocol, name);
 	else if (strcmp(domain, "manga.animea.net") == 0)
 			animea(url_orig, protocol, name);
