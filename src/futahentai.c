@@ -2,19 +2,18 @@
 #include <string.h>
 #include <curl/curl.h>
 
-void futahentai(char url_orig[], char protocol[], char name[]){
-    short unsigned int i, length;
-strtok (NULL, "-");
+void futahentai(char url_orig[], char protocol[], char name[], char chapter[]){
+short unsigned int j;
+	strtok (NULL, "-");
     //Let's parse the name
-strcpy(name, strtok(NULL, "-"));
-    length = strlen(name);
-i = length;
-name[i] = '\0';
-name[i-1] = '\0';
-for(i=0;i<length;i++){
- if (name[i] == '-') 
-		name[i] = ' ';
+	strcpy(name, strtok(NULL, "-"));
+	for(j=0;name[j]!='\0';j++){
+		if (name[j] == '_') 
+			name[j] = ' ';
 }
-printf("%s", name);
+	//Parsing chapter
+	strcpy(chapter, strtok(NULL, "."));
+	
+	printf("Name: %s\nChapter: %s\n", name, chapter);
 return;
 }

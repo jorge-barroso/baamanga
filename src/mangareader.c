@@ -3,19 +3,19 @@
 #include <ctype.h>
 #include <curl/curl.h>
 
-void mangareader(char url_orig[], char protocol[], char name[]){
-    unsigned short int i;
-    char chapter[4];
+void mangareader(char url_orig[], char protocol[], char name[], char chapter[]){
+    short int j;
     //Name easy parsing
 strcpy (name, strtok (NULL, "/"));
-    for (i=0;name[i]!='\0';i++){
-        if(name[i] == '_')
-        	name[i] = ' ';
-        if (isalpha(name[i]) && name[i-1] == ' ') 
-        toupper (name[i]);
+    for (j=0;name[j]!='\0';j++){
+        if(name[j] == '_')
+        	name[j] = ' ';
+        if (isalpha(name[j]) && name[j-1] == ' ') 
+        name[j] = toupper(name[j]);
     }
     if (isalpha(name[0]))
-        	toupper (name[i]);
+        	name[0] = toupper(name[0]);
     //Get the chapter 
     strcpy(chapter,strtok (NULL,"/"));
+printf("Name: %s\nChapter: %s\n", name, chapter);
 }

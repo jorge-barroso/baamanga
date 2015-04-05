@@ -3,17 +3,47 @@
 #include <curl/curl.h>
 #include <ctype.h>
 
-void animea(char url_orig[], char protocol[], char name[]){
+void animeasingle(char[], char[], char[], char[], char[]);
+void animeabulk(char[], char[], char[], char[], char[]);
+
+void animea(char url_orig[], char protocol[], char name[], char chapter[]){
+char discr[50];
+	strcpy(discr, strtok(NULL,"\0"));
+	if(strstr(discr, "chapter") != NULL){
+		animeasingle(url_orig, protocol, name, chapter, discr);
+	}
+	else{
+		animeabulk(url_orig, protocol, name, chapter, discr);
+	}
+return;
+}
+
+void animeasingle(char url_orig[], char protocol[], char name[], char chapter[], char discr[]){
 	char namex[40];
-    //Complex name parsing 
-	strcpy (namex, strtok(NULL, "."));
+	short unsigned int j;
+	
+    //Complex name parsing
+	strcpy(namex, strtok(discr, "-"));
     while (strcmp(namex, "chapter")!= 0){
-        if (strcmp(name, "") == 0)
-        strcpy(name, namex);
-        else{
-            name = name + ' ' + namex;
-        	}
-        strcpy(namex, strtok(NULL, "-"));
-        }
+		strcat (name, namex);
+		strcat (name, " ");
+		strcpy(namex, strtok(NULL, "-"));
+		}										//Now starts capitalizing
+	for (j=0; name[j]!='\0'; j++){
+		if (isalpha(name[j]) && name[j-1] == ' ')
+			name[j] = toupper(name[j]);
+		}
+	if (isalpha(name[0]))
+		name[0] = toupper(name[0]);
+	
+	//Chapter
+	strcpy(chapter, strtok(NULL, "h"));
+	j = strlen(chapter);
+	chapter[j] = '\0';
+	printf("Name: %s\nChapter: %s\n", name, chapter);
+return;
+}
+
+void animeabulk(char url_orig[], char protocol[], char name[], char chapter[], char discr[]){
 return;
 }
