@@ -1,11 +1,18 @@
 #include <stdio.h>
 #include <string.h>
 #include <curl/curl.h>
+#include <unistd.h>
 
 void mangaheresingle(char[], char[], char[], char[]);
 void mangaherebulk(char[], char[], char[], char[]);
 
-void mangahere(char url_orig[], char protocol[], char name[], char chapter[]){
+size_t write_data_mangahere(void *ptr, size_t size, size_t nmemb, FILE *stream) {
+    size_t written;
+    written = fwrite(ptr, size, nmemb, stream);
+    return written;
+}
+
+void mangahere(char url_orig[], char name[], char chapter[], char downdir[]){
 	int j;
 	
 	strtok(NULL, "/");
@@ -24,22 +31,22 @@ void mangahere(char url_orig[], char protocol[], char name[], char chapter[]){
 		
 	strcpy(chapter, strtok(NULL,"/"));
 	if (strcmp(chapter, "\0") == 0)
-		mangaherebulk(url_orig, protocol, name, chapter);
+		mangaherebulk(url_orig, name, chapter, downdir);
 	else{
 		strcpy(chapter, strtok(NULL,"c"));
-		mangaheresingle(url_orig, protocol, name, chapter);
+		mangaheresingle(url_orig, name, chapter, downdir);
 	}
 		printf("Name: %s\nChapter: %s\n", name, chapter);
 return;
 }
 
 
-void mangaheresingle(char url_orig[], char protocol[], char name[], char chapter[]){
+void mangaheresingle(char url_orig[], char name[], char chapter[], char downdir[]){
 printf("This is mangaheresingle");
 return;
 }
 
-void mangaherebulk(char url_orig[], char protocol[], char name[], char chapter[]){
+void mangaherebulk(char url_orig[], char name[], char chapter[], char downdir[]){
 printf("This is mangaherebulk");
 return;
 }

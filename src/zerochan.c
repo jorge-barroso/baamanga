@@ -1,11 +1,18 @@
 #include <stdio.h>
 #include <string.h>
 #include <curl/curl.h>
+#include <unistd.h>
 
 void zerochansingle(char[], char[], char[]);
 void zerochanbulk(char[], char[], char[], char[]);
 
-void zerochan(char url_orig[], char protocol[], char name[], char chapter[]){
+size_t write_data_zerochan(void *ptr, size_t size, size_t nmemb, FILE *stream) {
+    size_t written;
+    written = fwrite(ptr, size, nmemb, stream);
+    return written;
+}
+
+void zerochan(char url_orig[], char name[], char chapter[], char downdir[]){
 short unsigned int j;
 char discr;
 
@@ -21,20 +28,20 @@ char discr;
 				name[j] = ' ';
 				}
 			}
-		zerochanbulk(url_orig, protocol, name, chapter);
+		zerochanbulk(url_orig, name, chapter, downdir);
 	}
 	else
 		printf("Please, give a name for the file you are going to download");
 		scanf("%49s", name);
-		 zerochansingle(url_orig, protocol, name);
+		 zerochansingle(url_orig, name, downdir);
 }
 
-void zerochansingle(char url_orig[], char protocol[], char name[]){
+void zerochansingle(char url_orig[], char name[], char downdir[]){
 printf("This is zerochansingle");
 return;
 }
 
-void zerochanbulk(char url_orig[], char protocol[], char name[], char chapter[]){
+void zerochanbulk(char url_orig[], char name[], char chapter[], char downdir[]){
 printf("This is zerochanbulk");
 return;
 }

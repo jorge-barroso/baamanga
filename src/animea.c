@@ -2,23 +2,30 @@
 #include <string.h>
 #include <curl/curl.h>
 #include <ctype.h>
+#include <unistd.h>
 
 void animeasingle(char[], char[], char[], char[], char[]);
 void animeabulk(char[], char[], char[], char[], char[]);
 
-void animea(char url_orig[], char protocol[], char name[], char chapter[]){
+size_t write_data_animea(void *ptr, size_t size, size_t nmemb, FILE *stream) {
+    size_t written;
+    written = fwrite(ptr, size, nmemb, stream);
+    return written;
+}
+
+void animea(char url_orig[], char name[], char chapter[], char downdir[]){
 char discr[50];
 	strcpy(discr, strtok(NULL,"\0"));
 	if(strstr(discr, "chapter") != NULL){
-		animeasingle(url_orig, protocol, name, chapter, discr);
+		animeasingle(url_orig, name, chapter, discr, downdir);
 	}
 	else{
-		animeabulk(url_orig, protocol, name, chapter, discr);
+		animeabulk(url_orig, name, chapter, discr, downdir);
 	}
 return;
 }
 
-void animeasingle(char url_orig[], char protocol[], char name[], char chapter[], char discr[]){
+void animeasingle(char url_orig[], char name[], char chapter[], char discr[], char downdir[]){
 	char namex[40];
 	short unsigned int j;
 	
@@ -44,6 +51,6 @@ void animeasingle(char url_orig[], char protocol[], char name[], char chapter[],
 return;
 }
 
-void animeabulk(char url_orig[], char protocol[], char name[], char chapter[], char discr[]){
+void animeabulk(char url_orig[], char name[], char chapter[], char discr[], char downdir[]){
 return;
 }

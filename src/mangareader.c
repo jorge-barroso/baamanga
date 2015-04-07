@@ -2,8 +2,15 @@
 #include <string.h>
 #include <ctype.h>
 #include <curl/curl.h>
+#include <unistd.h>
 
-void mangareader(char url_orig[], char protocol[], char name[], char chapter[]){
+size_t write_data_mangareader(void *ptr, size_t size, size_t nmemb, FILE *stream) {
+    size_t written;
+    written = fwrite(ptr, size, nmemb, stream);
+    return written;
+}
+
+void mangareader(char url_orig[], char name[], char chapter[], char downdir[]){
     short int j;
     //Name easy parsing
 strcpy (name, strtok (NULL, "/"));
