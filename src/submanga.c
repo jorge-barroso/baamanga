@@ -111,7 +111,6 @@ char imgurl[7];
 			}
 			
 		
-		
 		printf("Downloading page %d...\n", i);
 		/*strcpy(file, file_orig);
 		strcpy(url,url_orig);*/
