@@ -51,11 +51,10 @@ char baseimg[] = ".jpg";
 char tmpfile[] = "/tmp/.html";
 short unsigned int j=0, line = 1, result=0;
 unsigned int sz;
-char temp[12000], p[3];
+char temp[512], p[3];
 char imgurl[7];
 
 	strcat(urldown,(strtok(strrchr(url_orig, '/'), "\0")));
-	puts(urldown);
 	
 	while(err == 0){
 		sprintf(p, "%d", i);
@@ -87,8 +86,19 @@ char imgurl[7];
 	
 	fp = fopen(tmpfile, "r");
 	
-	
-    while(fgets(temp, sz, fp) != '\0'){
+	while(fgets(temp, sz, fp) != '\0'){
+			//printf("%s\n", temp);
+			if (strstr(temp,imgurl) != '\0'){
+				printf("Resultado: %s\n", temp);
+				result++;
+				}
+			line++;
+			}	
+			
+		line = 0;
+		result = 0;
+		
+    while(fgets(temp, 512, fp) != '\0'){
 			printf("%s\n", temp);
 			if (strstr(temp,urldown) != '\0'){
 				printf("Resultado: %s\n", temp);/*
@@ -97,20 +107,11 @@ char imgurl[7];
 				puts(imgurl);*/
 				result++;
 				}
-			else
-		line++;
+			line++;
 			}
 			
-    while(fgets(temp, sz, fp) != '\0'){
-			//printf("%s\n", temp);
-			if (strstr(temp,imgurl) != '\0'){
-				printf("Resultado: %s\n", temp);
-				result++;
-				}
-			else
-		line++;
-			}	
-
+		
+		
 		printf("Downloading page %d...\n", i);
 		/*strcpy(file, file_orig);
 		strcpy(url,url_orig);*/
