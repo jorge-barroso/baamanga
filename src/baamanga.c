@@ -36,7 +36,7 @@ void zerochan (char[], char[], char[], char[]);
 
 int main(int argc, char *argv[2]) {
 
-char url[100], protocol[5], domain[20], url_orig[100], name[50], chapter[4], downdir[60]="/home/jorge/Descargas/Recibo 1";
+char url[100], protocol[5], domain[20], url_orig[100], name[50], chapter[4], downdir[60]="/home/jorge/Descargas/Baamanga";
 		
 		downdir_check(downdir);
 
@@ -83,7 +83,7 @@ if (strcmp(domain, "manga.animea.net") == 0)					//ANIMEA
 			mangashare(url_orig, name, chapter, downdir);
 	else if (strcmp(domain, "www.pown.it") == 0)				//POWN
 			pown(url_orig, name, downdir);
-	else if (strcmp(domain, "img.submanga.com") == 0 )				//SUBMANGA
+	else if (strcmp(domain, "submanga.com") == 0 )				//SUBMANGA
 			submanga(url_orig, name, chapter, downdir);
 	else if (strcmp(domain, "www.zerochan.net") == 0)			//ZEROCHAN
 			zerochan(url_orig, name, chapter, downdir);
