@@ -1,0 +1,240 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Baamanga 1.0\n"
+"POT-Creation-Date: 2015-04-09 16:40+0100\n"
+"PO-Revision-Date: 2015-04-09 16:46+0200\n"
+"Last-Translator: Jorge Barroso Barea <jorge_barroso_11@hotmail.com>\n"
+"Language-Team: Italian\n"
+"Language: it\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.7.5\n"
+"X-Poedit-Basepath: /home/jorge/Dropbox/baamanga/\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-KeywordsList: printf\n"
+"X-Poedit-SearchPath-0: ./src\n"
+
+#: src/animea.c:50 src/futahentai.c:24 src/mangafox.c:31 src/mangahere.c:39
+#: src/mangareader.c:27 src/mangashare.c:24 src/submanga.c:35
+#, c-format
+msgid ""
+"Name: %s\n"
+"Chapter: %s\n"
+msgstr ""
+
+#: src/baamanga.c:58
+#, c-format
+msgid "Insert download link: "
+msgstr ""
+
+#: src/baamanga.c:91
+#, c-format
+msgid ""
+"Sorry, is not possible to download from this webpage, try with one bellow:\n"
+"-Submanga\n"
+"-Mcanime\n"
+"-Mangafox\n"
+"-Mangashare\n"
+"-Mangareader\n"
+"-Futahentai\n"
+"-E-hentai\n"
+"-4Chan\n"
+"-Zerochan\n"
+"-Danboru\n"
+"-Pown"
+msgstr ""
+
+#: src/bmhelp.c:5
+#, c-format
+msgid "USAGE: baamanga [options] [url]\n"
+msgstr ""
+
+#: src/bmhelp.c:6
+#, c-format
+msgid "Both [options] and [url] are optional\n"
+msgstr ""
+
+#: src/bmhelp.c:7
+#, c-format
+msgid "Options are:\n"
+msgstr ""
+
+#: src/bmhelp.c:8
+#, c-format
+msgid "\t--config\t\t\t\tShow config dialog\n"
+msgstr ""
+
+#: src/bmhelp.c:9 src/bmhelp.c:11
+#, c-format
+msgid "\t\n"
+msgstr ""
+
+#: src/bmhelp.c:10
+#, c-format
+msgid "\t--ver\t\t\t\t\tPrint version information and exit\n"
+msgstr ""
+
+#: src/bmhelp.c:12
+#, c-format
+msgid "\t--help\t\t\t\t\tShow this dialog\n"
+msgstr ""
+
+#: src/bmopt.c:7
+#, c-format
+msgid "When do you want your manga to be downloaded?: "
+msgstr ""
+
+#: src/bmopt.c:10
+#, c-format
+msgid "Do you want your manga to be on a single pdf file? [y/N] "
+msgstr ""
+
+#: src/bmver.c:4
+#, c-format
+msgid ""
+"Baamanga version 1.0 (release data).\n"
+"\n"
+msgstr ""
+
+#: src/bmver.c:5
+#, c-format
+msgid "Copyright by Jorge Barroso <jorge_barroso_11 at hotmail dot com>.\n"
+msgstr ""
+
+#: src/bmver.c:6
+#, c-format
+msgid "Distributed under GNU General Public License 2 (GPL 2.0)\n"
+msgstr ""
+
+#: src/bmver.c:7
+#, c-format
+msgid ""
+"Feel free to report any bug, issue or comment to https://github.com/jorge-"
+"barroso/baamanga\n"
+msgstr ""
+
+#: src/danboru.c:39
+#, c-format
+msgid "Select a name for your downloaded file: "
+msgstr ""
+
+#: src/danboru.c:70
+#, c-format
+msgid "Select a name for your downloaded file"
+msgstr ""
+
+#: src/danboru.c:103
+#, c-format
+msgid "This is danborubulk"
+msgstr ""
+
+#: src/danboru.c:105
+#, c-format
+msgid "Give a name to the board: "
+msgstr ""
+
+#: src/downdir_check.c:22 src/downdir_check.c:50 src/submanga.c:105
+#: src/submanga.c:126
+#, c-format
+msgid "%s\n"
+msgstr ""
+
+#: src/downdir_check.c:39
+#, c-format
+msgid ""
+"A file with the download directory already exists.\n"
+"Do you want to overwrite with a directory? [y/N]\n"
+msgstr ""
+
+#: src/downdir_check.c:40
+#, c-format
+msgid "-----------------------------------------------\n"
+msgstr ""
+
+#: src/downdir_check.c:57
+#, c-format
+msgid ""
+"Choose a new PATH to download your manga\n"
+"(full path with  if space): "
+msgstr ""
+
+#: src/ehentai.c:13
+#, c-format
+msgid "This is ehentai"
+msgstr ""
+
+#: src/mangahere.c:45
+#, c-format
+msgid "This is mangaheresingle"
+msgstr ""
+
+#: src/mangahere.c:50
+#, c-format
+msgid "This is mangaherebulk"
+msgstr ""
+
+#: src/pown.c:13
+#, c-format
+msgid "Give a name to the pown: "
+msgstr ""
+
+#: src/submanga.c:64
+#, c-format
+msgid "%s %s\n"
+msgstr ""
+
+#: src/submanga.c:75
+#, c-format
+msgid "EEEEEEEEEEEEEY URLDOWN IS %s AND URL_ORIG IS %s\n"
+msgstr ""
+
+#: src/submanga.c:110
+#, c-format
+msgid "URL = %s\n"
+msgstr ""
+
+#: src/submanga.c:117
+#, c-format
+msgid "%d\n"
+msgstr ""
+
+#: src/submanga.c:139
+#, c-format
+msgid "Downloading page %d...\n"
+msgstr ""
+
+#: src/submanga.c:140
+#, c-format
+msgid "Downloading %s\n"
+msgstr ""
+
+#: src/submanga.c:146
+#, c-format
+msgid "DOWNLOADING\n"
+msgstr ""
+
+#: src/submanga.c:171
+#, c-format
+msgid "%s chapter %s downloaded\n"
+msgstr ""
+
+#: src/submanga.c:177
+#, c-format
+msgid "This is submangabulk"
+msgstr ""
+
+#: src/zerochan.c:34
+#, c-format
+msgid "Please, give a name for the file you are going to download"
+msgstr ""
+
+#: src/zerochan.c:40
+#, c-format
+msgid "This is zerochansingle"
+msgstr ""
+
+#: src/zerochan.c:45
+#, c-format
+msgid "This is zerochanbulk"
+msgstr ""
