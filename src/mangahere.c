@@ -6,14 +6,9 @@
 void mangaheresingle(char[], char[], char[], char[]);
 void mangaherebulk(char[], char[], char[], char[]);
 
-size_t write_data_mangahere(void *ptr, size_t size, size_t nmemb, FILE *stream) {
-    size_t written;
-    written = fwrite(ptr, size, nmemb, stream);
-    return written;
-}
-
-void mangahere(char url_orig[], char name[], char chapter[], char downdir[]){
+void mangahere(char url_orig[], char name[], char downdir[]){
 	int j;
+	char chapter[4];
 	
 	strtok(NULL, "/");
 	// Parse name

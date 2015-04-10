@@ -10,15 +10,10 @@ void submangasingle(char[], char[], char[], char[]);
 void submangabulk(char[], char[], char[], char[]);
 void namedir_check(char [], char []);
 void chapdir_check(char [], char []);
-size_t write_data_submanga(void *ptr, size_t size, size_t nmemb, FILE *stream) {
-    size_t written;
-    written = fwrite(ptr, size, nmemb, stream);
-    return written;
-}
 
-void submanga(char url_orig[], char name[], char chapter[], char downdir[]){
+void submanga(char url_orig[], char name[], char downdir[]){
 	int j;
-	char discr[10];
+	char discr[10], chapter[6];
 	
 	// Parse name
 	strcpy(name, strtok(NULL, "/"));
@@ -88,7 +83,7 @@ int length;
 		fp = fopen(tmpfile, "w+");
 		curl_easy_setopt(curl, CURLOPT_URL, url_orig);
 		curl_easy_setopt(curl, CURLOPT_URL, url_orig);
-		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data_submanga); //Save
+		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data); //Save
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);						//Where to save
 		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);					//Autoredirect
 	
@@ -169,7 +164,7 @@ int length;
 		fp = fopen(tmpfile, "w+");
 		curl_easy_setopt(curl, CURLOPT_URL, pageurl);
 		curl_easy_setopt(curl, CURLOPT_URL, pageurl);
-		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data_submanga); //Save
+		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data); //Save
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, img);						//Where to save
 		curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 0L);						//No output
 		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);					//Autoredirect

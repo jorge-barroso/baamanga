@@ -4,15 +4,9 @@
 #include <unistd.h>
 
 void zerochansingle(char[], char[], char[]);
-void zerochanbulk(char[], char[], char[], char[]);
+void zerochanbulk(char[], char[], char[]);
 
-size_t write_data_zerochan(void *ptr, size_t size, size_t nmemb, FILE *stream) {
-    size_t written;
-    written = fwrite(ptr, size, nmemb, stream);
-    return written;
-}
-
-void zerochan(char url_orig[], char name[], char chapter[], char downdir[]){
+void zerochan(char url_orig[], char name[], char downdir[]){
 short unsigned int j;
 char discr;
 
@@ -28,7 +22,7 @@ char discr;
 				name[j] = ' ';
 				}
 			}
-		zerochanbulk(url_orig, name, chapter, downdir);
+		zerochanbulk(url_orig, name, downdir);
 	}
 	else
 		printf("Please, give a name for the file you are going to download");
@@ -41,7 +35,10 @@ printf("This is zerochansingle");
 return;
 }
 
-void zerochanbulk(char url_orig[], char name[], char chapter[], char downdir[]){
+void zerochanbulk(char url_orig[], char name[], char downdir[]){
+
+//short int pages[4];
+
 printf("This is zerochanbulk");
 return;
 }

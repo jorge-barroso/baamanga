@@ -5,22 +5,16 @@
 #include <unistd.h>
 
 void animeasingle(char[], char[], char[], char[], char[]);
-void animeabulk(char[], char[], char[], char[], char[]);
+void animeabulk(char[], char[], char[], char[]);
 
-size_t write_data_animea(void *ptr, size_t size, size_t nmemb, FILE *stream) {
-    size_t written;
-    written = fwrite(ptr, size, nmemb, stream);
-    return written;
-}
-
-void animea(char url_orig[], char name[], char chapter[], char downdir[]){
-char discr[50];
+void animea(char url_orig[], char name[], char downdir[]){
+char discr[50], chapter[4];
 	strcpy(discr, strtok(NULL,"\0"));
 	if(strstr(discr, "chapter") != NULL){
 		animeasingle(url_orig, name, chapter, discr, downdir);
 	}
 	else{
-		animeabulk(url_orig, name, chapter, discr, downdir);
+		animeabulk(url_orig, name, chapter, downdir);
 	}
 return;
 }
@@ -51,6 +45,6 @@ void animeasingle(char url_orig[], char name[], char chapter[], char discr[], ch
 return;
 }
 
-void animeabulk(char url_orig[], char name[], char chapter[], char discr[], char downdir[]){
+void animeabulk(char url_orig[], char name[], char chapter[], char downdir[]){
 return;
 }

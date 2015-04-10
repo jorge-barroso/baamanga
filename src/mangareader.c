@@ -4,14 +4,9 @@
 #include <curl/curl.h>
 #include <unistd.h>
 
-size_t write_data_mangareader(void *ptr, size_t size, size_t nmemb, FILE *stream) {
-    size_t written;
-    written = fwrite(ptr, size, nmemb, stream);
-    return written;
-}
-
-void mangareader(char url_orig[], char name[], char chapter[], char downdir[]){
+void mangareader(char url_orig[], char name[], char downdir[]){
     short int j;
+    char chapter[4];
     //Name easy parsing
 strcpy (name, strtok (NULL, "/"));
     for (j=0;name[j]!='\0';j++){

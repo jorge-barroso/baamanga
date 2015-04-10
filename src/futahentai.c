@@ -3,14 +3,9 @@
 #include <curl/curl.h>
 #include <unistd.h>
 
-size_t write_data_futahentai(void *ptr, size_t size, size_t nmemb, FILE *stream) {
-    size_t written;
-    written = fwrite(ptr, size, nmemb, stream);
-    return written;
-}
-
-void futahentai(char url_orig[], char name[], char chapter[], char downdir[]){
+void futahentai(char url_orig[], char name[], char downdir[]){
 short unsigned int j;
+char chapter [4];
 	strtok (NULL, "-");
     //Let's parse the name
 	strcpy(name, strtok(NULL, "-"));

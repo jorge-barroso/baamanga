@@ -7,13 +7,9 @@ void danborudirect(char[], char[], char[]);
 void danborusingle(char[], char[], char[]);
 void danborubulk(char[], char[], char[], char[]);
 
-size_t write_data_danboru(void *ptr, size_t size, size_t nmemb, FILE *stream) {
-    size_t written;
-    written = fwrite(ptr, size, nmemb, stream);
-    return written;
-}
-
-void danboru(char url_orig[], char name[], char chapter[], char downdir[]){
+void danboru(char url_orig[], char name[], char downdir[]){
+	
+	char chapter[3];
 	
 	strcpy(name,strtok(NULL, "/"));
 	
@@ -49,7 +45,7 @@ FILE *fp;
 	if(curl) {
 		curl_easy_setopt(curl, CURLOPT_URL, url_orig);
 		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
-        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data_danboru);
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);
 	
 		chdir(downdir);
@@ -81,7 +77,7 @@ FILE *fp;
 		curl_easy_setopt(curl, CURLOPT_URL, url_orig);
 		/* example.com is redirected, so we tell libcurl to follow redirection */ 
 		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
-        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data_danboru);
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);
 	
 		/* Perform the request, res will get the return code */ 
