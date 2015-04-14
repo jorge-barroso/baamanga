@@ -41,12 +41,14 @@ void submangasingle(char url_orig[], char name[], char chapter[], char downdir[]
 	FILE *img;
 CURL *curl;
 CURLcode res;
-short int i=1, k=0;
-bool err = 0, pgfound = 0, mode = 0;
+short int i=1, k=0, mode = 0;
+bool err = 0, pgfound = 0;
 char urldown[50] = "http://submanga.com/c";
 char pageurl[60];
 char pgbaseone[] = "http://omg.submanga.com/pages";
 char pgbasetwo[] = "http://img.submanga.com/pages";
+char pgbasethree[] = "http://amg.submanga.com/pages";
+char pgbasefour[] = "http://img2.submanga.com/pages";
 char tmpfile[] = "/tmp/.html";
 short unsigned int result=0;
 char p[3], q[3], imgname[7], baseimg[] = ".jpg";
@@ -135,6 +137,34 @@ int length;
 				while (fgets(html, sizeof(html) - 1, fp) != '\0'){
 					if (strstr(html, pgbasetwo) != NULL){
 						strcpy(pageurl, strtok(strstr(html, pgbasetwo), "\""));
+						pgfound = 1;
+					}
+				}
+			}
+			
+			if (pgfound == 0 && i == 2){
+				mode = 2;
+				rewind(fp);
+			}
+			
+			if (mode == 2){
+				while (fgets(html, sizeof(html) - 1, fp) != '\0'){
+					if (strstr(html, pgbasethree) != NULL){
+						strcpy(pageurl, strtok(strstr(html, pgbasethree), "\""));
+						pgfound = 1;
+					}
+				}
+			}
+			
+			if (pgfound == 0 && i == 2){
+				mode = 3;
+				rewind(fp);
+			}
+			
+			if (mode == 3){
+				while (fgets(html, sizeof(html) - 1, fp) != '\0'){
+					if (strstr(html, pgbasefour) != NULL){
+						strcpy(pageurl, strtok(strstr(html, pgbasefour), "\""));
 						pgfound = 1;
 					}
 				}
