@@ -3,7 +3,7 @@
 #include "bmopt.c"
 #include "bmhelp.c"
 #include "bmver.c"
-#include "downdir_check.c"
+#include "dirs_check.c"
 #include "write_data.c"
 #include "animea.c"
 #include "danboru.c"

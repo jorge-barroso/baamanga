@@ -45,11 +45,11 @@ short int i=1, k=0;
 bool err = 0, pgfound = 0, mode = 0;
 char urldown[50] = "http://submanga.com/c";
 char pageurl[60];
-char pgbaseone[] = "http://img.submanga.com/pages";
-char pgbasetwo[] = "http://omg.submanga.com/pages";
+char pgbaseone[] = "http://omg.submanga.com/pages";
+char pgbasetwo[] = "http://img.submanga.com/pages";
 char tmpfile[] = "/tmp/.html";
 short unsigned int result=0;
-char p[3], q[3], imgurl[7], baseimg[] = ".jpg";
+char p[3], q[3], imgname[7], baseimg[] = ".jpg";
 char html[153600];
 int length;
 	
@@ -58,15 +58,15 @@ int length;
 	chapdir_check(chapter, downdir);
 	strcat(strcat(downdir, "/"), chapter);
 	chdir(downdir);
-	strcat(urldown,(strtok(strrchr(url_orig, '/'), "\0")));
 	
+	strcat(urldown,(strtok(strrchr(url_orig, '/'), "\0")));
 	
 	while(err == 0){
 		result = 0;
 		pgfound = 0;
 		sprintf(p, "%d", i);
-		sprintf(q, "%d", k);
-		strcat(strcpy(imgurl, q), baseimg);
+		sprintf(q, "%.2d", k);
+		strcat(strcpy(imgname, q), baseimg);
 		if (k==1)
 			strcat(urldown, "/");
 		if (k > 1){/* "i", and then p, higher than 9 so, two digits*/
@@ -81,7 +81,6 @@ int length;
 		curl = curl_easy_init();
 	if(curl) {
 		fp = fopen(tmpfile, "w+");
-		curl_easy_setopt(curl, CURLOPT_URL, url_orig);
 		curl_easy_setopt(curl, CURLOPT_URL, url_orig);
 		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data); //Save
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);						//Where to save
@@ -105,14 +104,7 @@ int length;
 		
 		while (fgets(html, sizeof(html) - 1, fp) != '\0'){
 			if (strstr(html, urldown) != NULL){
-				if (i < 10)
-				sscanf(strstr(html, urldown), "%30s", url_orig);
-				else
-				sscanf(strstr(html, urldown), "%31s", url_orig);
-				if (i == 1){
-					length = strlen(url_orig);
-					url_orig[length-1] = '\0';
-					}
+				strcpy(url_orig, strtok(strstr(html, urldown), "\""));
 					result++;
 				}
 			}
@@ -128,29 +120,26 @@ int length;
 			if (mode == 0){
 				while (fgets(html, sizeof(html) - 1, fp) != '\0'){
 					if (strstr(html, pgbaseone) != NULL){
-						if (i < 11)
-						strncpy(pageurl, strstr(html, pgbaseone), 47 + sizeof(chapter));
-						else
-						strncpy(pageurl, strstr(html, pgbaseone), 48 + sizeof(chapter));
-							pgfound = 1;
-						}
-					}
-				if (pgfound==0)
-					mode = 1;
-			}
-		
-			else if (mode == 1){
-				while (fgets(html, sizeof(html) - 1, fp) != '\0'){
-					if (strstr(html, pgbasetwo) != NULL){
-						if (i < 11)
-						strncpy(pageurl, strstr(html, pgbaseone), 47 + sizeof(chapter));
-						else
-						strncpy(pageurl, strstr(html, pgbaseone), 48 + sizeof(chapter));
-							pgfound = 1;
-						}
+						strcpy(pageurl, strtok(strstr(html, pgbaseone), "\""));
+						pgfound = 1;
 					}
 				}
 			}
+		
+			if (pgfound == 0 && i == 2){
+				mode = 1;
+				rewind(fp);
+			}
+			
+			if (mode == 1){
+				while (fgets(html, sizeof(html) - 1, fp) != '\0'){
+					if (strstr(html, pgbasetwo) != NULL){
+						strcpy(pageurl, strtok(strstr(html, pgbasetwo), "\""));
+						pgfound = 1;
+					}
+				}
+			}
+		}
 		
 		fclose(fp);
 		
@@ -158,11 +147,10 @@ int length;
 		printf("\n\n\nDownloading page %d...\n", k);
 		/* Now for the image */
 		if (pgfound == 1){
-		img = fopen(imgurl, "w+");
+		img = fopen(imgname, "w+");
 		if(curl) {
 		curl = curl_easy_init();
 		fp = fopen(tmpfile, "w+");
-		curl_easy_setopt(curl, CURLOPT_URL, pageurl);
 		curl_easy_setopt(curl, CURLOPT_URL, pageurl);
 		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data); //Save
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, img);						//Where to save
@@ -185,6 +173,7 @@ int length;
 	}
 	if (i > 2)
 		printf("\n\n%s chapter %s downloaded\n", name, chapter);
+	remove(tmpfile);
 
 return;
 }

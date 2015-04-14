@@ -7,14 +7,15 @@
 
 void namedir_check(char[], char[]);
 void chapdir_check(char[], char[]);
-void mangafoxsingle(char[], char[], char[], char [], char []);
+void mangafoxsingle(char[], char[], char[], char [], char[], char[], char[]);
 void mangafoxbulk(char[], char[], char[], char[]);
 
 void mangafox(char url_orig[], char name[], char downdir[]){
 short int j;
 char nameorig[80];
 char discr [6];
-char chapter [5];
+char chapter [5], chaptorig[5], sn[10] = "";
+    
     strtok (NULL, "/");
     
     //Let's parse the name
@@ -31,39 +32,41 @@ char chapter [5];
     
     //Now for the chapter
 	strcpy (discr, strtok(NULL, "/"));
-    if (discr[0] != 'c' && discr[0] != '\0')
-		strcpy (discr, strtok(NULL, "/"));
-		puts(name);
+    
     if (discr == '\0'){
 		printf("This is Mangafox Bulk\n");
 		mangafoxbulk(name, nameorig, url_orig, downdir);
 	}
 	else{
 		printf("This is Mangafox Single\n");
-		strcpy (chapter, discr);
+		if (discr[0] != 'c'){ //If it's not cXXXX and it's not empty, it means that 
+			strcpy(sn, discr);
+			strcpy (chapter, strtok(NULL, "/")); //it is a chapter, but this is the volume serial name
+			}
+		else
+			strcpy (chapter, discr);
+			strcpy (chaptorig, chapter);
 		while (chapter[0] == 'c' || chapter[0] == '0')
 			memmove(chapter, chapter+1, strlen(chapter));
 		printf("Name: %s\nChapter: %s\n", name, chapter);
-		mangafoxsingle(url_orig, name, nameorig, chapter,downdir);
+		mangafoxsingle(url_orig, name, nameorig, chapter, chaptorig, sn, downdir);
 	}
 return;
 }
 
-void mangafoxsingle(char url_orig[], char name[], char nameorig[], char chapter[], char downdir[]){
+void mangafoxsingle(char url_orig[], char name[], char nameorig[], char chapter[], char chaptorig[], char sn[], char downdir[]){
 	
 	FILE *fp;
 	FILE *img;
 CURL *curl;
 CURLcode res;
-short int i=1, k=0;
-bool err = 0, pgfound = 0, mode = 0;
-char urldown[50] = "http://mangafox.me/manga/";
-char pageurl[60];
-char pgbaseone[] = "http://a.mfcdn.net/store/manga/";
+short int i=1, k=0, pgfound = 0;
+bool err = 0, mode = 0, result=0;
+char urldown[] = ".html";
+char pgbase[] = "http://a.mfcdn.net/store/manga/";
 char tmpfile[] = "/tmp/.html";
-short unsigned int result=0;
-char p[3], q[3], imgurl[7], baseimg[] = ".jpg";
-char html[153600];
+char baseimg[] = ".jpg";
+char html[153600], basecode[7], basechap[10], imgurl[7], pageurl[60], p[3], q[3];
 int length;
 	
 	namedir_check(name, downdir);
@@ -71,35 +74,25 @@ int length;
 	chapdir_check(chapter, downdir);
 	strcat(strcat(downdir, "/"), chapter);
 	chdir(downdir);
-	strcat(urldown,(strtok(strrchr(url_orig, '/') +1, "\0")));
-	puts(urldown);
 	
 	while(err == 0){
+		length=strlen(url_orig);
 		result = 0;
 		pgfound = 0;
-		sprintf(p, "%d", i);
+		sprintf(p, "%d", i+1);
 		sprintf(q, "%d", k);
+		strcat(strcpy(urldown, p), ".html");
 		strcat(strcpy(imgurl, q), baseimg);
-		if (k==1)
-			strcat(urldown, "/");
-		if (k > 1){/* "i", and then p, higher than 9 so, two digits*/
-			length = strlen(urldown);
-			urldown[length-1] = '\0';
-		}
-		if (k > 9)
-			urldown[length-2] = '\0';
-		if (k > 0)
-			strcat(urldown, p);
+		
 		/* Download html page*/
 		curl = curl_easy_init();
 	if(curl) {
 		fp = fopen(tmpfile, "w+");
 		curl_easy_setopt(curl, CURLOPT_URL, url_orig);
-		curl_easy_setopt(curl, CURLOPT_URL, url_orig);
-		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data); //Save
-        curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);						//Where to save
-		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);					//Autoredirect
-	
+		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data); 	//Save
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);				//Where to save
+		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);			//Autoredirect
+		curl_easy_setopt(curl, CURLOPT_USERAGENT, "libcurl-agent/1.0");
 	
     res = curl_easy_perform(curl);
     fclose(fp);
@@ -115,20 +108,32 @@ int length;
 		fp = fopen(tmpfile, "r");
 		
 		/* Look for the next html page to download */
-		
+		printf("%d", result);
 		while (fgets(html, sizeof(html) - 1, fp) != '\0'){
-			if (strstr(html, urldown) != NULL){
-				if (i < 10)
-				sscanf(strstr(html, urldown), "%30s", url_orig);
-				else
-				sscanf(strstr(html, urldown), "%31s", url_orig);
-				if (i == 1){
-					length = strlen(url_orig);
-					url_orig[length-1] = '\0';
+			if (i == 1){
+				while (strstr(html, urldown) != NULL && result == 0){
+					if (i == 1){
+					strtok(strstr(html, urldown), "/");	//Getting Manga base code and chap.
+					strtok(NULL, "/");
+					strtok(NULL, "/");//3x To get Volume Serial and chapter expression
+					strtok(NULL, "/");
+					strcpy(basecode, strtok(NULL, "/"));
+					strcpy(basechap, strtok(NULL, "/"));
+					strcat(pgbase, strcat(basecode,basechap));
 					}
+					if (i==11)	//length + 1
+					length++;
+					if (i==101)	//You never know XD
+					length++;
+					while(url_orig[length-1] != '/'){
+					url_orig[length-1] = '\0';
+					length--;
+					}
+					strcat (url_orig, urldown);
 					result++;
 				}
 			}
+		}
 		
 		rewind(fp);
 		
@@ -137,38 +142,20 @@ int length;
 		
 		/* HERE WE GET THE PAGE URL */
 		
-		if (i>1){
 			if (mode == 0){
-				while (fgets(html, sizeof(html) - 1, fp) != '\0'){
-					if (strstr(html, pgbaseone) != NULL){
-						if (i < 11)
-						strncpy(pageurl, strstr(html, pgbaseone), 47 + sizeof(chapter));
-						else
-						strncpy(pageurl, strstr(html, pgbaseone), 48 + sizeof(chapter));
-							pgfound = 1;
+				while (fgets(html, sizeof(html) - 1, fp) != '\0' && pgfound == 0){
+					if (strstr(html, pgbase) != NULL){
+						strcpy(pageurl, strtok(strstr(html, pgbase), "\""));
+						pgfound = 1;
 						}
 					}
 				if (pgfound==0)
 					mode = 1;
 			}
-		/*
-			else if (mode == 1){
-				while (fgets(html, sizeof(html) - 1, fp) != '\0'){
-					if (strstr(html, pgbasetwo) != NULL){
-						if (i < 11)
-						strncpy(pageurl, strstr(html, pgbaseone), 47 + sizeof(chapter));
-						else
-						strncpy(pageurl, strstr(html, pgbaseone), 48 + sizeof(chapter));
-							pgfound = 1;
-						}
-					}
-				}*/
-			}
 		
 		fclose(fp);
 		
-		if (i > 1)
-		printf("\n\n\nDownloading page %d...\n", k);
+		printf("\n\n\nDownloading page %d...\n", i);
 		/* Now for the image */
 		if (pgfound == 1){
 		img = fopen(imgurl, "w+");
@@ -192,9 +179,8 @@ int length;
 		
 		curl_easy_cleanup(curl);
 			}
-		}
+	}
 		i++, k++;
-		
 	}
 	if (i > 2)
 		printf("\n\n%s chapter %s downloaded\n", name, chapter);
