@@ -60,13 +60,13 @@ void mangafoxsingle(char url_orig[], char name[], char nameorig[], char chapter[
 	FILE *img;
 CURL *curl;
 CURLcode res;
-short int i=1, k=0, pgfound = 0;
-bool err = 0, mode = 0, result=0;
+short int i=1, k=0;
+bool err = 0, result=0, pgfound = 0;
 char urldown[] = ".html";
 char pgbase[] = "http://a.mfcdn.net/store/manga/";
 char tmpfile[] = "/tmp/.html";
 char baseimg[] = ".jpg";
-char html[153600], basecode[7], basechap[10], imgurl[7], pageurl[60], p[3], q[3];
+char html[153600], imgname[7], pageurl[80], p[3], q[3];
 int length;
 	
 	namedir_check(name, downdir);
@@ -80,9 +80,9 @@ int length;
 		result = 0;
 		pgfound = 0;
 		sprintf(p, "%d", i+1);
-		sprintf(q, "%d", k);
+		sprintf(q, "%.2d", k+1);
 		strcat(strcpy(urldown, p), ".html");
-		strcat(strcpy(imgurl, q), baseimg);
+		strcat(strcpy(imgname, q), baseimg);
 		
 		/* Download html page*/
 		curl = curl_easy_init();
@@ -108,33 +108,20 @@ int length;
 		fp = fopen(tmpfile, "r");
 		
 		/* Look for the next html page to download */
-		printf("%d", result);
 		while (fgets(html, sizeof(html) - 1, fp) != '\0'){
-			if (i == 1){
-				while (strstr(html, urldown) != NULL && result == 0){
-					if (i == 1){
-					strtok(strstr(html, urldown), "/");	//Getting Manga base code and chap.
-					strtok(NULL, "/");
-					strtok(NULL, "/");//3x To get Volume Serial and chapter expression
-					strtok(NULL, "/");
-					strcpy(basecode, strtok(NULL, "/"));
-					strcpy(basechap, strtok(NULL, "/"));
-					strcat(pgbase, strcat(basecode,basechap));
-					}
-					if (i==11)	//length + 1
-					length++;
-					if (i==101)	//You never know XD
-					length++;
-					while(url_orig[length-1] != '/'){
-					url_orig[length-1] = '\0';
-					length--;
-					}
-					strcat (url_orig, urldown);
-					result++;
+			while (strstr(html, urldown) != NULL && result == 0){
+				if (i==11)	//length + 1
+				length++;
+				if (i==101)	//You never know XD
+				length++;
+				while(url_orig[length-1] != '/'){
+				url_orig[length-1] = '\0';
+				length--;
 				}
+				strcat (url_orig, urldown);
+				result++;
 			}
 		}
-		
 		rewind(fp);
 		
 		if (result == 0)
@@ -142,29 +129,24 @@ int length;
 		
 		/* HERE WE GET THE PAGE URL */
 		
-			if (mode == 0){
-				while (fgets(html, sizeof(html) - 1, fp) != '\0' && pgfound == 0){
-					if (strstr(html, pgbase) != NULL){
+			while (fgets(html, sizeof(html) - 1, fp) != '\0'){
+				if (strstr(html, pgbase) != NULL && strstr(html, "compressed") != NULL && pgfound < 1) {
+						puts(imgname);
 						strcpy(pageurl, strtok(strstr(html, pgbase), "\""));
-						pgfound = 1;
-						}
-					}
-				if (pgfound==0)
-					mode = 1;
+						puts(imgname);
+						pgfound++;
+				}
 			}
 		
 		fclose(fp);
-		
 		printf("\n\n\nDownloading page %d...\n", i);
 		/* Now for the image */
 		if (pgfound == 1){
-		img = fopen(imgurl, "w+");
+		img = fopen(imgname, "w+");
 		if(curl) {
 		curl = curl_easy_init();
-		fp = fopen(tmpfile, "w+");
 		curl_easy_setopt(curl, CURLOPT_URL, pageurl);
-		curl_easy_setopt(curl, CURLOPT_URL, pageurl);
-		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data); //Save
+		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data);		 	//Save
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, img);						//Where to save
 		curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 0L);						//No output
 		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);					//Autoredirect

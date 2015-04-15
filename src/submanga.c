@@ -119,7 +119,7 @@ int length;
 		/* HERE WE GET THE PAGE URL */
 		
 		if (i>1){
-			if (mode == 0){
+			if (mode == 0){ //omg.submanga.com
 				while (fgets(html, sizeof(html) - 1, fp) != '\0'){
 					if (strstr(html, pgbaseone) != NULL){
 						strcpy(pageurl, strtok(strstr(html, pgbaseone), "\""));
@@ -133,7 +133,7 @@ int length;
 				rewind(fp);
 			}
 			
-			if (mode == 1){
+			if (mode == 1){ //img.submanga.com
 				while (fgets(html, sizeof(html) - 1, fp) != '\0'){
 					if (strstr(html, pgbasetwo) != NULL){
 						strcpy(pageurl, strtok(strstr(html, pgbasetwo), "\""));
@@ -147,7 +147,7 @@ int length;
 				rewind(fp);
 			}
 			
-			if (mode == 2){
+			if (mode == 2){ //amg.submanga.com
 				while (fgets(html, sizeof(html) - 1, fp) != '\0'){
 					if (strstr(html, pgbasethree) != NULL){
 						strcpy(pageurl, strtok(strstr(html, pgbasethree), "\""));
@@ -161,7 +161,7 @@ int length;
 				rewind(fp);
 			}
 			
-			if (mode == 3){
+			if (mode == 3){ //img2.submanga.com
 				while (fgets(html, sizeof(html) - 1, fp) != '\0'){
 					if (strstr(html, pgbasefour) != NULL){
 						strcpy(pageurl, strtok(strstr(html, pgbasefour), "\""));
