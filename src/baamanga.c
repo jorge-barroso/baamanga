@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include "bmopt.c"
 #include "bmhelp.c"
 #include "bmver.c"
@@ -35,8 +36,10 @@ void zerochan (char[], char[], char[]);
 
 int main(int argc, char *argv[2]) {
 
-char url[100], domain[20], url_orig[100], name[80], downdir[60]="/home/jorge/Descargas/Baamanga";
-		
+char url[100], domain[20], url_orig[100], name[80], downdir[60];
+
+		strcpy(downdir, getenv("HOME"));
+		strcat(downdir, "/Baamanga");
 		downdir_check(downdir);
 
 if (argc == 2){
