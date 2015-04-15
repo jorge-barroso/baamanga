@@ -131,9 +131,7 @@ int length;
 		
 			while (fgets(html, sizeof(html) - 1, fp) != '\0'){
 				if (strstr(html, pgbase) != NULL && strstr(html, "compressed") != NULL && pgfound < 1) {
-						puts(imgname);
 						strcpy(pageurl, strtok(strstr(html, pgbase), "\""));
-						puts(imgname);
 						pgfound++;
 				}
 			}

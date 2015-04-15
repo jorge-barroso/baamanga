@@ -51,7 +51,7 @@ char pgbasethree[] = "http://amg.submanga.com/pages";
 char pgbasefour[] = "http://img2.submanga.com/pages";
 char tmpfile[] = "/tmp/.html";
 short unsigned int result=0;
-char p[3], q[3], imgname[7], baseimg[] = ".jpg";
+char p[3], q[3], imgname[7];
 char html[153600];
 int length;
 	
@@ -68,7 +68,7 @@ int length;
 		pgfound = 0;
 		sprintf(p, "%d", i);
 		sprintf(q, "%.2d", k);
-		strcat(strcpy(imgname, q), baseimg);
+		strcat(strcpy(imgname, q), ".jpg");
 		if (k==1)
 			strcat(urldown, "/");
 		if (k > 1){/* "i", and then p, higher than 9 so, two digits*/
