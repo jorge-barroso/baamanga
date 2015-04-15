@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
-#include <curl/curl.h>
 #include <unistd.h>
+#include <curl/curl.h>
 
 void zerochansingle(char[], char[], char[]);
 void zerochanbulk(char[], char[], char[]);

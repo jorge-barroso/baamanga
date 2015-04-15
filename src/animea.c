@@ -2,7 +2,6 @@
 #include <string.h>
 #include <curl/curl.h>
 #include <ctype.h>
-#include <unistd.h>
 
 void animeasingle(char[], char[], char[], char[], char[]);
 void animeabulk(char[], char[], char[], char[]);

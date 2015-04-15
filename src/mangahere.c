@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
-#include <curl/curl.h>
 #include <unistd.h>
+#include <ctype.h>
 
 void mangaheresingle(char[], char[], char[], char[]);
 void mangaherebulk(char[], char[], char[], char[]);

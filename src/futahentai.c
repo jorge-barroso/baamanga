@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <curl/curl.h>
-#include <unistd.h>
 
 void futahentai(char url_orig[], char name[], char downdir[]){
 short unsigned int j;

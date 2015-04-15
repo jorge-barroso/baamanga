@@ -1,0 +1,7 @@
+PACKAGE (0.2) UNRELEASED; urgency=medium
+
+  * Initial release. 0.2
+    Program works on terminal, but is easy to use.
+    Download from Submanga.
+
+ -- Jorge Barroso Barea <jorge@lainucs-desktop-2>  Wed, 15 Apr 2015 14:44:33 +0200

@@ -33,7 +33,6 @@ void pown (char[], char[], char[]);
 void submanga (char[], char[], char[]);
 void zerochan (char[], char[], char[]);
 
-
 int main(int argc, char *argv[2]) {
 
 char url[100], domain[20], url_orig[100], name[80], downdir[60]="/home/jorge/Descargas/Baamanga";

@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <string.h>
-#include <curl/curl.h>
 #include <sys/stat.h>
 #include <stdbool.h>
 #include <ctype.h>
 #include <unistd.h>
+#include <curl/curl.h>
 
 void submangasingle(char[], char[], char[], char[]);
 void submangabulk(char[], char[], char[], char[]);
