@@ -14,18 +14,22 @@ all:
 	$(CC) $(CFLAGS) $(MAIN) -o $(EXECUTABLE)
 	
 
-INSTALL = /usr/bin/install -D
-INSTALLDATA = /usr/bin/install -D -m 644
+INSTALL = /usr/bin/install -c
+INSTALLDATA = /usr/bin/install -c -m 644
 prefix=/usr
-bindir=$(prefix)/bin
-docdir=$(prefix)/share/doc/$(NAME)
+bindir=$(DESTDIR)$(prefix)/bin
+datadir=$(DESTDIR)$(docdir)/$(NAME)
+licensedir=$(DESTDIR)$(prefix)/share/licenses/$(NAME)
+docdir=$(prefix)/share/doc/
 DESTDIR=
 
 install:
-	if [ ! -d $(DESTDIR)$(bindir) ]; then mkdir -p $(DESTDIR)$(bindir); fi
-	$(INSTALL) $(EXECUTABLE) $(DESTDIR)$(bindir)/baamanga
-	$(INSTALLDATA) $(DATA) $(DESTDIR)$(docdir)/
-	$(INSTALLDATA) COPYING $(DESTDIR)$(prefix)/share/licenses/$(NAME)/
+	if [ ! -d $(bindir) ]; then mkdir -p $(bindir); fi
+	if [ ! -d $(datadir) ]; then mkdir -p $(datadir); fi
+	if [ ! -d $(licensedir) ]; then mkdir -p $(licensedir); fi	
+	$(INSTALL) $(EXECUTABLE) $(bindir)/baamanga
+	$(INSTALLDATA) $(DATA) $(datadir)
+	$(INSTALLDATA) COPYING $(licensedir)
 	
 clean:
 	if [ -f ./baamanga ];then rm baamanga; fi
