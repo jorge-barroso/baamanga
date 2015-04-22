@@ -91,16 +91,16 @@ if (strcmp(domain, "manga.animea.net") == 0){						//ANIMEA
 			printf("\nThis is a Mangahere url isn't it? It's a very good manga site, starting download!\n");
 			mangahere(url_orig, name, downdir);
 			}
-	else if (strcmp(domain, "read.mangareader.net") == 0){			//MANGAREADER
-			printf("Mmm mangareader, a classic! Good and varied, let's download it!\n");
+	else if (strcmp(domain, "www.mangareader.net") == 0){			//MANGAREADER
+			printf("\nMmm mangareader, a classic! Good and varied, let's download it!\n");
 			mangareader(url_orig, name, downdir);
 		}
 	else if (strcmp(domain, "read.mangashare.com") == 0){			//MANGASHARE
-			printf("Shared manga is better isn't it? Starting download\n");
+			printf("\nShared manga is better isn't it? Starting download\n");
 			mangashare(url_orig, name, downdir);
 		}
 	else if (strcmp(domain, "www.pown.it") == 0){					//POWN
-			printf("Yeah good pown, let's share it\n");
+			printf("\nYeah good pown, let's share it\n");
 			pown(url_orig, name, downdir);
 		}
 	else if (strcmp(domain, "submanga.com") == 0 ){					//SUBMANGA
@@ -108,11 +108,11 @@ if (strcmp(domain, "manga.animea.net") == 0){						//ANIMEA
 			submanga(url_orig, name, downdir);
 		}
 	else if (strcmp(domain, "www.zerochan.net") == 0){			//ZEROCHAN
-			printf("Hey, good manga board, it is from Zerochan isn't it? Downloading!\n");
+			printf("\nHey, good manga board, it is from Zerochan isn't it? Downloading!\n");
 			zerochan(url_orig, name, downdir);
 		}
 	else
-			printf("Sorry, is not possible to download from this webpage, try with one bellow:\n-Submanga\n-Mcanime\n-Mangafox\n-Mangashare\n-Mangareader\n-Futahentai\n-E-hentai\n-4Chan\n-Zerochan\n-Danboru\n-Pown");
+			printf("\nSorry, is not possible to download from this webpage, try with one bellow:\n-Submanga\n-Mcanime\n-Mangafox\n-Mangashare\n-Mangareader\n-Futahentai\n-E-hentai\n-4Chan\n-Zerochan\n-Danboru\n-Pown\n");
 			
 }
 return 0;

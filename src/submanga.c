@@ -10,6 +10,7 @@ void submangasingle(char[], char[], char[], char[]);
 void submangabulk(char[], char[], char[], char[]);
 void namedir_check(char [], char []);
 void chapdir_check(char [], char []);
+size_t write_data();
 
 void submanga(char url_orig[], char name[], char downdir[]){
 	int j;

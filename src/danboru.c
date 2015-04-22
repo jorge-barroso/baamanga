@@ -7,6 +7,7 @@
 void danborudirect(char[], char[], char[]);
 void danborusingle(char[], char[], char[]);
 void danborubulk(char[], char[], char[], char[]);
+size_t write_data();
 
 void danboru(char url_orig[], char name[], char downdir[]){
 	

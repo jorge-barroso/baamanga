@@ -7,20 +7,19 @@
 
 void namedir_check(char[], char[]);
 void chapdir_check(char[], char[]);
-void mangafoxsingle(char[], char[], char[], char [], char[], char[], char[]);
-void mangafoxbulk(char[], char[], char[], char[]);
+void mangafoxsingle(char[], char[], char[], char [], char[]);
+void mangafoxbulk(char[], char[], char[]);
+size_t write_data();
 
 void mangafox(char url_orig[], char name[], char downdir[]){
 short int j;
-char nameorig[80];
 char discr [6];
-char chapter [5], chaptorig[5], sn[10] = "";
+char chapter [5], chaptorig[5];
     
     strtok (NULL, "/");
     
     //Let's parse the name
-    strcpy (nameorig, strtok(NULL, "/"));
-    strcpy (name, nameorig);
+    strcpy (name, strtok(NULL, "/"));
     
     for (j=0; name[j] != '\0'; j++){
         if (name[j] == '_')
@@ -35,26 +34,23 @@ char chapter [5], chaptorig[5], sn[10] = "";
     
     if (discr == '\0'){
 		printf("This is Mangafox Bulk\n");
-		mangafoxbulk(name, nameorig, url_orig, downdir);
+		mangafoxbulk(name, url_orig, downdir);
 	}
 	else{
-		printf("This is Mangafox Single\n");
-		if (discr[0] != 'c'){ //If it's not cXXXX and it's not empty, it means that 
-			strcpy(sn, discr);
+		if (discr[0] != 'c') //If it's not cXXXX and it's not empty, it means that 
 			strcpy (chapter, strtok(NULL, "/")); //it is a chapter, but this is the volume serial name
-			}
 		else
 			strcpy (chapter, discr);
 			strcpy (chaptorig, chapter);
 		while (chapter[0] == 'c' || chapter[0] == '0')
 			memmove(chapter, chapter+1, strlen(chapter));
-		printf("Name: %s\nChapter: %s\n", name, chapter);
-		mangafoxsingle(url_orig, name, nameorig, chapter, chaptorig, sn, downdir);
+		printf("\n	Name: %s\n	Chapter: %s", name, chapter);
+		mangafoxsingle(url_orig, name, chapter, chaptorig, downdir);
 	}
 return;
 }
 
-void mangafoxsingle(char url_orig[], char name[], char nameorig[], char chapter[], char chaptorig[], char sn[], char downdir[]){
+void mangafoxsingle(char url_orig[], char name[], char chapter[], char chaptorig[], char downdir[]){
 	
 	FILE *fp;
 	FILE *img;
@@ -168,7 +164,7 @@ int length;
 return;
 }
 
-void mangafoxbulk(char name[], char nameorig [], char url_orig[], char downdir[]){
+void mangafoxbulk(char name[], char url_orig[], char downdir[]){
 
 return;
 }
