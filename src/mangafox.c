@@ -62,7 +62,7 @@ char urldown[] = ".html";
 char pgbase[] = "http://a.mfcdn.net/store/manga/";
 char tmpfile[] = "/tmp/.html";
 char baseimg[] = ".jpg";
-char html[153600], imgname[7], pageurl[80], p[3], q[3];
+char html[153600], imgname[7], pageurl[200], p[3], q[3];
 int length;
 	
 	namedir_check(name, downdir);
