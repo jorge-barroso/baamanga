@@ -52,7 +52,7 @@ char pgbasethree[] = "http://amg.submanga.com/pages";
 char pgbasefour[] = "http://img2.submanga.com/pages";
 char tmpfile[30] = "/tmp/.html-submanga";
 short unsigned int result=0;
-char p[4], q[4], imgname[7];
+char p[4], q[4], imgname[8];
 char html[153600];
 int length;
 

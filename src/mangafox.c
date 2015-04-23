@@ -62,16 +62,16 @@ char urldown[] = ".html";
 char pgbase[] = "http://a.mfcdn.net/store/manga/";
 char tmpfile[30] = "/tmp/.html-mangafox";
 char baseimg[] = ".jpg";
-char html[153600], imgname[7], pageurl[200], p[4], q[4];
+char html[153600], imgname[8], pageurl[200], p[4], q[4];
 int length;
 
-	strncat		(tmpfile, name, 10);
+	strncat		    (tmpfile, name, 10);
 
 	namedir_check	(name, downdir);
-	strcat		(strcat(downdir, "/"), name);
+	strcat		    (strcat(downdir, "/"), name);
 	chapdir_check	(chapter, downdir);
-	strcat(strcat	(downdir, "/"), chapter);
-	chdir		(downdir);
+	strcat          (strcat(downdir, "/"), chapter);
+	chdir		    (downdir);
 
 	while(err == 0){
 		length=strlen(url_orig);

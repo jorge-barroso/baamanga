@@ -66,28 +66,27 @@ char baseurl[]	="http://www.mangareader.net/";
 	strtok(urldown, "/");
 	strtok(NULL, "/");
 	strcpy(urldown, strtok(NULL, "/"));
-
 	while (err == 0){
 		result		= 0;
 		pgfound		= 0;
-		sprintf		(p, "%d", i);
+		sprintf		(p, "%d", i+1);
 		sprintf		(q, "%.3d", i);
 		strcpy		(imgname, q);
 		strcat		(imgname, ".jpg");
-
 		while (urldown[strlen(urldown) -1] != '-')
 			urldown[strlen(urldown) -1] = '\0';
 		strcat		(urldown, p);
-		//strcat		(urldown, nameorig);
+
 		/* Download html page*/
 		curl = curl_easy_init();
-
+    puts(url_orig);
 	if(curl) {
 		fp = fopen(tmpfile, "w+");
 		curl_easy_setopt(curl, CURLOPT_URL, url_orig);
-		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data); 		//Save
+		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data); 	//Save
 		curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);				//Where to save
 		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);			//Autoredirect
+		curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 0L);
 		curl_easy_setopt(curl, CURLOPT_USERAGENT, "libcurl-agent/1.0");
 
 		res = curl_easy_perform(curl);
@@ -100,6 +99,7 @@ char baseurl[]	="http://www.mangareader.net/";
 		curl_easy_cleanup(curl);
 	}
 
+		printf("\nHERE\n");
 	fp = fopen (tmpfile, "r");
 
 	while (fgets(html, sizeof(html) - 1, fp) != '\0' && result != 1){
