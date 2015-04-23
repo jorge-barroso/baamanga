@@ -58,7 +58,7 @@ CURL *curl;
 CURLcode res;
 short int i=1, k=0;
 bool err = 0, result=0, pgfound = 0;
-char urldown[] = ".html";
+char urldown[9] = ".html";
 char pgbase[] = "http://a.mfcdn.net/store/manga/";
 char tmpfile[30] = "/tmp/.html-mangafox";
 char baseimg[] = ".jpg";
