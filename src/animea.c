@@ -8,6 +8,7 @@ void animeabulk(char[], char[], char[], char[]);
 
 void animea(char url_orig[], char name[], char downdir[]){
 char discr[50], chapter[4];
+
 	strcpy(discr, strtok(NULL,"\0"));
 	if(strstr(discr, "chapter") != NULL){
 		animeasingle(url_orig, name, chapter, discr, downdir);
@@ -21,7 +22,7 @@ return;
 void animeasingle(char url_orig[], char name[], char chapter[], char discr[], char downdir[]){
 	char namex[40];
 	short unsigned int j;
-	
+
     //Complex name parsing
 	strcpy(namex, strtok(discr, "-"));
     while (strcmp(namex, "chapter")!= 0){
@@ -35,7 +36,7 @@ void animeasingle(char url_orig[], char name[], char chapter[], char discr[], ch
 		}
 	if (isalpha(name[0]))
 		name[0] = toupper(name[0]);
-	
+
 	//Chapter
 	strcpy(chapter, strtok(NULL, "h"));
 	j = strlen(chapter);

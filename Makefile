@@ -1,19 +1,29 @@
 CC=gcc
+GG=g++
 NAME=baamanga
-#CFLAGS=-c -Isrc
-#LDFLAGS=-Og -Wall -lcurl
-CFLAGS=-Og -Wall -lcurl
-srcdir=./src
-#SOURCES=$(srcdir)/{baamanga.c,bmver.c,danboru.c,dirs_check.c,ehentai.c,futahentai.c,mangafox.c,mangahere.c,mangareader.c,mangashare.c,pown.c,submanga.c,zerochan.c}
-#OBJ=bmver.o danboru.o dirs_check.o ehentai.o futahentai.o mangafox.o mangahere.o mangareader.o mangashare.o pown.o submanga.o zerochan.o
-MAIN=$(srcdir)/baamanga.c
+srcdir=src
+CFLAGS=-Wall -O2 -c
+DBLAGS=-Wall -g -c
+LDFLAGS=-lcurl
+SOURCES=animea.c baamanga.c bmhelp.c bmopt.c bmver.c danboru.c dirs_check.c ehentai.c futahentai.c mangafox.c mangahere.c mangareader.c mangashare.c pown.c submanga.c write_data.c zerochan.c
+OBJ=animea.o baamanga.o bmhelp.o bmopt.o bmver.o danboru.o dirs_check.o ehentai.o futahentai.o mangafox.o mangahere.o mangareader.o mangashare.o pown.o submanga.o write_data.o zerochan.o
 DATA={AUTHORS,changelog,README.md}
-EXECUTABLE=$(NAME)
+
 
 all:
-	$(CC) $(CFLAGS) $(MAIN) -o $(EXECUTABLE)
+
+	cd $(srcdir);				\
+	$(CC) $(SOURCES) $(CFLAGS);		\
+	$(CC) $(OBJ) -o ../baamanga $(LDFLAGS)
+	
+debug:
+
+	cd $(srcdir);				\
+	$(CC) $(SOURCES) $(DBLAGS);		\
+	$(CC) $(OBJ) -o ../baamanga $(LDFLAGS)
 	
 
+EXECUTABLE=$(NAME)
 INSTALL = /usr/bin/install -c
 INSTALLDATA = /usr/bin/install -c -m 644
 prefix=/usr
@@ -33,6 +43,7 @@ install:
 	
 clean:
 	if [ -f ./baamanga ];then rm baamanga; fi
+	rm $(srcdir)/*.o
 	
 remove:
 	rm $(DESTDIR)$(bindir)/baamanga

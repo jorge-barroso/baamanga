@@ -10,7 +10,7 @@ struct stat d;
 int check;
 char yesno;
 short int i;
-	
+
 void downdir_check(char downdir[]){
 
 while (ok == 0){
@@ -60,13 +60,13 @@ while (ok == 0){
 				scanf("%s", downdir);
 				}
 			}
-		
+
 	}
 return;
 }
 
 void namedir_check(char name[], char downdir[]){
-	
+
 	chdir(downdir);
 	ok=0;
 	while (ok == 0){
@@ -100,13 +100,13 @@ void namedir_check(char name[], char downdir[]){
 				scanf("%s", name);
 				}
 			}
-		
+
 	}
 return;
 }
 
 void chapdir_check(char chapter[], char downdir[]){
-	
+
 	chdir(downdir);
 	ok=0;
 	while (ok == 0){
@@ -140,7 +140,7 @@ void chapdir_check(char chapter[], char downdir[]){
 				scanf("%s", chapter);
 				}
 			}
-		
+
 	}
 return;
 }

@@ -1,27 +1,13 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include "bmopt.c"
-#include "bmhelp.c"
-#include "bmver.c"
-#include "dirs_check.c"
-#include "write_data.c"
-#include "animea.c"
-#include "danboru.c"
-#include "ehentai.c"
-#include "futahentai.c"
-#include "mangafox.c"
-#include "mangahere.c"
-#include "mangareader.c"
-#include "mangashare.c"
-#include "pown.c"
-#include "submanga.c"
-#include "zerochan.c"
 
+void domain_check(char[], char[]);
 void config();
 void help();
 void version();
 void downdir_check(char[]);
+
 void animea (char[], char[], char[]);
 void danboru (char[], char[], char[]);
 void ehentai (char[], char[], char[]);
@@ -34,39 +20,57 @@ void pown (char[], char[], char[]);
 void submanga (char[], char[], char[]);
 void zerochan (char[], char[], char[]);
 
-int main(int argc, char *argv[2]) {
 
-char url[100], domain[20], url_orig[100], name[80], downdir[60];
+int main(int argc, char *argv[]) {
+
+char url[100], downdir[60];
 
 		strcpy(downdir, getenv("HOME"));
 		strcat(downdir, "/Baamanga");
 		downdir_check(downdir);
 
-if (argc == 2){
-	if (strcmp(argv[1], "--config") == 0)
-		config();
-	
-	else if (strcmp(argv[1], "--help") == 0)
-		help();
-	
-	else if (strcmp(argv[1], "--version") == 0)
-		version();
-		
-	else
-		strcpy(url, argv[1]);
-}
-
-else{
+if (argc == 1){
 printf("Welcome to Baamanga, the new manga downloader with lots of supported webpages.\nJust insert your download link and everything will be done automatically: ");
 
 scanf("%99s", url);
+
+domain_check(url, downdir);
 }
-if (url != '\0'){
-strcpy(url_orig, url) ;
+    else if (argc == 2){
+        if (strcmp(argv[1], "--config") == 0)
+            config();
 
-strtok(url, ":");
+        else if (strcmp(argv[1], "--help") == 0)
+            help();
 
-	strcpy(domain, strtok(NULL,"/"));
+        else if (strcmp(argv[1], "--version") == 0)
+            version();
+
+        else{
+            strcpy(url, argv[1]);
+            domain_check(url, downdir);
+        }
+}
+    else if (argc > 2){
+        short i;
+        for (i=1;i <= argc; i++);{
+            strcpy(url,argv[i]);
+            domain_check(url, downdir);
+        }
+    }
+
+return 0;
+}
+
+void domain_check(char url[], char downdir[]) {
+
+char domain[20], url_orig[100], name[80];
+
+    strcpy(url_orig, url) ;
+
+    strtok(url, "/");
+    strcpy(domain, strtok(NULL,"/"));
+
 if (strcmp(domain, "manga.animea.net") == 0){						//ANIMEA
 	printf("Manga from animea! I'd like to download it's anime aswell, soon maybe...\n");
 	animea(url_orig, name, downdir);
@@ -113,7 +117,5 @@ if (strcmp(domain, "manga.animea.net") == 0){						//ANIMEA
 		}
 	else
 			printf("\nSorry, is not possible to download from this webpage, try with one bellow:\n-Submanga\n-Mcanime\n-Mangafox\n-Mangashare\n-Mangareader\n-Futahentai\n-E-hentai\n-4Chan\n-Zerochan\n-Danboru\n-Pown\n");
-			
-}
-return 0;
+
 }
