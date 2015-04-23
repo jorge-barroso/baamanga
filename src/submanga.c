@@ -50,17 +50,19 @@ char pgbaseone[] = "http://omg.submanga.com/pages";
 char pgbasetwo[] = "http://img.submanga.com/pages";
 char pgbasethree[] = "http://amg.submanga.com/pages";
 char pgbasefour[] = "http://img2.submanga.com/pages";
-char tmpfile[] = "/tmp/.html";
+char tmpfile[30] = "/tmp/.html-submanga";
 short unsigned int result=0;
 char p[3], q[3], imgname[7];
 char html[153600];
 int length;
 	
-	namedir_check(name, downdir);
-	strcat(strcat(downdir, "/"), name);
-	chapdir_check(chapter, downdir);
-	strcat(strcat(downdir, "/"), chapter);
-	chdir(downdir);
+	strncat		(tmpfile, name, 10);
+
+	namedir_check	(name, downdir);
+	strcat(strcat	(downdir, "/"), name);
+	chapdir_check	(chapter, downdir);
+	strcat(strcat	(downdir, "/"), chapter);
+	chdir		(downdir);
 	
 	strcat(urldown,(strtok(strrchr(url_orig, '/'), "\0")));
 	
@@ -68,7 +70,7 @@ int length;
 		result = 0;
 		pgfound = 0;
 		sprintf(p, "%d", i);
-		sprintf(q, "%.2d", k);
+		sprintf(q, "%.3d", k);
 		strcat(strcpy(imgname, q), ".jpg");
 		if (k==1)
 			strcat(urldown, "/");
@@ -85,9 +87,9 @@ int length;
 	if(curl) {
 		fp = fopen(tmpfile, "w+");
 		curl_easy_setopt(curl, CURLOPT_URL, url_orig);
-		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data); //Save
-        curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);						//Where to save
-		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);					//Autoredirect
+		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data);	//Save
+		curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);			//Where to save
+		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);		//Autoredirect
 	
 	
     res = curl_easy_perform(curl);
@@ -174,17 +176,15 @@ int length;
 		
 		fclose(fp);
 		
-		if (i > 1)
-		printf("\n\n\nDownloading page %d...\n", k);
+		if (i > 1 && pgfound == 1){
 		/* Now for the image */
-		if (pgfound == 1){
 		img = fopen(imgname, "w+");
+		printf("\n\n\nDownloading page %d...\n", k);
 		if(curl) {
 		curl = curl_easy_init();
-		fp = fopen(tmpfile, "w+");
 		curl_easy_setopt(curl, CURLOPT_URL, pageurl);
 		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data); //Save
-        curl_easy_setopt(curl, CURLOPT_WRITEDATA, img);						//Where to save
+		curl_easy_setopt(curl, CURLOPT_WRITEDATA, img);						//Where to save
 		curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 0L);						//No output
 		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);					//Autoredirect
 	
