@@ -58,7 +58,7 @@ CURL *curl;
 CURLcode res;
 short int i=1, k=0;
 bool err = 0, result=0, pgfound = 0;
-char urldown[9] = ".html";
+char urldown[9];
 char pgbase[] = "http://a.mfcdn.net/store/manga/";
 char tmpfile[30] = "/tmp/.html-mangafox";
 char baseimg[] = ".jpg";
@@ -87,7 +87,7 @@ int length;
 	if(curl) {
 		fp = fopen(tmpfile, "w+");
 		curl_easy_setopt(curl, CURLOPT_URL, url_orig);
-		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data); 		//Save
+		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data); 	//Save
 		curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);				//Where to save
 		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);			//Autoredirect
 		curl_easy_setopt(curl, CURLOPT_USERAGENT, "libcurl-agent/1.0");
@@ -129,7 +129,7 @@ int length;
 
 	while (fgets(html, sizeof(html) - 1, fp) != '\0'){
 		if (strstr(html, pgbase) != NULL && strstr(html, "compressed") != NULL && pgfound < 1) {
-			strcpy(pageurl, strtok(strstr(html, pgbase), "\""));
+			strcpy (pageurl, strtok(strstr(html, pgbase), "\""));
 			pgfound++;
 		}
 	}
@@ -142,7 +142,7 @@ int length;
 		if(curl) {
 			curl = curl_easy_init();
 			curl_easy_setopt(curl, CURLOPT_URL, pageurl);
-			curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data);		 		//Save
+			curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data);          //Save
 			curl_easy_setopt(curl, CURLOPT_WRITEDATA, img);						//Where to save
 			curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 0L);						//No output
 			curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);					//Autoredirect
