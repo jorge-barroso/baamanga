@@ -8,13 +8,13 @@
 void namedir_check(char[], char[]);
 void chapdir_check(char[], char[]);
 void mangareadersingle(char[], char[], char[], char[], char[], short);
-void mangareaderbulk(char[], char[], char[], char[]);
+void mangareaderbulk(char[], char[], char[], char[], char[], char[], char[], short);
 size_t write_data();
 
 
 void mangareader(char url_orig[], char name[], char downdir[]){
     short j=0, len, slash = 0;
-    char chapter[4], nameorig[80];
+    char chapter[4], nameorig[80],code[7], chapname[13];
 
     //Name easy parsing
     while(url_orig[j] != '\0'){
@@ -22,8 +22,9 @@ void mangareader(char url_orig[], char name[], char downdir[]){
             slash++;
         j++;
     }
-    if (slash == 5 || strstr(url_orig, "chapter") != NULL)
-        strtok(NULL, "/");
+
+    if (slash == 5 || strstr(url_orig, ".html") != NULL)
+        strcpy(code, strtok(NULL, "/"));
 
 strcpy	(name, strtok (NULL, "/"));
 strcpy	(nameorig, name);
@@ -38,10 +39,14 @@ strcpy	(nameorig, name);
         	name[0] = toupper(name[0]);
 
 	len = strlen(name);
-	if (name[len-5] == '.' && slash > 4){
-	strtok (name, ".");
-	printf("Name: %s\n", name);
-	mangareaderbulk(url_orig, name, chapter, downdir);
+
+	if (name[len-5] == '.' || slash == 3){
+        if (slash == 4){
+            strtok (name, ".");
+            strtok (nameorig, ".");
+        }
+	printf("\n  Name: %s\n", name);
+	mangareaderbulk(url_orig, name, nameorig, chapname, chapter, code, downdir, slash);
 	}
 	else if (slash == 5){
         strcpy(chapter,strtok (NULL,"."));
@@ -87,7 +92,7 @@ char baseurl[]	="http://www.mangareader.net/";
         strcpy(urldown, "/");
         strcat(urldown, strcat(nameorig, "/"));
         strcat(urldown, chapter);
-         strcat(urldown, "/");
+        strcat(urldown, "/");
     }
 
 	while (err == 0){
@@ -202,7 +207,107 @@ char baseurl[]	="http://www.mangareader.net/";
 return;
 }
 
-void mangareaderbulk(char url_orig[], char name[], char chapter[], char downdir[]){
+void mangareaderbulk(char url_orig[], char name[], char nameorig[], char chapname[], char chapter[], char code[], char downdir[], short slash){
+    FILE *bf;
+CURL *pcurl;
+CURLcode pre;
+
+unsigned short chapters=0, i=0, k=1;
+char blkhtml[153600], p[4], q[4], yesno, path2[81], path[81], next[4];
+char blktmpfile[]="/tmp/.baamanga-bulk-mangareader";
+bool err=0;
+
+    strcpy(path, nameorig);
+    strcat(path, "/");
+    strcat(path, "1");
+
+    strcpy(path2, nameorig);
+    strcat(path2, "/");
+    strcat(path2, "chapter-1");
+
+
+    pcurl = curl_easy_init();
+    if(pcurl) {
+		bf = fopen(blktmpfile, "w+");
+		curl_easy_setopt(pcurl, CURLOPT_URL, url_orig);
+		curl_easy_setopt(pcurl, CURLOPT_WRITEFUNCTION, write_data); 	//Save
+		curl_easy_setopt(pcurl, CURLOPT_WRITEDATA, bf);				    //Where to save
+		curl_easy_setopt(pcurl, CURLOPT_FOLLOWLOCATION, 1L);			//Autoredirect
+		curl_easy_setopt(pcurl, CURLOPT_USERAGENT, "libcurl-agent/1.0");
+
+		pre = curl_easy_perform(pcurl);
+		fclose(bf);
+
+		if(pre!= CURLE_OK){
+			printf("\nUnknown URL\n");
+			}
+
+		curl_easy_cleanup(pcurl);
+	}
+
+    bf = fopen(blktmpfile, "r");
+
+    while(err != 1){
+        while (fgets(blkhtml, sizeof(blkhtml) -1, bf) != '\0'){
+            if (strstr(blkhtml, path) != '\0'){
+                chapters++;
+                sprintf(next, "%hu", chapters+1);
+
+                while(path[strlen(path) -1] != '/'){
+                        path[strlen(path) -1] = '\0';
+                }
+                strcat(path, next);
+                while(path2[strlen(path2) -1] != '-'){
+                        path2[strlen(path2) -1] = '\0';
+                }
+                strcat(path2, next);
+                strcat(path2, ".html");
+                err = 0;
+            }
+            else
+                err = 1;
+
+            if (strstr(blkhtml, path2) != '\0' && strstr(blkhtml, code) != '\0'){
+                chapters++;
+                //puts(strstr(blkhtml, code));
+                sprintf(next, "%hu", chapters+1);
+
+                while(path[strlen(path) -1] != '/'){
+                        path[strlen(path) -1] = '\0';
+                }
+                strcat(path, next);
+                while(path2[strlen(path2) -1] != '-'){
+                        path2[strlen(path2) -1] = '\0';
+                }
+                strcat(path2, next);
+                strcat(path2, ".html");
+                puts(path); puts(path2);
+                err = 0;
+            }
+            else
+                err = 1;
+        }
+    }
+    rewind(bf);
+
+    printf("\nThere are %hu chapters, do you want to start downloading with some chapter in particular? [y/N] ", chapters);
+		scanf("%c", &yesno);
+		scanf("%*[^\n]\n");
+    if(yesno == 'y' || yesno == 'Y'){
+        printf("Which chapter do you want to start for? ");
+        scanf("%3hu", &i);
+		scanf("%*[^\n]\n");
+    }
+    else
+        i=1;
+        for(;i<=chapters;i++){
+            sprintf(q, "%hu", i);
+            strcpy(url_orig, "http://www.mangareader.net/");
+            while (fgets(blkhtml, sizeof(blkhtml) -1, bf) != '\0'){
+            if (){
+        }
+            }
+
 
 return;
 }

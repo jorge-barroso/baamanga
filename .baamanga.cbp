@@ -31,7 +31,55 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
-		<Unit filename="main.c">
+		<Unit filename="src/animea.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/baamanga.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/bmhelp.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/bmopt.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/bmver.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/danboru.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/dirs_check.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/ehentai.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/futahentai.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/mangafox.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/mangahere.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/mangareader.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/mangashare.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/pown.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/submanga.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/write_data.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/zerochan.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Extensions>
