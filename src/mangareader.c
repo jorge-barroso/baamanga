@@ -303,9 +303,9 @@ bool err=0;
         for(;i<=chapters;i++){
             sprintf(q, "%hu", i);
             strcpy(url_orig, "http://www.mangareader.net/");
-            while (fgets(blkhtml, sizeof(blkhtml) -1, bf) != '\0'){
+            /*while (fgets(blkhtml, sizeof(blkhtml) -1, bf) != '\0'){
             if (){
-        }
+        }*/
             }
 
 
