@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Debug" />
+	<File name="src/mangareader.c" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="7690" topLine="121" />
+		</Cursor>
+		<Folding>
+			<Collapse line="63" />
+		</Folding>
+	</File>
 	<File name="src/mangafox.c" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="1541" topLine="53" />
-		</Cursor>
-	</File>
-	<File name="src/baamanga.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="0" topLine="21" />
 		</Cursor>
 	</File>
 	<File name="src/dirs_check.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -16,12 +19,9 @@
 			<Cursor1 position="866" topLine="30" />
 		</Cursor>
 	</File>
-	<File name="src/mangareader.c" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="src/baamanga.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="8474" topLine="149" />
+			<Cursor1 position="0" topLine="21" />
 		</Cursor>
-		<Folding>
-			<Collapse line="63" />
-		</Folding>
 	</File>
 </CodeBlocks_layout_file>

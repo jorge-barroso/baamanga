@@ -209,23 +209,27 @@ return;
 
 void mangareaderbulk(char url_orig[], char name[], char nameorig[], char chapname[], char chapter[], char code[], char downdir[], short slash){
     FILE *bf;
+    FILE *tmpchap;
+
 CURL *pcurl;
 CURLcode pre;
 
-unsigned short chapters=0, i=0, k=1;
-char blkhtml[153600], p[4], q[4], yesno, path2[81], path[81], next[4];
+unsigned short chapters=0, i=0/*, k=1, z=*/;
+char blkhtml[153600]/*, p[4]*/, q[4], yesno, path2[81], path[81], next[4]/*, blkurldown[40]*/;
 char blktmpfile[]="/tmp/.baamanga-bulk-mangareader";
-bool err=0;
-
+char chaplist[] = "/tmp/.mangareader-chaplist";
+//bool err=0;
+    //Default path 1
     strcpy(path, nameorig);
     strcat(path, "/");
     strcat(path, "1");
 
+    //Default path 2
     strcpy(path2, nameorig);
     strcat(path2, "/");
     strcat(path2, "chapter-1");
 
-
+    //Download html
     pcurl = curl_easy_init();
     if(pcurl) {
 		bf = fopen(blktmpfile, "w+");
@@ -245,11 +249,14 @@ bool err=0;
 		curl_easy_cleanup(pcurl);
 	}
 
-    bf = fopen(blktmpfile, "r");
+    bf      =   fopen(blktmpfile, "r");
+    tmpchap =   fopen(chaplist, "w+");
 
-    while(err != 1){
+    //while(err != 1){
         while (fgets(blkhtml, sizeof(blkhtml) -1, bf) != '\0'){
+            //look for the path style 1
             if (strstr(blkhtml, path) != '\0'){
+                fprintf(tmpchap, "%s\n", strstr(blkhtml, path));
                 chapters++;
                 sprintf(next, "%hu", chapters+1);
 
@@ -262,16 +269,17 @@ bool err=0;
                 }
                 strcat(path2, next);
                 strcat(path2, ".html");
-                err = 0;
+                //err = 0;
             }
-            else
-                err = 1;
-
+            /*else
+                err = 1;*/
+            //Look for path style 2
             if (strstr(blkhtml, path2) != '\0' && strstr(blkhtml, code) != '\0'){
+                fprintf(tmpchap, "%s\n", strstr(blkhtml, code));
                 chapters++;
                 //puts(strstr(blkhtml, code));
                 sprintf(next, "%hu", chapters+1);
-
+                //modify next path and path2 to look for.
                 while(path[strlen(path) -1] != '/'){
                         path[strlen(path) -1] = '\0';
                 }
@@ -281,15 +289,16 @@ bool err=0;
                 }
                 strcat(path2, next);
                 strcat(path2, ".html");
-                puts(path); puts(path2);
-                err = 0;
+
+                //err = 0;
             }
-            else
-                err = 1;
+            /*else
+                err = 1;*/
         }
-    }
+    //}
     rewind(bf);
 
+    //Ask for the first chapter to download for. Take 1 if not specified
     printf("\nThere are %hu chapters, do you want to start downloading with some chapter in particular? [y/N] ", chapters);
 		scanf("%c", &yesno);
 		scanf("%*[^\n]\n");
@@ -300,14 +309,14 @@ bool err=0;
     }
     else
         i=1;
-        for(;i<=chapters;i++){
-            sprintf(q, "%hu", i);
-            strcpy(url_orig, "http://www.mangareader.net/");
-            /*while (fgets(blkhtml, sizeof(blkhtml) -1, bf) != '\0'){
-            if (){
-        }*/
-            }
-
+    //Start downloading chapters
+    for(;i<=chapters;i++){
+           sprintf(q, "%hu", i);
+           strcpy(url_orig, "http://www.mangareader.net/");
+           /*while (fgets(blkhtml, sizeof(blkhtml) -1, bf) != '\0'){
+           if (){
+       }*/
+           }
 
 return;
 }
