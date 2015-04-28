@@ -209,25 +209,22 @@ return;
 
 void mangareaderbulk(char url_orig[], char name[], char nameorig[], char chapname[], char chapter[], char code[], char downdir[], short slash){
     FILE *bf;
-    FILE *tmpchap;
-
 CURL *pcurl;
 CURLcode pre;
 
-unsigned short chapters=0, i=0/*, k=1, z=*/;
-char blkhtml[153600]/*, p[4]*/, q[4], yesno, path2[81], path[81], next[4]/*, blkurldown[40]*/;
+unsigned short chapters=0, i=0, z=0;
+char blkhtml[153600], p[4], yesno, path2[81], path[81];
 char blktmpfile[]="/tmp/.baamanga-bulk-mangareader";
-char chaplist[] = "/tmp/.mangareader-chaplist";
-//bool err=0;
+bool found=0;
     //Default path 1
     strcpy(path, nameorig);
     strcat(path, "/");
-    strcat(path, "1");
+    strcat(path, "1\""); // adding \" to avoid i.e. "chapter-13" as first coincidence
 
     //Default path 2
     strcpy(path2, nameorig);
     strcat(path2, "/");
-    strcat(path2, "chapter-1");
+    strcat(path2, "chapter-1.html\""); // adding \" to avoid i.e. "chapter-13" as first coincidence
 
     //Download html
     pcurl = curl_easy_init();
@@ -250,52 +247,28 @@ char chaplist[] = "/tmp/.mangareader-chaplist";
 	}
 
     bf      =   fopen(blktmpfile, "r");
-    tmpchap =   fopen(chaplist, "w+");
+    //Count Chapters
+    while (fgets(blkhtml, sizeof(blkhtml) -1, bf) != '\0'){
+            //look for the path: style 1
+            if (strstr(blkhtml, path) != '\0' && strstr(blkhtml, "chapter") == '\0'){
+                while(path[strlen(path) -1] != '/')
+                    path[strlen(path) -1] = '\0';
+                while(path2[strlen(path2) -1] != '-')
+                    path2[strlen(path2) -1] = '\0';
 
-    //while(err != 1){
-        while (fgets(blkhtml, sizeof(blkhtml) -1, bf) != '\0'){
-            //look for the path style 1
-            if (strstr(blkhtml, path) != '\0'){
-                fprintf(tmpchap, "%s\n", strstr(blkhtml, path));
                 chapters++;
-                sprintf(next, "%hu", chapters+1);
-
-                while(path[strlen(path) -1] != '/'){
-                        path[strlen(path) -1] = '\0';
-                }
-                strcat(path, next);
-                while(path2[strlen(path2) -1] != '-'){
-                        path2[strlen(path2) -1] = '\0';
-                }
-                strcat(path2, next);
-                strcat(path2, ".html");
-                //err = 0;
             }
-            /*else
-                err = 1;*/
-            //Look for path style 2
+
+            //Look for path style: 2
             if (strstr(blkhtml, path2) != '\0' && strstr(blkhtml, code) != '\0'){
-                fprintf(tmpchap, "%s\n", strstr(blkhtml, code));
-                chapters++;
-                //puts(strstr(blkhtml, code));
-                sprintf(next, "%hu", chapters+1);
-                //modify next path and path2 to look for.
-                while(path[strlen(path) -1] != '/'){
-                        path[strlen(path) -1] = '\0';
-                }
-                strcat(path, next);
-                while(path2[strlen(path2) -1] != '-'){
-                        path2[strlen(path2) -1] = '\0';
-                }
-                strcat(path2, next);
-                strcat(path2, ".html");
+                while(path[strlen(path) -1] != '/')
+                    path[strlen(path) -1] = '\0';
+                while(path2[strlen(path2) -1] != '-')
+                    path2[strlen(path2) -1] = '\0';
 
-                //err = 0;
+                chapters++;
             }
-            /*else
-                err = 1;*/
         }
-    //}
     rewind(bf);
 
     //Ask for the first chapter to download for. Take 1 if not specified
@@ -309,14 +282,111 @@ char chaplist[] = "/tmp/.mangareader-chaplist";
     }
     else
         i=1;
-    //Start downloading chapters
-    for(;i<=chapters;i++){
-           sprintf(q, "%hu", i);
-           strcpy(url_orig, "http://www.mangareader.net/");
-           /*while (fgets(blkhtml, sizeof(blkhtml) -1, bf) != '\0'){
-           if (){
-       }*/
-           }
+    if (i > chapters)
+        printf("The chosed chapter does not exist, downloading from chapter 1\n");
+
+    z = i;
+    //Check if given chapter exists. Program takes next chapter in case the given one doesn't exist
+    while(found==0){
+        sprintf(p, "%hu", i);
+
+        while(path[strlen(path) -1] != '/')
+            path[strlen(path) -1] = '\0';
+        strcat(path,p);
+        strcat(path,"\""); // adding \" to avoid i.e. "chapter-13" as first coincidence
+        while(path2[strlen(path2) -1] != '-')
+            path2[strlen(path2) -1] = '\0';
+        strcat(path2, p);
+        strcat(path2, ".html\""); // adding \" to avoid i.e. "chapter-13" as first coincidence
+        while (fgets(blkhtml, sizeof(blkhtml) -1, bf) != '\0'){
+            if (strstr(blkhtml, path) != '\0' && strstr(blkhtml, "chapter") == '\0'){
+                found=1;
+            }
+            if (strstr(blkhtml, path2) != '\0' && strstr(blkhtml, code) != '\0'){
+                found=1;
+            }
+        }
+        if (found==0){
+            rewind(bf);
+            i++;
+        }
+    }
+    rewind(bf);
+
+    if (z != i)
+        printf("Given chapter does not exist. Download will start from next available chapter (Chapter n. %s)\n", p);
+
+    if(i > 1){
+        //Look for chapter one (avoids find the chapter on "recents" list, which will cause problems)
+        while(path[strlen(path) -1] != '/')
+            path[strlen(path) -1] = '\0';
+        strcat(path, "1\"");
+        while(path2[strlen(path2) -1] != '-')
+            path2[strlen(path2) -1] = '\0';
+        strcat(path2, "1.html\"");
+
+        found=0;
+        while (fgets(blkhtml, sizeof(blkhtml) -1, bf) != '\0' && found == 0){
+            if (strstr(blkhtml, path) != '\0' && strstr(blkhtml, "chapter") == '\0'){
+                while(path[strlen(path) -1] != '/')
+                    path[strlen(path) -1] = '\0';
+                while(path2[strlen(path2) -1] != '-')
+                    path2[strlen(path2) -1] = '\0';
+                found=1;
+            }
+            if (strstr(blkhtml, path2) != '\0' && strstr(blkhtml, code) != '\0'){
+                    puts(strstr(blkhtml, code));
+                while(path[strlen(path) -1] != '/')
+                    path[strlen(path) -1] = '\0';
+                while(path2[strlen(path2) -1] != '-')
+                    path2[strlen(path2) -1] = '\0';
+                found=1;
+            }
+        }
+    }
+
+    //Download begins
+    if(i > 1){
+    strcat(path, p);
+    strcat(path2, p);
+    strcat(path2, ".html");
+    }
+    strcpy(url_orig, "http://www.mangareader.net/");
+    slash++;
+
+    while (fgets(blkhtml, sizeof(blkhtml) -1, bf) != '\0'){
+        if (strstr(blkhtml, path) != '\0' && strstr(blkhtml, "chapter") == '\0'){
+                strcat(url_orig, strtok(strstr(blkhtml, path), "\""));
+
+                strcpy(chapter, strrchr(url_orig, '/'));
+                memmove(chapter, chapter+1, strlen(chapter));
+                printf("\n    Chapter: %s", chapter);
+                mangareadersingle(url_orig, name, nameorig, chapter, downdir, slash);
+
+                strcpy(url_orig, "http://www.mangareader.net/");
+                while(path[strlen(path) -1] != '/')
+                    path[strlen(path) -1] = '\0';
+                while(path2[strlen(path2) -1] != '-')
+                    path2[strlen(path2) -1] = '\0';
+                }
+
+        if (strstr(blkhtml, path2) != '\0' && strstr(blkhtml, code) != '\0'){
+            strcat(url_orig, strtok(strstr(blkhtml, code), "\""));
+
+            strcpy(chapter, strrchr(url_orig, '-'));
+            memmove(chapter, chapter+1, strlen(chapter));
+            strtok(chapter, ".");
+            printf("\n    Chapter: %s", chapter);
+            mangareadersingle(url_orig, name, nameorig, chapter, downdir, slash);
+
+            strcpy(url_orig, "http://www.mangareader.net/");
+            while(path[strlen(path) -1] != '/')
+                path[strlen(path) -1] = '\0';
+            while(path2[strlen(path2) -1] != '-')
+                path2[strlen(path2) -1] = '\0';
+        }
+    }
+    printf("\n  Download Finished\n");
 
 return;
 }
