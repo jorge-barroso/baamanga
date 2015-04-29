@@ -42,7 +42,7 @@ void downdir_check(char downdir[]){
 		printf ("-----------------------------------------------\n");
 		scanf ("%1c", &yesno);
 		scanf("%*[^\n]\n");
-			if (yesno== 'y'){
+			if (yesno == 'y' || yesno == 'Y'){
 				remove (downdir);
 				for (i=0;i<2;i++);{
 				if (downdir[i] == '~' && downdir[i+1] == '/'){
@@ -56,7 +56,7 @@ void downdir_check(char downdir[]){
 				ok = 1;
 			}
 			else{
-				printf("Choose a new PATH to download your manga\n(full path with "" if space): ");
+				printf("Choose a new PATH to download your manga.\n(full path with \"\" if space): ");
 				scanf("%s", downdir);
 				}
 			}
@@ -96,7 +96,7 @@ void namedir_check(char name[], char downdir[]){
 				ok = 1;
 			}
 			else{
-				printf("Choose a new directory to download %s\n(Use "" if space): ", name);
+				printf("Choose a new directory to download %s.\n(Use \"\" if space): ", name);
 				scanf("%s", name);
 				}
 			}
@@ -136,7 +136,7 @@ void chapdir_check(char chapter[], char downdir[]){
 				ok = 1;
 			}
 			else{
-				printf("Choose a new directory to download the chapter\n(Use "" if space): ");
+				printf("Choose a new directory to download the chapter.\n(Use \"\" if space): ");
 				scanf("%s", chapter);
 				}
 			}
@@ -164,7 +164,7 @@ char confdirbackup[]=".config/baamanga.backup";
 		ok = 1;
 		}
 		else{
-		printf ("A file with the download directory already exists.\nSaved as %s.backup, making config directory\n", confdir);
+		printf ("A file with the download directory name already exists.\nSaved as %s.backup, making config directory.\n", confdir);
 				rename (confdir, confdirbackup);
 				remove (confdir);
 				mkdir (confdir, 0755);

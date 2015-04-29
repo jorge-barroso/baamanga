@@ -13,24 +13,23 @@ void config(char confdir[]){
     strcat(configfile, "baamanga.conf");
 	chdir(confdir);
 	cfg=fopen(configfile,  "w+");
-	printf("When do you want your manga to be downloaded?: ");
+	printf("Where do you want your manga to be downloaded?: ");
 	scanf(" %69s", dfolder);
 	puts(dfolder);
 	fprintf(cfg, "Downdir=%s\n", dfolder) ;
 
-	printf("How do you want your downloaded manga?\n	1. image\n	2. pdf\n	3. cbz");
-	printf ("\n ———————————————————————— \n") ;
+	printf("How do you want your downloaded manga?\n	1. image\n	2. pdf\n	3. cbz\n\n");
 	printf (" Introduce format number: ");
 	scanf("%hu", &formatnum);
 	if(formatnum==1)
 		fprintf(cfg, "Format=image");
 	else if (formatnum==2){
 		fprintf(cfg, "Format=image");
-		printf("You have chosen pdf, which is not yet supported, your manga Manga format set as image");
+		printf("You have chosen pdf, which is not yet supported, manga format set as image.");
 	}
 	else if (formatnum==3){
 		fprintf(cfg, "Format=image");
-		printf("You have chosen cbz, which is not yet supported, your manga Manga format set as image");
+		printf("You have chosen cbz, which is not yet supported, manga format set as image.");
 	}
 	fclose(cfg);
 return;

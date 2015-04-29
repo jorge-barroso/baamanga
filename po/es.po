@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Baamanga 1.0\n"
-"POT-Creation-Date: 2015-04-10 01:33+0100\n"
-"PO-Revision-Date: 2015-04-10 01:33+0100\n"
+"POT-Creation-Date: 2015-04-29 19:15+0100\n"
+"PO-Revision-Date: 2015-04-29 19:21+0100\n"
 "Last-Translator: Jorge Barroso Barea <jorge_barroso_11@hotmail.com>\n"
 "Language-Team: Spanish <jorge_barroso_11@hotmail.com>\n"
 "Language: es\n"
@@ -12,99 +12,133 @@ msgstr ""
 "X-Generator: Poedit 1.7.5\n"
 "X-Poedit-Basepath: /home/jorge/Dropbox/baamanga/\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Poedit-KeywordsList: printf\n"
+"X-Poedit-KeywordsList: printf;yesno\n"
 "X-Poedit-SearchPath-0: ./src\n"
 
-#: src/animea.c:50 src/futahentai.c:24 src/mangafox.c:31 src/mangahere.c:39
-#: src/mangareader.c:27 src/mangashare.c:24
+#: src/animea.c:44 src/futahentai.c:18 src/mangahere.c:34 src/mangashare.c:19
 #, c-format
 msgid ""
 "Name: %s\n"
 "Chapter: %s\n"
 msgstr ""
+"Nombre: %s\n"
+"Capítulo: %s\n"
 
-#: src/baamanga.c:57
+#: src/baamanga.c:52
 #, c-format
 msgid ""
 "Welcome to Baamanga, the new manga downloader with lots of supported "
 "webpages.\n"
 "Just insert your download link and everything will be done automatically: "
 msgstr ""
+"Bienvenido a Baamanga, el nuevo programa para descargar manga con soporte "
+"para un montón de páginas.\n"
+"Simplemente introduce el enlace de descarga y todo se hará automáticamente: "
 
-#: src/baamanga.c:68
+#: src/baamanga.c:94
 #, c-format
 msgid ""
 "Manga from animea! I'd like to download it's anime aswell, soon maybe...\n"
 msgstr ""
+"Manga de animea! Ojalá se pudiera descargar su anime también. Pronto, tal "
+"vez...\n"
 
-#: src/baamanga.c:72
+#: src/baamanga.c:98
 #, c-format
 msgid ""
 "\n"
 "Ok, you are downloading Danbooru boards, let's go\n"
 msgstr ""
+"\n"
+"Muy bien, descargando imagenes de Danbooru, vamos alla\n"
 
-#: src/baamanga.c:76
+#: src/baamanga.c:102
 #, c-format
 msgid ""
 "\n"
 "Wow, you are downloading manga from e-hentai, enjoy it!\n"
 msgstr ""
+"\n"
+"Guau, descargando manga de e-hentai, ¡disfrútalo!\n"
 
-#: src/baamanga.c:80
+#: src/baamanga.c:106
 #, c-format
 msgid ""
 "\n"
 "Mmm Futahentai, having fun huh? Let's download it!\n"
 msgstr ""
+"\n"
+"Mmm Futahentai, ¿estás pasándolo bien eh? ¡Vamos allá!\n"
 
-#: src/baamanga.c:84
+#: src/baamanga.c:110
 #, c-format
 msgid ""
 "\n"
 "Mangafox! Good choice! Come on\n"
 msgstr ""
+"\n"
+"¡Mangafox! ¡Buena elección! Vamos allá\n"
 
-#: src/baamanga.c:88
+#: src/baamanga.c:114
 #, c-format
 msgid ""
 "\n"
 "This is a Mangahere url isn't it? It's a very good manga site, starting "
 "download!\n"
 msgstr ""
+"\n"
+"Una url de Mangahere, ¿no? Muy buen sitio de manga, ¡comenzando descarga!\n"
 
-#: src/baamanga.c:92
+#: src/baamanga.c:118
 #, c-format
-msgid "Mmm mangareader, a classic! Good and varied, let's download it!\n"
+msgid ""
+"\n"
+"Mmm mangareader, a classic! Good and varied, let's download it!\n"
 msgstr ""
+"\n"
+"Mmm mangareader, ¡un clásico! Bueno y variado, ¡vamos a descargar!\n"
 
-#: src/baamanga.c:96
+#: src/baamanga.c:122
 #, c-format
-msgid "Shared manga is better isn't it? Starting download\n"
+msgid ""
+"\n"
+"Shared manga is better isn't it? Starting download\n"
 msgstr ""
+"\n"
+"El manga compartido es mejor, ¿eh? Comenzando la descarga\n"
 
-#: src/baamanga.c:100
+#: src/baamanga.c:126
 #, c-format
-msgid "Yeah good pown, let's share it\n"
+msgid ""
+"\n"
+"Yeah good pown, let's share it\n"
 msgstr ""
+"\n"
+"Oh sí, buen pown, vamos a compartirlo\n"
 
-#: src/baamanga.c:104
+#: src/baamanga.c:130
 #, c-format
 msgid ""
 "\n"
 "This is Submanga! The best Spanish manga site!\n"
 msgstr ""
+"\n"
+"¡Esto es Submanga! El mejor sitio de manga en español\n"
 
-#: src/baamanga.c:108
-#, c-format
-msgid "Hey, good manga board, it is from Zerochan isn't it? Downloading!\n"
-msgstr ""
-
-#: src/baamanga.c:112
+#: src/baamanga.c:134
 #, c-format
 msgid ""
-"Sorry, is not possible to download from this webpage, try with one "
-"bellow:\n"
+"\n"
+"Hey, good manga board, it is from Zerochan isn't it? Downloading!\n"
+msgstr ""
+"\n"
+"Ey, una buena imagen de un manga, es de Zerochan, ¿no? ¡Descargando!\n"
+
+#: src/baamanga.c:138
+#, c-format
+msgid ""
+"\n"
+"Sorry, is not possible to download from this webpage, try with one bellow:\n"
 "-Submanga\n"
 "-Mcanime\n"
 "-Mangafox\n"
@@ -115,53 +149,99 @@ msgid ""
 "-4Chan\n"
 "-Zerochan\n"
 "-Danboru\n"
-"-Pown"
+"-Pown\n"
 msgstr ""
+"\n"
+"Lo siento, no es posible descargar de esta página web, prueba una de las "
+"siguientes:\n"
+"-Submanga\n"
+"-Mcanime\n"
+"-Mangafox\n"
+"-Mangashare\n"
+"-Mangareader\n"
+"-Futahentai\n"
+"-E-hentai\n"
+"-4Chan\n"
+"-Zerochan\n"
+"-Danboru\n"
+"-Pown\n"
 
 #: src/bmhelp.c:5
 #, c-format
 msgid "USAGE: baamanga [options] [url]\n"
-msgstr ""
+msgstr "USO: baamanga [opciones] [url]\n"
 
 #: src/bmhelp.c:6
 #, c-format
 msgid "Both [options] and [url] are optional\n"
-msgstr ""
+msgstr "Tanto [opciones] como [url] son opcionales\n"
 
 #: src/bmhelp.c:7
 #, c-format
 msgid "Options are:\n"
-msgstr ""
+msgstr "Las opciones son:\n"
 
 #: src/bmhelp.c:8
 #, c-format
 msgid "\t--config\t\t\t\tShow config dialog\n"
-msgstr ""
+msgstr "\t--config\t\t\t\tMuestra el diálogo de configuración\n"
 
 #: src/bmhelp.c:9 src/bmhelp.c:11
 #, c-format
 msgid "\t\n"
-msgstr ""
+msgstr "\t\n"
 
 #: src/bmhelp.c:10
 #, c-format
-msgid "\t--ver\t\t\t\t\tPrint version information and exit\n"
+msgid "\t--version               Print version information and exit\n"
 msgstr ""
+"\t--version               Muestra información sobre la versión y se cierra\n"
 
 #: src/bmhelp.c:12
 #, c-format
 msgid "\t--help\t\t\t\t\tShow this dialog\n"
-msgstr ""
+msgstr "\t--help\t\t\t\t\tMostrar este dialogo\n"
 
-#: src/bmopt.c:7
+#: src/bmopt.c:16
 #, c-format
-msgid "When do you want your manga to be downloaded?: "
-msgstr ""
+msgid "Where do you want your manga to be downloaded?: "
+msgstr "¿Donde quieres que se guarde tu manga?: "
 
-#: src/bmopt.c:10
+#: src/bmopt.c:21
 #, c-format
-msgid "Do you want your manga to be on a single pdf file? [y/N] "
+msgid ""
+"How do you want your downloaded manga?\n"
+"\t1. image\n"
+"\t2. pdf\n"
+"\t3. cbz\n"
+"\n"
 msgstr ""
+"¿Como quieres ver tu manga descargado?\n"
+"\t1. imagen\n"
+"\t2. pdf\n"
+"\t3. cbz\n"
+"\n"
+
+#: src/bmopt.c:22
+#, c-format
+msgid " Introduce format number: "
+msgstr "Introduce el número del formato:"
+
+#: src/bmopt.c:28
+#, c-format
+msgid ""
+"You have chosen pdf, which is not yet supported, manga format set as image."
+msgstr ""
+"Has elegido pdf, pero aún no está soportado, formato configurado como "
+"\"imagen\"."
+
+#: src/bmopt.c:32
+#, c-format
+msgid ""
+"You have chosen cbz, which is not yet supported, manga format set as image."
+msgstr ""
+"Has elegido cbz, pero aún no está soportado, formato configurado como "
+"\"imagen\"."
 
 #: src/bmver.c:4
 #, c-format
@@ -169,16 +249,18 @@ msgid ""
 "Baamanga version 1.0 (release data).\n"
 "\n"
 msgstr ""
+"Baamanga versión 1.0 (fecha de lanzamiento).\n"
+"\n"
 
 #: src/bmver.c:5
 #, c-format
 msgid "Copyright by Jorge Barroso <jorge_barroso_11 at hotmail dot com>.\n"
-msgstr ""
+msgstr "Copyright por Jorge Barroso <jorge_barroso_11 at hotmail dot com>.\n"
 
 #: src/bmver.c:6
 #, c-format
 msgid "Distributed under GNU General Public License 2 (GPL 2.0)\n"
-msgstr ""
+msgstr "Distribuido bajo GNU General Public License 2 (GPL 2.0)\n"
 
 #: src/bmver.c:7
 #, c-format
@@ -186,108 +268,120 @@ msgid ""
 "Feel free to report any bug, issue or comment to https://github.com/jorge-"
 "barroso/baamanga\n"
 msgstr ""
+"Siéntete libre de reportar cualquier error, comentario o lo que quieras en "
+"https://github.com/jorge-barroso/baamanga\n"
 
-#: src/danboru.c:39
+#: src/danboru.c:37 src/danboru.c:68
 #, c-format
 msgid "Select a name for your downloaded file: "
-msgstr ""
+msgstr "Elige un nombre para el archivo descargado: "
 
-#: src/danboru.c:70
+#: src/danboru.c:101
 #, c-format
-msgid "Select a name for your downloaded file"
-msgstr ""
+msgid "This is danborubulk"
+msgstr "Esta es la función danborubulk"
 
 #: src/danboru.c:103
 #, c-format
-msgid "This is danborubulk"
-msgstr ""
-
-#: src/danboru.c:105
-#, c-format
 msgid "Give a name to the board: "
-msgstr ""
+msgstr "Dale un nombre a la imagen: "
 
-#: src/downdir_check.c:24 src/downdir_check.c:52
-#, c-format
-msgid "%s\n"
-msgstr ""
-
-#: src/downdir_check.c:41
+#: src/dirs_check.c:41
 #, c-format
 msgid ""
 "A file with the download directory already exists.\n"
 "Do you want to overwrite with a directory? [y/N]\n"
 msgstr ""
+"Ya existe un archivo con el nombre del directorio de descarga.\n"
+"¿Quieres sobreescribirlo con un directorio? [y/N]\n"
 
-#: src/downdir_check.c:42 src/downdir_check.c:90 src/downdir_check.c:130
+#: src/dirs_check.c:42 src/dirs_check.c:90 src/dirs_check.c:130
 #, c-format
 msgid "-----------------------------------------------\n"
-msgstr ""
+msgstr "-----------------------------------------------\n"
 
-#: src/downdir_check.c:59
+#: src/dirs_check.c:52
+#, c-format
+msgid "%s\n"
+msgstr "%s\n"
+
+#: src/dirs_check.c:59
 #, c-format
 msgid ""
-"Choose a new PATH to download your manga\n"
-"(full path with  if space): "
+"Choose a new PATH to download your manga.\n"
+"(full path with \"\" if space): "
 msgstr ""
+"Elige una nueva RUTA para descargar tu manga.\n"
+"(ruta completa con \"\" si usas espacios): "
 
-#: src/downdir_check.c:89
+#: src/dirs_check.c:89
 #, c-format
 msgid ""
 "A file with the name of your manga already exists.\n"
 "Do you want to overwrite it? [y/N]\n"
 msgstr ""
+"Ya existe un archivo con el nombre de tu manga.\n"
+"¿Quieres sobreescribirlo? [y/N]\n"
 
-#: src/downdir_check.c:99
+#: src/dirs_check.c:99
 #, c-format
 msgid ""
-"Choose a new directory to download %s\n"
-"(Use  if space): "
+"Choose a new directory to download %s.\n"
+"(Use \"\" if space): "
 msgstr ""
+"Elige una nueva carpeta para descargar %s.\n"
+"(Usa \"\" si usas espacios): "
 
-#: src/downdir_check.c:129
+#: src/dirs_check.c:129
 #, c-format
 msgid ""
 "A file with the chapter of your manga already exists.\n"
 "Do you want to overwrite it? [y/N]\n"
 msgstr ""
+"Un archivo con el capítulo de tu manga ya existe.\n"
+"¿Quieres sobreescribirlo? [y/N]\n"
 
-#: src/downdir_check.c:139
+#: src/dirs_check.c:139
 #, c-format
 msgid ""
-"Choose a new directory to download the chapter\n"
-"(Use  if space): "
+"Choose a new directory to download the chapter.\n"
+"(Use \"\" if space): "
 msgstr ""
+"Elige un nuevo directorio para descargar el capítulo.\n"
+"(Usa \"\" si usas espacios): "
 
-#: src/ehentai.c:13
+#: src/dirs_check.c:167
+#, c-format
+msgid ""
+"A file with the download directory name already exists.\n"
+"Saved as %s.backup, making config directory.\n"
+msgstr ""
+"Un archivo con el nombre del directorio de descarga ya existe.\n"
+"Se ha guardado como %s.backup, creando directorio de configuracion.\n"
+
+#: src/ehentai.c:7
 #, c-format
 msgid "This is ehentai"
-msgstr ""
+msgstr "Esto es ehentai."
 
-#: src/mangahere.c:45
+#: src/mangafox.c:36
 #, c-format
-msgid "This is mangaheresingle"
-msgstr ""
+msgid "This is Mangafox Bulk\n"
+msgstr "Esto es mangafox Bulk\n"
 
-#: src/mangahere.c:50
-#, c-format
-msgid "This is mangaherebulk"
-msgstr ""
-
-#: src/pown.c:13
-#, c-format
-msgid "Give a name to the pown: "
-msgstr ""
-
-#: src/submanga.c:37
+#: src/mangafox.c:47 src/mangareader.c:59 src/mangareader.c:65
+#: src/submanga.c:33
 #, c-format
 msgid ""
 "\n"
 "\tName: %s\n"
 "\tChapter: %s"
 msgstr ""
+"\n"
+"\tNombre: %s\n"
+"\tCapítulo: %s"
 
-#: src/submanga.c:163
+#: src/mangafox.c:140 src/mangareader.c:191 src/submanga.c:182
 #, c-format
 msgid ""
 "\n"
@@ -295,30 +389,170 @@ msgid ""
 "\n"
 "Downloading page %d...\n"
 msgstr ""
+"\n"
+"\n"
+"\n"
+"Descargando página %d...\n"
 
-#: src/submanga.c:192
+#: src/mangafox.c:163 src/mangareader.c:217 src/submanga.c:206
 #, c-format
 msgid ""
 "\n"
+"\n"
 "%s chapter %s downloaded\n"
 msgstr ""
+"\n"
+"\n"
+"%s capítulo %s descargado\n"
 
-#: src/submanga.c:198
+#: src/mangahere.c:40
+#, c-format
+msgid "This is mangaheresingle"
+msgstr "Esto es mangaheresingle"
+
+#: src/mangahere.c:45
+#, c-format
+msgid "This is mangaherebulk"
+msgstr "Esto es mangaherebulk"
+
+#: src/mangareader.c:52
+#, c-format
+msgid ""
+"\n"
+"  Name: %s\n"
+msgstr ""
+"\n"
+"  Nombre: %s\n"
+
+#: src/mangareader.c:259
+#, c-format
+msgid ""
+"\n"
+"Unknown URL\n"
+msgstr ""
+"\n"
+"URL desconocida\n"
+
+#: src/mangareader.c:291
+#, c-format
+msgid ""
+"\n"
+"There are %hu chapters, do you want to start downloading with some chapter "
+"in particular? [y/N] "
+msgstr ""
+"\n"
+"Hay %hu capítulos, ¿quieres empezar la descarga desde algún capítulo en "
+"concreto? [y/N]"
+
+#: src/mangareader.c:295
+#, c-format
+msgid "Which chapter do you want to start for? "
+msgstr "¿Por qué capítulo quieres empezar? "
+
+#: src/mangareader.c:302
+#, c-format
+msgid "The chosed chapter does not exist, downloading from chapter 1\n"
+msgstr "El capítulo elegido no existe, descargando desde el capítulo 1\n"
+
+#: src/mangareader.c:333
+#, c-format
+msgid ""
+"Given chapter does not exist. Download will start from next available "
+"chapter (Chapter n. %s)\n"
+msgstr ""
+"El capítulo elegido no existe. La descarga comenzará por el siguiente "
+"capítulo disponible (Capítulo nº %s)\n"
+
+#: src/mangareader.c:377 src/mangareader.c:392
+#, c-format
+msgid ""
+"\n"
+"    Chapter: %s"
+msgstr ""
+"\n"
+"    Capítulo: %s"
+
+#: src/mangareader.c:404
+#, c-format
+msgid ""
+"\n"
+"  Download Finished\n"
+msgstr ""
+"\n"
+"  Descarga finalizada\n"
+
+#: src/pown.c:7
+#, c-format
+msgid "Give a name to the pown: "
+msgstr "Dale un nombre al pown: "
+
+#: src/submanga.c:213
 #, c-format
 msgid "This is submangabulk"
-msgstr ""
+msgstr "Estoes submangabulk"
 
-#: src/zerochan.c:34
+#: src/zerochan.c:29
 #, c-format
 msgid "Please, give a name for the file you are going to download"
-msgstr ""
+msgstr "Por favor, dale un nombre al archivo que vas a descargar"
 
-#: src/zerochan.c:40
+#: src/zerochan.c:35
 #, c-format
 msgid "This is zerochansingle"
-msgstr ""
+msgstr "Esto es zerochansingle"
 
-#: src/zerochan.c:45
+#: src/zerochan.c:43
 #, c-format
 msgid "This is zerochanbulk"
-msgstr ""
+msgstr "Esto es zerochanbulk"
+
+#~ msgid ""
+#~ "Choose a new PATH to download your manga\n"
+#~ "(full path with \"\" if space): "
+#~ msgstr ""
+#~ "Elige una nueva RUTA para descargar tu manga\n"
+#~ "(ruta completa con \"\" si hay espacios);"
+
+#~ msgid ""
+#~ "Choose a new directory to download %s\n"
+#~ "(Use \"\" if space): "
+#~ msgstr ""
+#~ "Elige un nuevo directorio para descargar %s\n"
+#~ "(Usa \"\" si hay espacios): "
+
+#~ msgid ""
+#~ "Choose a new directory to download %s\n"
+#~ "(Use  if space): "
+#~ msgstr ""
+#~ "Elige un nuevo directorio para descargar %s\n"
+#~ "(Use if "
+
+#~ msgid "y"
+#~ msgstr "s"
+
+#~ msgid "Y"
+#~ msgstr "S"
+
+#~ msgid ""
+#~ "Choose a new PATH to download your manga\n"
+#~ "(full path with  if space): "
+#~ msgstr ""
+#~ "Elige una nueva RUTA para descargar tu manga\n"
+#~ "(ruta completa"
+
+#~ msgid "Select a name for your downloaded file"
+#~ msgstr "Elige"
+
+#~ msgid ""
+#~ "You have chosen pdf, which is not yet supported, manga format set as image"
+#~ msgstr ""
+#~ "Has elegido pdf, pero aún no está soportado, formato configurado como "
+#~ "\"imagen\"."
+
+#~ msgid ""
+#~ "You have chosen pdf, which is not yet supported, your manga Manga format "
+#~ "set as image"
+#~ msgstr "Has elegido pdf, pero aún no está soportado, tu manga "
+
+#~ msgid "When do you want your manga to be downloaded?: "
+#~ msgstr "Donde quieres que se descargue tu manga?:"

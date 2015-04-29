@@ -65,7 +65,7 @@ return;
 
 void danborusingle(char url_orig[], char name[], char downdir[]){
 
-printf("Select a name for your downloaded file");
+printf("Select a name for your downloaded file: ");
 scanf("%s", name);
 FILE *fp;
 
