@@ -1,11 +1,12 @@
 #include <stdio.h>
+#include <string.h>
 #include <sys/stat.h>
 #include <stdbool.h>
 #include <errno.h>
 #include <unistd.h>
 #include <stdlib.h>
 
-bool ok;
+bool ok=0;
 struct stat d;
 int check;
 char yesno;
@@ -13,27 +14,26 @@ short int i;
 
 void downdir_check(char downdir[]){
 
-while (ok == 0){
-	check = lstat(downdir, &d);
-	if (check == -1){
-		if(ENOENT == errno){
-			for (i=0;i<2;i++);{
-				if (downdir[i] == '~' && downdir[i+1] == '/'){
-				downdir[i] = '\0';
-				downdir[i+1] = '\0';
-				printf("%s\n", downdir);
-				chdir(getenv("HOME"));
-			}
-			}
-			mkdir (downdir, 0755);
-			ok = 1;
-		}
+    while (ok == 0){
+        check = lstat(downdir, &d);
+        if (check == -1){
+            if(ENOENT == errno){
+                for (i=0;i<2;i++){
+                    if (downdir[i] == '~' && downdir[i+1] == '/'){
+                    downdir[i] = '\0';
+                    downdir[i+1] = '\0';
+                    chdir(getenv("HOME"));
+                    }
+                }
+                mkdir (downdir, 0755);
+                ok = 1;
+            }
 		else {
-        perror("stat");
-        exit(1);
-        ok=1;
-		}
-	}
+            perror("stat");
+            exit(1);
+            ok=1;
+        }
+        }
 	else if (S_ISDIR(d.st_mode)){
 		ok = 1;
 		}
@@ -142,5 +142,32 @@ void chapdir_check(char chapter[], char downdir[]){
 			}
 
 	}
+return;
+}
+
+void confdir_check(char confdir[]){
+char confdirbackup[]=".config/baamanga.backup";
+
+    chdir(getenv("HOME"));
+
+	check = lstat(confdir, &d);
+	if (check == -1){
+		if(ENOENT == errno){
+			mkdir (confdir, 0755);
+		}
+		else {
+        perror("stat");
+        exit(1);
+		}
+	}
+	else if (S_ISDIR(d.st_mode)){
+		ok = 1;
+		}
+		else{
+		printf ("A file with the download directory already exists.\nSaved as %s.backup, making config directory\n", confdir);
+				rename (confdir, confdirbackup);
+				remove (confdir);
+				mkdir (confdir, 0755);
+			}
 return;
 }

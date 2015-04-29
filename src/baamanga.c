@@ -1,12 +1,15 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 void domain_check(char[], char[]);
-void config();
+void confdir_check(char[]);
+void downdir_check(char[]);
+
+void config(char []);
 void help();
 void version();
-void downdir_check(char[]);
 
 void animea (char[], char[], char[]);
 void danboru (char[], char[], char[]);
@@ -22,12 +25,28 @@ void zerochan (char[], char[], char[]);
 
 
 int main(int argc, char *argv[]) {
+    //FILE *conf;
+char url[100], downdir[60], confdir[30];
 
-char url[100], downdir[60];
+    /*strcpy(confdir, getenv("HOME"));
+    strcat(confdir, "/.config/baamanga/");
+    confdir_check(confdir);
+    chdir(confdir);
 
-		strcpy(downdir, getenv("HOME"));
-		strcat(downdir, "/Baamanga");
-		downdir_check(downdir);
+    if( access( "baamanga.conf", F_OK ) == -1 ) {
+        printf("\nConfiguration file does not exist. Please, wait a second and configure Baamanga.\n\n");
+        config(confdir);
+    }
+    conf = fopen("baamanga.conf", "r");
+    fgets(downdir, 59, conf);
+    fclose(conf);
+
+    strcpy(downdir, strrchr(downdir, '=')+1);
+    downdir_check(downdir);*/
+
+	strcpy(downdir, getenv("HOME"));
+	strcat(downdir, "/Baamanga");
+	downdir_check(downdir);
 
 if (argc == 1){
 printf("Welcome to Baamanga, the new manga downloader with lots of supported webpages.\nJust insert your download link and everything will be done automatically: ");
@@ -38,7 +57,7 @@ domain_check(url, downdir);
 }
     else if (argc == 2){
         if (strcmp(argv[1], "--config") == 0)
-            config();
+            config(confdir);
 
         else if (strcmp(argv[1], "--help") == 0)
             help();
