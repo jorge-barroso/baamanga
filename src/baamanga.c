@@ -52,7 +52,7 @@ if (argc == 1){
 printf("Welcome to Baamanga, the new manga downloader with lots of supported webpages.\nJust insert your download link and everything will be done automatically: ");
 
 scanf("%99s", url);
-
+getchar();
 domain_check(url, downdir);
 }
     else if (argc == 2){
