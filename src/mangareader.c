@@ -6,6 +6,7 @@
 #include <curl/curl.h>
 #include <unistd.h>
 
+void downdir_check(char []);
 void namedir_check(char[], char[]);
 void chapdir_check(char[], char[]);
 void mangareadersingle(char[], char[], char[], char[], char[], short);
@@ -87,6 +88,8 @@ char baseurl[]	="http://www.mangareader.net/";
 	strcat(strcat(downdir, "/"), name);
 	chapdir_check(chapter, downdir);
 	strcat(strcat(downdir, "/"), chapter);
+
+    downdir_check(downdir);
 	chdir(downdir);
 
     //urldown for long url system

@@ -14,8 +14,7 @@ void config(char confdir[]){
 	chdir(confdir);
 	cfg=fopen(configfile,  "w+");
 	printf("Where do you want your manga to be downloaded?: ");
-	scanf(" %69s", dfolder);
-	puts(dfolder);
+	scanf("%69s", dfolder);
 	fprintf(cfg, "Downdir=%s\n", dfolder) ;
 
 	printf("How do you want your downloaded manga?\n	1. image\n	2. pdf\n	3. cbz\n\n");

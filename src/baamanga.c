@@ -23,12 +23,11 @@ void pown (char[], char[], char[]);
 void submanga (char[], char[], char[]);
 void zerochan (char[], char[], char[]);
 
-
 int main(int argc, char *argv[]) {
-    //FILE *conf;
+    FILE *conf;
 char url[100], downdir[60], confdir[30];
 
-    /*strcpy(confdir, getenv("HOME"));
+    strcpy(confdir, getenv("HOME"));
     strcat(confdir, "/.config/baamanga/");
     confdir_check(confdir);
     chdir(confdir);
@@ -37,16 +36,19 @@ char url[100], downdir[60], confdir[30];
         printf("\nConfiguration file does not exist. Please, wait a second and configure Baamanga.\n\n");
         config(confdir);
     }
+
     conf = fopen("baamanga.conf", "r");
     fgets(downdir, 59, conf);
     fclose(conf);
 
     strcpy(downdir, strrchr(downdir, '=')+1);
-    downdir_check(downdir);*/
+    downdir[strlen(downdir)-1] = '\0';
+    downdir_check(downdir);
+    chdir(downdir);
 
-	strcpy(downdir, getenv("HOME"));
+	/*strcpy(downdir, getenv("HOME"));
 	strcat(downdir, "/Baamanga");
-	downdir_check(downdir);
+	downdir_check(downdir);*/
 
 if (argc == 1){
 printf("Welcome to Baamanga, the new manga downloader with lots of supported webpages.\nJust insert your download link and everything will be done automatically: ");

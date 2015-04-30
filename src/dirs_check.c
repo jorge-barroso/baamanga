@@ -13,18 +13,17 @@ char yesno;
 short int i;
 
 void downdir_check(char downdir[]){
-
-    while (ok == 0){
+    for (i=0;i<2;i++){
+        if (downdir[i] == '~' && downdir[i+1] == '/'){
+        memmove(downdir, downdir+1, strlen(downdir));
+        memmove(downdir, downdir+1, strlen(downdir));
+        chdir(getenv("HOME"));
+        }
+    }
+    do{
         check = lstat(downdir, &d);
         if (check == -1){
             if(ENOENT == errno){
-                for (i=0;i<2;i++){
-                    if (downdir[i] == '~' && downdir[i+1] == '/'){
-                    downdir[i] = '\0';
-                    downdir[i+1] = '\0';
-                    chdir(getenv("HOME"));
-                    }
-                }
                 mkdir (downdir, 0755);
                 ok = 1;
             }
@@ -58,10 +57,11 @@ void downdir_check(char downdir[]){
 			else{
 				printf("Choose a new PATH to download your manga.\n(full path with \"\" if space): ");
 				scanf("%s", downdir);
+				ok=0;
 				}
 			}
 
-	}
+	}while (ok == 0);
 return;
 }
 
