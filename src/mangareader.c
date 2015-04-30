@@ -9,23 +9,27 @@
 void downdir_check(char []);
 void namedir_check(char[], char[]);
 void chapdir_check(char[], char[]);
-void mangareadersingle(char[], char[], char[], char[], char[], short);
-void mangareaderbulk(char[], char[], char[], char[], char[], char[], char[], short);
+void mangareadersingle(char[], char[], char[], char[], char[], bool);
+void mangareaderbulk(char[], char[], char[], char[], char[], char[], char[], bool);
 size_t write_data();
 
 
 void mangareader(char url_orig[], char name[], char downdir[]){
     short j=0, len, slash = 0;
     char chapter[10], nameorig[80],code[7], chapname[13];
-
+    bool mode;
     //Name easy parsing
     while(url_orig[j] != '\0'){
         if (url_orig[j] == '/')
             slash++;
         j++;
     }
+    if (slash == 4)
+        mode=0;
+    if (slash == 5)
+        mode=1;
 		//"long" kind of URL,  extract code
-    if (slash == 5 || strstr(url_orig, ".html") != NULL)
+    if (mode == 1 || strstr(url_orig, ".html") != NULL)
         strcpy(code, strtok(NULL, "/"));
 
 strcpy	(name, strtok (NULL, "/"));
@@ -45,30 +49,30 @@ strcpy	(nameorig, name);
 	len = strlen(name);
 
 	if (name[len-5] == '.' || slash == 3){	//Bulk download
-        if (slash == 4){	//remove ".html" of long, bulk URL
+        if (mode == 0){	//remove ".html" of long, bulk URL
             strtok (name, ".");
             strtok (nameorig, ".");
         }
         //Start Bulk
 	printf("\n  Name: %s\n", name);
-	mangareaderbulk(url_orig, name, nameorig, chapname, chapter, code, downdir, slash);
+	mangareaderbulk(url_orig, name, nameorig, chapname, chapter, code, downdir, mode);
 	}
   //Single chapter, long URL download
-	else if (slash == 5){
+	else if (mode == 1){
         strcpy(chapter,strtok (NULL,"."));
         strcpy(chapter, strrchr(chapter, '-') + 1);
         printf("\n	Name: %s\n	Chapter: %s", name, chapter);
-        mangareadersingle(url_orig, name, nameorig, chapter, downdir, slash);
+        mangareadersingle(url_orig, name, nameorig, chapter, downdir, mode);
 	}
     //Single chapter, short URL download
-    else if (slash == 4){
+    else if (mode == 0){
         strcpy(chapter, strrchr (url_orig,'/') + 1);
         printf("\n	Name: %s\n	Chapter: %s", name, chapter);
-        mangareadersingle(url_orig, name, nameorig, chapter, downdir,slash);
+        mangareadersingle(url_orig, name, nameorig, chapter, downdir,mode);
     }
 }
 
-void mangareadersingle(char url_orig[], char name[], char nameorig[], char chapter[], char downdir[], short slash){
+void mangareadersingle(char url_orig[], char name[], char nameorig[], char chapter[], char downdir[], bool mode){
 
 	FILE *fp;
 	FILE *img;
@@ -93,14 +97,14 @@ char baseurl[]	="http://www.mangareader.net/";
 	chdir(downdir);
 
     //urldown for long url system
-    if(slash == 5){
+    if(mode == 1){
         strcpy(urldown, url_orig);
         strtok(urldown, "/");
         strtok(NULL, "/");
         strcpy(urldown, strtok(NULL, "/"));
     }
     //urldown for short url system
-    else if (slash == 4){
+    else if (mode == 0){
         strcpy(urldown, "/");
         strcat(urldown, nameorig);
         strcat(urldown, "/");
@@ -118,12 +122,12 @@ char baseurl[]	="http://www.mangareader.net/";
 		strcpy		(imgname, q);
 		strcat		(imgname, ".jpg");
 
-		if (slash == 5){
+		if (mode == 1){
 			while (urldown[strlen(urldown) -1] != '-'){
 				urldown[strlen(urldown) -1] = '\0';
 			}
 		}
-		else if (slash == 4){
+		else if (mode == 0){
             while (urldown[strlen(urldown) -1] != '/'){
                 urldown[strlen(urldown) -1] = '\0';
             }
@@ -156,12 +160,12 @@ char baseurl[]	="http://www.mangareader.net/";
     while (fgets(html, sizeof(html) - 1, fp) != '\0' && result != 1){
 		if (strstr(html, urldown) != NULL){
 
-            if (slash == 5){
+            if (mode == 1){
                 strcpy (url_orig, baseurl);
                 strcat (url_orig, strtok(strstr(html, urldown),"\'"));
             }
 
-            else if (slash == 4){
+            else if (mode == 0){
                 if (i > 1){
                     while(url_orig[strlen(url_orig) -1] != '/')
                     url_orig[strlen(url_orig) -1] = '\0';
@@ -224,7 +228,7 @@ char baseurl[]	="http://www.mangareader.net/";
 return;
 }
 
-void mangareaderbulk(char url_orig[], char name[], char nameorig[], char chapname[], char chapter[], char code[], char downdir[], short slash){
+void mangareaderbulk(char url_orig[], char name[], char nameorig[], char chapname[], char chapter[], char code[], char downdir[], bool mode){
     FILE *bf;
 CURL *pcurl;
 CURLcode pre;
@@ -370,15 +374,15 @@ bool found=0;
     strcat(path2, ".html");
     }
     strcpy(url_orig, "http://www.mangareader.net/");
-    slash++;
 
     while (fgets(blkhtml, sizeof(blkhtml) -1, bf) != '\0'){
         if (strstr(blkhtml, path) != '\0' && strstr(blkhtml, "chapter") == '\0'){
+            mode == 0;
             strcat(url_orig, strtok(strstr(blkhtml, path), "\""));
             strcpy(chapter, strrchr(url_orig, '/'));
             memmove(chapter, chapter+1, strlen(chapter));
             printf("\n    Chapter: %s", chapter);
-            mangareadersingle(url_orig, name, nameorig, chapter, downdir, slash);
+            mangareadersingle(url_orig, name, nameorig, chapter, downdir, mode);
             strcpy(url_orig, "http://www.mangareader.net/");
             while(path[strlen(path) -1] != '/')
                 path[strlen(path) -1] = '\0';
@@ -388,12 +392,13 @@ bool found=0;
 		}
 
         if (strstr(blkhtml, path2) != '\0' && strstr(blkhtml, code) != '\0'){
+            mode == 1;
             strcat(url_orig, strtok(strstr(blkhtml, code), "\""));
             strcpy(chapter, strrchr(url_orig, '-'));
             memmove(chapter, chapter+1, strlen(chapter));
             strtok(chapter, ".");
             printf("\n    Chapter: %s", chapter);
-            mangareadersingle(url_orig, name, nameorig, chapter, downdir, slash);
+            mangareadersingle(url_orig, name, nameorig, chapter, downdir, mode);
             strcpy(url_orig, "http://www.mangareader.net/");
             while(path[strlen(path) -1] != '/')
                 path[strlen(path) -1] = '\0';

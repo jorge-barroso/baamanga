@@ -46,10 +46,6 @@ char url[100], downdir[60], confdir[30];
     downdir_check(downdir);
     chdir(downdir);
 
-	/*strcpy(downdir, getenv("HOME"));
-	strcat(downdir, "/Baamanga");
-	downdir_check(downdir);*/
-
 if (argc == 1){
 printf("Welcome to Baamanga, the new manga downloader with lots of supported webpages.\nJust insert your download link and everything will be done automatically: ");
 
