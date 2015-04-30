@@ -201,9 +201,9 @@ char baseurl[]	="http://www.mangareader.net/";
 		curl = curl_easy_init();
 		curl_easy_setopt(curl, CURLOPT_URL, pageurl);
 		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data);          //Save
-		curl_easy_setopt(curl, CURLOPT_WRITEDATA, img);										//Where to save
+		curl_easy_setopt(curl, CURLOPT_WRITEDATA, img);						//Where to save
 		curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 0L);
-		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);							//Autoredirect
+		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);					//Autoredirect
 
 
 		res = curl_easy_perform(curl);
@@ -251,7 +251,6 @@ bool found=0;
 
     //Download html
     pcurl = curl_easy_init();
-    if(pcurl) {
 		bf = fopen(blktmpfile, "w+");
 		curl_easy_setopt(pcurl, CURLOPT_URL, url_orig);
 		curl_easy_setopt(pcurl, CURLOPT_WRITEFUNCTION, write_data); 	//Save
@@ -267,7 +266,6 @@ bool found=0;
 			}
 
 		curl_easy_cleanup(pcurl);
-	}
 
     bf      =   fopen(blktmpfile, "r");
     //Count Chapters
@@ -305,9 +303,10 @@ bool found=0;
     }
     else
         i=1;
-    if (i > chapters)
+    if (i > chapters){
         printf("The chosed chapter does not exist, downloading from chapter 1\n");
-
+        i = 1;
+    }
     z = i;
     //Check if given chapter exists. Program takes next chapter in case the given one doesn't exist
     while(found==0){
