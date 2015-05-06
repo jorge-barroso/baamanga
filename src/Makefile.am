@@ -1,3 +1,3 @@
-AM_CFLAGS = -Wall -lcurl
+AM_CXXFLAGS = -Wall -std=c++11 -lcurlcpp -lcurl
 bin_PROGRAMS=baamanga
-baamanga_SOURCES=animea.c baamanga.c bmhelp.c bmopt.c bmver.c danboru.c dirs_check.c ehentai.c futahentai.c mangafox.c mangahere.c mangareader.c mangashare.c pown.c submanga.c write_data.c zerochan.c
+baamanga_SOURCES=animea.cpp baamanga.cpp bmhelp.cpp bmopt.cpp bmver.cpp danboru.cpp dirs_check.cpp ehentai.cpp futahentai.cpp mangafox.cpp mangahere.cpp mangareader.cpp mangashare.cpp pown.cpp submanga.cpp write_data.cpp zerochan.cpp

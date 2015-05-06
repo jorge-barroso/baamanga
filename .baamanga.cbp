@@ -6,6 +6,7 @@
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
+			<Script file="lib_finder.script" />
 			<Target title="Debug">
 				<Option output="bin/Debug/baamanga" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Debug/" />
@@ -30,61 +31,31 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
+			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="src/animea.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="src/baamanga.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="src/bmhelp.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="src/bmopt.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="src/bmver.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="src/danboru.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="src/dirs_check.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="src/ehentai.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="src/futahentai.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="src/mangafox.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="src/mangahere.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="src/mangareader.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="src/mangashare.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="src/pown.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="src/submanga.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="src/write_data.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="src/zerochan.c">
-			<Option compilerVar="CC" />
-		</Unit>
+		<Unit filename="src/animea.cpp" />
+		<Unit filename="src/baamanga.cpp" />
+		<Unit filename="src/bmhelp.cpp" />
+		<Unit filename="src/bmopt.cpp" />
+		<Unit filename="src/bmver.cpp" />
+		<Unit filename="src/danboru.cpp" />
+		<Unit filename="src/dirs_check.cpp" />
+		<Unit filename="src/ehentai.cpp" />
+		<Unit filename="src/futahentai.cpp" />
+		<Unit filename="src/mangafox.cpp" />
+		<Unit filename="src/mangahere.cpp" />
+		<Unit filename="src/mangareader.cpp" />
+		<Unit filename="src/mangashare.cpp" />
+		<Unit filename="src/pown.cpp" />
+		<Unit filename="src/submanga.cpp" />
+		<Unit filename="src/write_data.cpp" />
+		<Unit filename="src/zerochan.cpp" />
 		<Extensions>
 			<envvars />
 			<code_completion />
+			<lib_finder disable_auto="1">
+				<lib name="libcurl" />
+			</lib_finder>
 			<debugger />
 		</Extensions>
 	</Project>
