@@ -8,6 +8,7 @@
 
 using namespace std;
 
+void downdir_check(string);
 void namedir_check(string, string);
 void chapdir_check(string, string);
 void mangafoxsingle(string, string, string, string, string);
@@ -15,7 +16,7 @@ void mangafoxbulk(string, string, string, string);
 
 void mangafox(string url, string name, string downdir){
 short unsigned l=0, slash=0;
-string discr = "", chapter = "", chaptorig = "", nameorig = "";
+string discr, chapter, volume, nameorig;
 size_t found, limit;
 bool mode;
 
@@ -61,24 +62,24 @@ bool mode;
         limit = url.find ("/", found);
         discr = url.substr(found, limit - found);
 		if (discr.at(0) != 'c'){
+            volume = discr;
             found = limit + 1;
             limit = url.find ("/", found);
             chapter= url.substr(found, limit - found);    //it is a chapter, but this is the volume serial name
 		}
 		else
 			chapter = discr;
-			chaptorig = chapter;
 		while (chapter.at(0) == 'c' || chapter.at(0) == '0')
 			chapter.erase(chapter.begin());
 		cout << "\n";
 		cout << "\t" << "Name: " << name << endl;
 		cout << "\t" << "Chapter: " << chapter << endl;
-		mangafoxsingle(url, name, chapter, chaptorig, downdir);
+		mangafoxsingle(url, name, chapter, volume, downdir);
 	}
 return;
 }
 
-void mangafoxsingle(string url, string name, string chapter, string chaptorig, string downdir){
+void mangafoxsingle(string url, string name, string chapter, string volume, string downdir){
 
 	fstream fp;
 	fstream img;
@@ -100,17 +101,19 @@ string html, imgname, pageurl;
 
 	namedir_check	(name, downdir);
 	downdir.append ("/" + name);
+	if (!volume.empty()){
+        downdir.append ("/" + volume);
+        downdir_check (downdir);
+	}
 	chapdir_check	(chapter, downdir);
 	downdir.append ("/" + chapter);
 	chdir		    (downdir.c_str());
 
-	do{
+	while(err == 0){
 		result = 0;
 		pgfound = 0;
-		ss << ++i;
-            urldown = ss.str() + ".html";
-        ss.str("");
 
+        ss.str("");
         ss << ++k;
 		if (k < 10)
             imgname = "00" + ss.str() + ".jpg";
@@ -119,6 +122,8 @@ string html, imgname, pageurl;
         else
             imgname = ss.str() + ".jpg";
         ss.str("");
+        ss << ++i;
+            urldown = ss.str() + ".html";
         i--, k--;
 
 		/* Download html page*/
@@ -143,11 +148,12 @@ string html, imgname, pageurl;
 			result++;
 		}
 	}
-	fp.seekg(0);
+	fp.close();
 
 	/* HERE WE GET THE PAGE URL */
-	while ( getline(fp, html) && pgfound == 0){
-		if ((html.find(pgbase) != string::npos) == 1 && (html.find("compressed") != string::npos) == 1 && pgfound < 1) {
+	fp.open(tmpfile, fstream::in);
+    while (getline(fp, html) && pgfound == 0){
+		if ((html.find("") != string::npos) == 1 && (html.find("compressed") != string::npos) == 1 && pgfound < 1) {
             found = html.find(pgbase);
             limit = html.find("\"", found);
             pageurl = html.substr(found, limit - found);
@@ -159,8 +165,9 @@ string html, imgname, pageurl;
 	if (pgfound == 1){
 		cout << "\n\n";
 		cout << "Downloading page " << i << "..." << endl;
-		img.open(imgname, fstream::out);
 
+		img.open(imgname, fstream::out);
+		cout << pageurl << endl;
         pic.add(curl_pair<CURLoption,string>(CURLOPT_URL,pageurl));
         pic.add(curl_pair<CURLoption, long>(CURLOPT_NOPROGRESS, 0L));
         pic.add(curl_pair<CURLoption, long>(CURLOPT_FOLLOWLOCATION, 1L));
@@ -175,10 +182,10 @@ string html, imgname, pageurl;
 		}
 
 	if (result == 0)
-		err++;
+		err = 1;
 
     i++,k++;
-	}while(err == 0);
+	}
 
 	if (i > 2){
 		cout << "\n" << endl;
