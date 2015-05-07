@@ -91,7 +91,7 @@ curl::curl_easy pic(draw);
 stringstream ss;
 short i=1, k=0;
 size_t found, limit;
-bool err=0, result=0, pgfound = 0;
+bool err=0, result, pgfound;
 string urldown;
 string pgbase = "http://a.mfcdn.net/store/manga/";
 string tmpfile = "/tmp/.html-mangafox";
@@ -109,7 +109,7 @@ string html, imgname, pageurl;
 	downdir.append ("/" + chapter);
 	chdir		    (downdir.c_str());
 
-	while(err == 0){
+	do{
 		result = 0;
 		pgfound = 0;
 
@@ -167,7 +167,6 @@ string html, imgname, pageurl;
 		cout << "Downloading page " << i << "..." << endl;
 
 		img.open(imgname, fstream::out);
-		cout << pageurl << endl;
         pic.add(curl_pair<CURLoption,string>(CURLOPT_URL,pageurl));
         pic.add(curl_pair<CURLoption, long>(CURLOPT_NOPROGRESS, 0L));
         pic.add(curl_pair<CURLoption, long>(CURLOPT_FOLLOWLOCATION, 1L));
@@ -185,7 +184,7 @@ string html, imgname, pageurl;
 		err = 1;
 
     i++,k++;
-	}
+	}while(err == 0);
 
 	if (i > 2){
 		cout << "\n" << endl;
