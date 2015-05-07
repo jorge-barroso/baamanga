@@ -8,16 +8,16 @@ using namespace std;
 void mangaheresingle(string, string, string, string);
 void mangaherebulk(string, string, string, string);
 
-void mangahere(string url_orig, string name, string downdir){
+void mangahere(string url, string name, string downdir){
 	int j;
     string chapter;
     size_t found, limit;
 
-    found = url_orig.find("/", 9) + 1;
-	found = url_orig.find("/", found) + 1;
-	limit = url_orig.find("/", found);
+    found = url.find("/", 9) + 1;
+	found = url.find("/", found) + 1;
+	limit = url.find("/", found);
 	// Parse name
-	name = url_orig.substr(found, limit - found);
+	name = url.substr(found, limit - found);
 
 	for(j=0;name.at(j)!='\0'; j++){
 		if (name.at(j) == '_'){
@@ -30,15 +30,15 @@ void mangahere(string url_orig, string name, string downdir){
 		name.at(0) = toupper(name.at(0));
 
     found = limit + 1;
-    limit = url_orig.find("/", found);
-	chapter = url_orig.substr(found, limit - found);
+    limit = url.find("/", found);
+	chapter = url.substr(found, limit - found);
 
 	if (chapter.compare("http:") == 0)
-		mangaherebulk(url_orig, name, chapter, downdir);
+		mangaherebulk(url, name, chapter, downdir);
 	else{
-		chapter = url_orig.substr(limit +1);
+		chapter = url.substr(limit +1);
         chapter.back() = '\0';
-		mangaheresingle(url_orig, name, chapter, downdir);
+		mangaheresingle(url, name, chapter, downdir);
 	}
 		cout << "\t" << "Name: " << name << endl;
 		cout << "\t" << "Chapter: " << chapter << endl;
@@ -46,12 +46,12 @@ return;
 }
 
 
-void mangaheresingle(string url_orig, string name, string chapter, string downdir){
+void mangaheresingle(string url, string name, string chapter, string downdir){
 cout << "This is mangaheresingle";
 return;
 }
 
-void mangaherebulk(string url_orig, string name, string chapter, string downdir){
+void mangaherebulk(string url, string name, string chapter, string downdir){
 cout << "This is mangaherebulk";
 return;
 }

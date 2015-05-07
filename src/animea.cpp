@@ -10,23 +10,23 @@ void animeabulk(string, string, string, string);
 
 
 
-void animea(string url_orig, string name, string downdir){
+void animea(string url, string name, string downdir){
 string discr, chapter;
 short found;
 
-    found = url_orig.find_last_of("/");
-	discr = url_orig.substr(found + 1);
+    found = url.find_last_of("/");
+	discr = url.substr(found + 1);
 
 	if((discr.find("chapter") != string::npos) == 1){
-		animeasingle(url_orig, name, chapter, discr, downdir);
+		animeasingle(url, name, chapter, discr, downdir);
 	}
 	else{
-		animeabulk(url_orig, name, chapter, downdir);
+		animeabulk(url, name, chapter, downdir);
 	}
 return;
 }
 
-void animeasingle(string url_orig, string name, string chapter, string discr, string downdir){
+void animeasingle(string url, string name, string chapter, string discr, string downdir){
 	string namex;
 	short unsigned int j;
 	size_t found, limit;
@@ -43,16 +43,16 @@ void animeasingle(string url_orig, string name, string chapter, string discr, st
 		name.at(0) = toupper(name.at(0));
 
 	//Chapter
-	found = url_orig.find_last_of("-") + 1;
-    limit = url_orig.find_last_of(".", found);
-    discr = url_orig.substr(found, limit - found -1);
-	chapter = url_orig.substr(found, limit - found -1);
+	found = url.find_last_of("-") + 1;
+    limit = url.find_last_of(".", found);
+    discr = url.substr(found, limit - found -1);
+	chapter = url.substr(found, limit - found -1);
 
 	cout << "\t" << "Name: " << name << endl;
 	cout << "\t" << "Chapter: " << chapter << endl;
 return;
 }
 
-void animeabulk(string url_orig, string name, string chapter, string downdir){
+void animeabulk(string url, string name, string chapter, string downdir){
 return;
 }

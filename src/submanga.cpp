@@ -8,19 +8,19 @@
 using namespace std;
 
 void submangasingle(string, string, string, string);
-void submangabulk(string, string, string, string);
+void submangabulk(string, string, string, string, string);
 void namedir_check(string, string);
 void chapdir_check(string, string);
 
-void submanga(string url_orig, string name, string downdir){
+void submanga(string url, string name, string downdir){
 	short unsigned j;
 	size_t found, limit;
-	string discr, chapter;
+	string discr, chapter, nameorig;
 
-    found = url_orig.find("/", 9) + 1;
-	limit = url_orig.find("/", found);
-	name = url_orig.substr(found, limit-found);
-
+    found = url.find("/", 9) + 1;
+	limit = url.find("/", found);
+	name = url.substr(found, limit-found);
+    nameorig = name;
 	// Parse name
 	for(j=0;j <= name.length() - 1 ; j++){
 		if (name.at(j) == '_'){
@@ -28,23 +28,24 @@ void submanga(string url_orig, string name, string downdir){
 		}
 	}
 	found = limit + 1;
-	limit = url_orig.find("/", found);
-	discr = url_orig.substr(found, limit-found);
+	limit = url.find("/", found);
+	discr = url.substr(found, limit-found);
 
-	if ((url_orig.find("completa") != string::npos) == 1){
-		submangabulk(url_orig, name, chapter, downdir);
+	if ((url.find("completa") != string::npos) == 1){
+		submangabulk(url, name, nameorig, chapter, downdir);
+		//cout << "Bulk function of submanga not yet available, sorry for the inconvenience" << endl;
 	}
 	else{
 		chapter = discr;
 		cout << "\n";
 		cout << "\t" << "Name: " << name << endl;
 		cout << "\t" << "Chapter: " << chapter << endl;
-		submangasingle(url_orig, name, chapter, downdir);
+		submangasingle(url, name, chapter, downdir);
 	}
   return;
 }
 
-void submangasingle(string url_orig, string name, string chapter, string downdir){
+void submangasingle(string url, string name, string chapter, string downdir){
 
 	fstream fp;
 	ofstream img;
@@ -73,7 +74,7 @@ size_t found, limit;
 	downdir.append("/" + chapter);
 	chdir		(downdir.c_str());
 
-    code = url_orig.substr(url_orig.find_last_of("/") + 1);
+    code = url.substr(url.find_last_of("/") + 1);
 
 	do{
 		result = 0;
@@ -93,7 +94,7 @@ size_t found, limit;
 
 		/* Download html page*/
 		fp.open(tmpfile, fstream::out);
-		curl.add(curl_pair<CURLoption,string>(CURLOPT_URL, url_orig));
+		curl.add(curl_pair<CURLoption,string>(CURLOPT_URL, url));
 		curl.add(curl_pair<CURLoption,long>(CURLOPT_FOLLOWLOCATION,1L));
 
         try {
@@ -110,7 +111,7 @@ size_t found, limit;
         fp.open(tmpfile, fstream::in);
 		while (getline(fp, html)){
 			if ((html.find(urldown) != string::npos) == 1){
-                    url_orig = urldown;
+                    url = urldown;
 					result++;
 				}
 			}
@@ -214,7 +215,59 @@ size_t found, limit;
 return;
 }
 
-void submangabulk(string url_orig, string name, string chapter, string downdir){
-cout << "This is submangabulk";
+void submangabulk(string url, string name, string nameorig, string chapter, string downdir){
+fstream bf;
+curl_writer writer(bf);
+curl::curl_easy curl (writer);
+
+stringstream ss;
+short chapters=0, i, j;
+string blkhtml, newest;
+string blktmpfile= "/tmp/.baamanga-bulk-submanga";
+string urldown = "http://submanga.com/";
+size_t found = 0, limit;
+
+    urldown.append(nameorig + "/");
+
+    bf.open(blktmpfile, fstream::out);
+    curl.add(curl_pair<CURLoption, string>(CURLOPT_URL, url));
+    curl.add(curl_pair<CURLoption, long>(CURLOPT_FOLLOWLOCATION, 1L));
+    try{
+        curl.perform();
+    } catch (curl_easy_exception error){
+            error.print_traceback();
+        }
+    bf.close();
+
+    bf.open(blktmpfile, fstream::in);
+
+    while(getline(bf, blkhtml)){
+        while((blkhtml.find(urldown, found) != string::npos) == 1){
+            found = blkhtml.find(urldown);
+            limit = blkhtml.find("\"", found);
+            cout << (blkhtml.substr(found, limit - found)) << endl;
+            if ((blkhtml.substr(found, limit - found).find("completa") != string::npos) == 0)
+                chapters++;
+            if (chapters == 1){
+                newest = blkhtml.substr(found, limit - found);
+            found=limit + 1;
+            }
+        }
+    }
+    found = newest.find("/", 9) + 1;
+    limit = newest.find("/", found);
+    newest = newest.substr(found, limit - found);
+
+    if(chapters < atoi(newest.c_str())){
+        cout << "There are some missing chapters.";
+        cout << "Latest chapter is " << newest << ", and there are " << chapters << " available chapters," << endl;
+    }
+    else
+        cout << "There are " << chapters << " available  chapters." << endl;
+
+    cout << "Which chapter do you want to start for? ";
+    cin >> i;
+
+    j = i;
 return;
 }

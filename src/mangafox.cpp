@@ -13,14 +13,14 @@ void chapdir_check(string, string);
 void mangafoxsingle(string, string, string, string, string);
 void mangafoxbulk(string, string, string, string);
 
-void mangafox(string url_orig, string name, string downdir){
+void mangafox(string url, string name, string downdir){
 short unsigned l=0, slash=0;
 string discr = "", chapter = "", chaptorig = "", nameorig = "";
 size_t found, limit;
 bool mode;
 
-    for(l=0;l<url_orig.length();l++){
-        if (url_orig.at(l) == '/')
+    for(l=0;l<url.length();l++){
+        if (url.at(l) == '/')
             slash++;
     }
 
@@ -31,15 +31,15 @@ bool mode;
 
     //Let's parse the name
     if (mode==0){
-        if (url_orig.back() == '/')
-            url_orig.back() = '\0';
-        found = url_orig.find_last_of("/") + 1;
-        name = url_orig.substr(found);
+        if (url.back() == '/')
+            url.back() = '\0';
+        found = url.find_last_of("/") + 1;
+        name = url.substr(found);
     }
     else{
-        found = url_orig.find("/", url_orig.find("/manga/") + 1) + 1;
-        limit = url_orig.find("/", found);
-        name = url_orig.substr(found, limit - found);
+        found = url.find("/", url.find("/manga/") + 1) + 1;
+        limit = url.find("/", found);
+        name = url.substr(found, limit - found);
     }
     nameorig = name;//.substr(0, name.length()-1);
 
@@ -53,17 +53,17 @@ bool mode;
     name.at(0) = toupper(name.at(0));
     if(mode == 0){
         cout << "\n\t" << "Name: " << name << endl;
-		mangafoxbulk(name, nameorig, url_orig, downdir);
+		mangafoxbulk(name, nameorig, url, downdir);
 	}
 	else{
         //Now for the chapter
         found = limit + 1;
-        limit = url_orig.find ("/", found);
-        discr = url_orig.substr(found, limit - found);
+        limit = url.find ("/", found);
+        discr = url.substr(found, limit - found);
 		if (discr.at(0) != 'c'){
             found = limit + 1;
-            limit = url_orig.find ("/", found);
-            chapter= url_orig.substr(found, limit - found);    //it is a chapter, but this is the volume serial name
+            limit = url.find ("/", found);
+            chapter= url.substr(found, limit - found);    //it is a chapter, but this is the volume serial name
 		}
 		else
 			chapter = discr;
@@ -73,12 +73,12 @@ bool mode;
 		cout << "\n";
 		cout << "\t" << "Name: " << name << endl;
 		cout << "\t" << "Chapter: " << chapter << endl;
-		mangafoxsingle(url_orig, name, chapter, chaptorig, downdir);
+		mangafoxsingle(url, name, chapter, chaptorig, downdir);
 	}
 return;
 }
 
-void mangafoxsingle(string url_orig, string name, string chapter, string chaptorig, string downdir){
+void mangafoxsingle(string url, string name, string chapter, string chaptorig, string downdir){
 
 	fstream fp;
 	fstream img;
@@ -123,7 +123,7 @@ string html, imgname, pageurl;
 
 		/* Download html page*/
     fp.open(tmpfile, fstream::out);
-	curl.add(curl_pair<CURLoption, string>(CURLOPT_URL, url_orig));
+	curl.add(curl_pair<CURLoption, string>(CURLOPT_URL, url));
 	curl.add(curl_pair<CURLoption, long>(CURLOPT_FOLLOWLOCATION, 1L));
 
         try {
@@ -139,7 +139,7 @@ string html, imgname, pageurl;
 	fp.open(tmpfile, fstream::in);
 	while ( getline(fp, html) && result == 0){
 		if ((html.find(urldown) != string::npos) == 1){
-			url_orig = url_orig.substr(0, url_orig.find_last_of("/") + 1) + urldown;
+			url = url.substr(0, url.find_last_of("/") + 1) + urldown;
 			result++;
 		}
 	}
@@ -188,7 +188,7 @@ string html, imgname, pageurl;
 return;
 }
 
-void mangafoxbulk(string name, string nameorig, string url_orig, string downdir){
+void mangafoxbulk(string name, string nameorig, string url, string downdir){
     fstream bf;
 curl::curl_writer blkwriter(bf);
 curl::curl_easy blkcurl(blkwriter);
@@ -205,7 +205,7 @@ size_t found, limit;
     path.append (nameorig);
 
     bf.open(blktmpfile, fstream::out);
-    blkcurl.add(curl_pair<CURLoption,string>(CURLOPT_URL, url_orig));
+    blkcurl.add(curl_pair<CURLoption,string>(CURLOPT_URL, url));
     blkcurl.add(curl_pair<CURLoption, long>(CURLOPT_FOLLOWLOCATION, 1L));
 
     try {
@@ -277,8 +277,8 @@ size_t found, limit;
             if((blkhtml.find(chapter) != string::npos) == 1){
                 found = blkhtml.find(path);
 				limit = blkhtml.find("\"", found);
-				url_orig = blkhtml.substr(found, limit - found);
-                mangafox(url_orig, name, downdir);
+				url = blkhtml.substr(found, limit - found);
+                mangafox(url, name, downdir);
             }
         }
         bf.close();

@@ -9,11 +9,11 @@ using namespace std;
 void zerochansingle(string, string, string);
 void zerochanbulk(string, string, string);
 
-void zerochan(string url_orig, string name, string downdir){
+void zerochan(string url, string name, string downdir){
 short unsigned int j;
 bool discr;
 
-	name = url_orig.substr(url_orig.find("/", 9) + 1);
+	name = url.substr(url.find("/", 9) + 1);
 
 	for(j=0;name.at(j)!='\0';j++){
 		if (name.at(j) == '+' || isalpha(name.at(j)))
@@ -25,20 +25,20 @@ bool discr;
 				name.at(j) = ' ';
 				}
 			}
-		zerochanbulk(url_orig, name, downdir);
+		zerochanbulk(url, name, downdir);
 	}
 	else
 		cout << "Please, give a name for the file you are going to download";
 		getline(cin, name);
-		 zerochansingle(url_orig, name, downdir);
+		 zerochansingle(url, name, downdir);
 }
 
-void zerochansingle(string url_orig, string name, string downdir){
+void zerochansingle(string url, string name, string downdir){
 cout << "This is zerochansingle";
 return;
 }
 
-void zerochanbulk(string url_orig, string name, string downdir){
+void zerochanbulk(string url, string name, string downdir){
 
 cout << "This is zerochanbulk";
 return;

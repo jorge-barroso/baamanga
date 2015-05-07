@@ -97,7 +97,8 @@ danboru.o: danboru.cpp /usr/include/stdc-predef.h \
  /usr/include/c++/4.9.2/bits/codecvt.h \
  /usr/include/c++/4.9.2/i686-pc-linux-gnu/bits/basic_file.h \
  /usr/include/c++/4.9.2/i686-pc-linux-gnu/bits/c++io.h \
- /usr/include/c++/4.9.2/bits/fstream.tcc /usr/include/curlcpp/curl_easy.h \
+ /usr/include/c++/4.9.2/bits/fstream.tcc /usr/include/c++/4.9.2/sstream \
+ /usr/include/c++/4.9.2/bits/sstream.tcc /usr/include/curlcpp/curl_easy.h \
  /usr/include/c++/4.9.2/algorithm /usr/include/c++/4.9.2/utility \
  /usr/include/c++/4.9.2/bits/stl_relops.h \
  /usr/include/c++/4.9.2/bits/stl_algo.h \
@@ -459,6 +460,10 @@ danboru.o: danboru.cpp /usr/include/stdc-predef.h \
 /usr/include/c++/4.9.2/i686-pc-linux-gnu/bits/c++io.h:
 
 /usr/include/c++/4.9.2/bits/fstream.tcc:
+
+/usr/include/c++/4.9.2/sstream:
+
+/usr/include/c++/4.9.2/bits/sstream.tcc:
 
 /usr/include/curlcpp/curl_easy.h:
 

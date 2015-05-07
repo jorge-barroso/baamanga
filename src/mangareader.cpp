@@ -14,15 +14,15 @@ void chapdir_check(string, string);
 void mangareadersingle(string, string, string, string, string, bool);
 void mangareaderbulk(string, string, string, string, string, string, string, bool);
 
-void mangareader(string url_orig, string name, string downdir){
+void mangareader(string url, string name, string downdir){
     unsigned short j=0, len, slash = 0;
     string chapter, nameorig,code, chapname;
     bool mode;
     size_t found, limit;
 
     //Name parsing
-    for(j=0;j<url_orig.length();j++){
-        if (url_orig.at(j) == '/')
+    for(j=0;j<url.length();j++){
+        if (url.at(j) == '/')
             slash++;
     }
 
@@ -31,14 +31,14 @@ void mangareader(string url_orig, string name, string downdir){
     if (slash == 5)
         mode=1;
 		//"long" kind of URL,  extract code
-		found = url_orig.find("/", 9) + 1;
-        limit = url_orig.find("/", found);
-    if (mode == 1 || (url_orig.find(".html") != string::npos) == 1){
-        code = url_orig.substr(found, limit - found);
+		found = url.find("/", 9) + 1;
+        limit = url.find("/", found);
+    if (mode == 1 || (url.find(".html") != string::npos) == 1){
+        code = url.substr(found, limit - found);
         found = limit + 1;
-        limit = url_orig.find("/", found);
+        limit = url.find("/", found);
     }
-    name = url_orig.substr(found, limit - found);
+    name = url.substr(found, limit - found);
     nameorig = name;
 	//formating name
 	for (j=1;j<name.length();j++){
@@ -60,27 +60,27 @@ void mangareader(string url_orig, string name, string downdir){
         }
         //Start Bulk
 	cout << "\n\t" << "Name: " << name << endl;
-	mangareaderbulk(url_orig, name, nameorig, chapname, chapter, code, downdir, mode);
+	mangareaderbulk(url, name, nameorig, chapname, chapter, code, downdir, mode);
 	}
   //Single chapter, long URL download
 	else if (mode == 1){
-        found = url_orig.find("-", limit) + 1;
-        limit = url_orig.find(".", found);
-        chapter = url_orig.substr(found, limit - found);
+        found = url.find("-", limit) + 1;
+        limit = url.find(".", found);
+        chapter = url.substr(found, limit - found);
         cout << "\n\t" << "Name: " << name << endl;
         cout << "\t" << "Chapter: " << chapter << endl;
-        mangareadersingle(url_orig, name, nameorig, chapter, downdir, mode);
+        mangareadersingle(url, name, nameorig, chapter, downdir, mode);
 	}
     //Single chapter, short URL download
     else if (mode == 0){
-        chapter = url_orig.substr(limit + 1);
+        chapter = url.substr(limit + 1);
         cout << "\n\t" << "Name: " << name << endl;
         cout << "\t" << "Chapter: " << chapter << endl;
-        mangareadersingle(url_orig, name, nameorig, chapter, downdir,mode);
+        mangareadersingle(url, name, nameorig, chapter, downdir,mode);
     }
 }
 
-void mangareadersingle(string url_orig, string name, string nameorig, string chapter, string downdir, bool mode){
+void mangareadersingle(string url, string name, string nameorig, string chapter, string downdir, bool mode){
 
 	fstream fp;
 	ofstream img;
@@ -110,9 +110,9 @@ size_t found, limit;
 
     //urldown for long url system
     if(mode == 1){
-        found = url_orig.find ("/", 9) + 1;
-        limit = url_orig.find ("/", found);
-        code = url_orig.substr(found, limit - found - 1);
+        found = url.find ("/", 9) + 1;
+        limit = url.find ("/", found);
+        code = url.substr(found, limit - found - 1);
     }
     //urldown for short url system
     else if (mode == 0)
@@ -136,7 +136,7 @@ size_t found, limit;
 		i--;
 		/* Download html page*/
         fp.open(tmpfile, fstream::out);
-        curl.add(curl_pair<CURLoption,string>(CURLOPT_URL, url_orig));
+        curl.add(curl_pair<CURLoption,string>(CURLOPT_URL, url));
 		curl.add(curl_pair<CURLoption,long>(CURLOPT_FOLLOWLOCATION,1L));
 
         try{
@@ -152,19 +152,19 @@ size_t found, limit;
             if (mode == 1){
                 found = html.find(urldown);
                 limit = html.find("\'", found);
-                url_orig = baseurl + (html.substr(found, limit - found));
+                url = baseurl + (html.substr(found, limit - found));
             }
 
 
             else if (mode == 0){
                 if (i > 1){
-                    while(url_orig.back() != '/'){
-                        url_orig.erase(url_orig.find_last_of(url_orig.back()));
+                    while(url.back() != '/'){
+                        url.erase(url.find_last_of(url.back()));
                         length--;
                     }
                 }
                 else
-                    url_orig.append ("/" + ss.str());
+                    url.append ("/" + ss.str());
             }
             result = 1;
 	}
@@ -216,7 +216,7 @@ size_t found, limit;
 return;
 }
 
-void mangareaderbulk(string url_orig, string name, string nameorig, string chapname, string chapter, string code, string downdir, bool mode){
+void mangareaderbulk(string url, string name, string nameorig, string chapname, string chapter, string code, string downdir, bool mode){
     fstream bf;
 curl_writer writer(bf);
 curl::curl_easy blkcurl(writer);
@@ -238,7 +238,7 @@ size_t found, limit;
     path2 = nameorig + "/" + "chapter-1.html\""; // adding \" to avoid i.e. "chapter-13" as first coincidence
     //Download html
     bf.open(blktmpfile, fstream::out);
-    blkcurl.add(curl_pair<CURLoption,string>(CURLOPT_URL,url_orig));
+    blkcurl.add(curl_pair<CURLoption,string>(CURLOPT_URL,url));
     blkcurl.add(curl_pair<CURLoption,long>(CURLOPT_FOLLOWLOCATION,1L));
 
     try{
@@ -366,11 +366,11 @@ size_t found, limit;
             mode = 0;
             found = blkhtml.find(path);
             limit = blkhtml.find("\"", found);
-            url_orig = "http://www.mangareader.net/" + blkhtml.substr(found, limit - found);
-            chapter = url_orig.substr(url_orig.find_last_of("/") + 1);
+            url = "http://www.mangareader.net/" + blkhtml.substr(found, limit - found);
+            chapter = url.substr(url.find_last_of("/") + 1);
             //chapter.erase(0);
             cout << "\n\t" << "Chapter: " << chapter << endl;
-            mangareadersingle(url_orig, name, nameorig, chapter, downdir, mode);
+            mangareadersingle(url, name, nameorig, chapter, downdir, mode);
             while(path.back() != '/'){
                 path.erase(path.find_last_of(path.back()));
             }
@@ -384,12 +384,12 @@ size_t found, limit;
             mode = 1;
             found = blkhtml.find("\"") + 1;
             limit = blkhtml.find("\"", found);
-            url_orig = "http://www.mangareader.net" + blkhtml.substr(found, limit - found);
-            found = url_orig.find_last_of("-") + 1;
-            limit = url_orig.find(".", found);
-            chapter = url_orig.substr(found, limit - found);
+            url = "http://www.mangareader.net" + blkhtml.substr(found, limit - found);
+            found = url.find_last_of("-") + 1;
+            limit = url.find(".", found);
+            chapter = url.substr(found, limit - found);
             cout << "\n\t" << "Chapter: " << chapter << endl;
-            mangareadersingle(url_orig, name, nameorig, chapter, downdir, mode);
+            mangareadersingle(url, name, nameorig, chapter, downdir, mode);
             while(path.back() != '/'){
                 path.erase(path.find_last_of(path.back()));
             }

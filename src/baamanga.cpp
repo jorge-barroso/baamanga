@@ -30,7 +30,6 @@ int main(int argc, char *argv[]) {
 ifstream conf;
 ifstream config_file;
 string url, downdir, confdir = getenv("HOME");
-//string config_file = ;
 
 
     confdir.append ("/.config/baamanga/");
@@ -65,15 +64,15 @@ string url, downdir, confdir = getenv("HOME");
         }while(url.empty());
 
         domain_check(url, downdir);
-}
+    }
     else if (argc == 2){
-        if (strcmp(argv[1], "--config") == 0)
+        if (strcmp(argv[1], "config") == 0)
             config(confdir);
 
-        else if (strcmp(argv[1], "--help") == 0)
+        else if (strcmp(argv[1], "help") == 0)
             help();
 
-        else if (strcmp(argv[1], "--version") == 0)
+        else if (strcmp(argv[1], "version") == 0)
             version();
 
         else{
@@ -94,10 +93,8 @@ return 0;
 
 void domain_check(string url, string downdir) {
 
-string domain, url_orig, name;
+string domain, name;
 size_t found, limit;
-
-    url_orig = url;
 
     found = url.find("/") + 2;
     limit = url.find("/", found);
@@ -105,47 +102,47 @@ size_t found, limit;
 
 if (domain.compare("manga.animea.net") == 0){						//ANIMEA
 	cout << "\n" << "Manga from animea! I'd like to download it's anime aswell, soon maybe..." << endl;
-	animea(url_orig, name, downdir);
+	animea(url, name, downdir);
 	}
 	else if (domain.compare("danbooru.donmai.us") == 0){			//DANBORU
 			cout << "\n" << "Ok, you are downloading Danbooru boards, let's go"  << endl;
-			danboru(url_orig, name, downdir);
+			danboru(url, name, downdir);
 		}
 	else if (domain.compare(" e-hentai.org") == 0){					//E-HENTAI
 			 cout << "\n" << "Wow, you are downloading manga from e-hentai, enjoy it!" << endl;
-			ehentai(url_orig, name, downdir);
+			ehentai(url, name, downdir);
 		}
 	else if (domain.compare("futahentai.com") == 0){				//FUTAHENTAI
 			 cout << "\n" << "Mmm Futahentai, having fun huh? Let's download it!" << endl;
-			futahentai(url_orig, name, downdir);
+			futahentai(url, name, downdir);
 		}
 	else if (domain.compare("mangafox.me") == 0){					//MANGAFOX
 			 cout << "\n" << "Mangafox! Good choice! Come on" << endl;
-			mangafox(url_orig, name, downdir);
+			mangafox(url, name, downdir);
 		}
 	else if (domain.compare("es.mangahere.co") == 0){				//MANGAHERE
 			 cout << "\n" << "This is a Mangahere url isn't it? It's a very good manga site, starting download!" << endl;
-			mangahere(url_orig, name, downdir);
+			mangahere(url, name, downdir);
 			}
 	else if (domain.compare("www.mangareader.net") == 0){			//MANGAREADER
 			 cout << "\n" << "Mmm mangareader, a classic! Good and varied, let's download it!" << endl;
-			mangareader(url_orig, name, downdir);
+			mangareader(url, name, downdir);
 		}
 	else if (domain.compare("read.mangashare.com") == 0){			//MANGASHARE
 			 cout << "\n" << "Shared manga is better isn't it? Starting download" << endl;
-			mangashare(url_orig, name, downdir);
+			mangashare(url, name, downdir);
 		}
 	else if (domain.compare("www.pown.it") == 0){					//POWN
 			 cout << "\n" << "Yeah good pown, let's share it" << endl;
-			pown(url_orig, name, downdir);
+			pown(url, name, downdir);
 		}
 	else if (domain.compare("submanga.com") == 0 ){					//SUBMANGA
 			 cout << "\n" << "This is Submanga! The best Spanish manga site!" << endl;
-			submanga(url_orig, name, downdir);
+			submanga(url, name, downdir);
 		}
 	else if (domain.compare("www.zerochan.net") == 0){			//ZEROCHAN
 			 cout << "\n" << "Hey, good manga board, it is from Zerochan isn't it? Downloading!" << endl;
-			zerochan(url_orig, name, downdir);
+			zerochan(url, name, downdir);
 		}
 	else
 			 cout << "\n" << "Sorry, is not possible to download from this webpage, try with one bellow:\n-Submanga\n-Mcanime\n-Mangafox\n-Mangashare\n-Mangareader\n-Futahentai\n-E-hentai\n-4Chan\n-Zerochan\n-Danboru\n-Pown" << endl;
