@@ -217,15 +217,18 @@ return;
 
 void submangabulk(string url, string name, string nameorig, string chapter, string downdir){
 fstream bf;
+fstream spec;
 curl_writer writer(bf);
 curl::curl_easy curl (writer);
 
 stringstream ss;
-short chapters=0, i, j;
+short chapters=0, spchapters = 0, i, j;
 string blkhtml, newest;
 string blktmpfile= "/tmp/.baamanga-bulk-submanga";
 string urldown = "http://submanga.com/";
-size_t found = 0, limit;
+size_t found, limit, foundspec;
+char yesno;
+bool check=0;
 
     urldown.append(nameorig + "/");
 
@@ -240,34 +243,60 @@ size_t found = 0, limit;
     bf.close();
 
     bf.open(blktmpfile, fstream::in);
-
+    spec.open("/tmp/.special_chapters", fstream::out);
     while(getline(bf, blkhtml)){
+            found = 0;
         while((blkhtml.find(urldown, found) != string::npos) == 1){
-            found = blkhtml.find(urldown);
+            //delimit the found url
+            found = blkhtml.find(urldown,found);
             limit = blkhtml.find("\"", found);
-            cout << (blkhtml.substr(found, limit - found)) << endl;
-            if ((blkhtml.substr(found, limit - found).find("completa") != string::npos) == 0)
+            //find the beggining of special chapters
+            if ((blkhtml.find("Especiales") != string::npos) == 1)
+                foundspec = blkhtml.find("Especiales");
+            //check if is a regular or a special chapter
+            if ((blkhtml.substr(found, limit - found).find("completa") != string::npos) == 0 && (!foundspec || found < foundspec))
                 chapters++;
-            if (chapters == 1){
+            else if (foundspec && found > foundspec){
+                spchapters++;
+                spec << blkhtml.substr(found, limit - found) << endl;
+            }
+            //check if there is chapter 0
+            if ((blkhtml.substr(found, limit - found).find("/0/") != string::npos) == 1)
+                check=1;
+            //get newest chapter url, to get the higher chapter available
+            if (chapters == 1)
                 newest = blkhtml.substr(found, limit - found);
+            //update found to continue looking for coincidences
             found=limit + 1;
             }
-        }
     }
+    spec.close();
+    bf.close();
+    //get the latest chapter number
     found = newest.find("/", 9) + 1;
     limit = newest.find("/", found);
     newest = newest.substr(found, limit - found);
-
+    //check whether it is complete and inform if it's not
     if(chapters < atoi(newest.c_str())){
         cout << "There are some missing chapters.";
-        cout << "Latest chapter is " << newest << ", and there are " << chapters << " available chapters," << endl;
+        cout << "Latest chapter is " << newest << ", and there are " << chapters << " available chapters.";
     }
     else
-        cout << "There are " << chapters << " available  chapters." << endl;
+        cout << "There are " << chapters << " available  chapters.";
+    //inform if there is a Chapter 0
+    if (check == 1)
+         cout << " A \"Chapter 0\" was found." << "\n" << endl;
+    else
+        cout << "\n" << endl;
 
     cout << "Which chapter do you want to start for? ";
     cin >> i;
-
     j = i;
+
+    //inform of special chapters and ask to download them
+    if (spchapters > 0)
+        cout << spchapters << "special chapters were found, do you want to download them?";
+        cin.get(yesno);
+
 return;
 }

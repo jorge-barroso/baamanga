@@ -32,7 +32,7 @@ bool mode;
     //Let's parse the name
     if (mode==0){
         if (url.back() == '/')
-            url.back() = '\0';
+            url.erase(url.length() - 1);
         found = url.find_last_of("/") + 1;
         name = url.substr(found);
     }
@@ -41,7 +41,7 @@ bool mode;
         limit = url.find("/", found);
         name = url.substr(found, limit - found);
     }
-    nameorig = name;//.substr(0, name.length()-1);
+    nameorig = name;
 
     for(l=1;l<name.length();l++){
         if (name.at(l) == '_')
@@ -202,7 +202,7 @@ char yesno;
 bool match=0;
 size_t found, limit;
 
-    path.append (nameorig);
+    path.append (nameorig + "/");
 
     bf.open(blktmpfile, fstream::out);
     blkcurl.add(curl_pair<CURLoption,string>(CURLOPT_URL, url));
@@ -217,11 +217,11 @@ size_t found, limit;
 
     bf.open(blktmpfile, fstream::in);
     while (getline(bf, blkhtml)){
-            if ((blkhtml.find(nameorig) != string::npos) == 1 && (blkhtml.find("1.html") != string::npos) == 1){
+            if ((blkhtml.find(path) != string::npos) == 1 && (blkhtml.find("1.html") != string::npos) == 1){
                 chapters++;
             }
     }
-    bf.close();//seekg(0);
+    bf.close();
 
     //Ask for the first chapter to download for. Take 1 if not specified
     cout << "\n";
@@ -248,7 +248,6 @@ size_t found, limit;
         else
             chapter = ss.str() + "/1.html";
         ss.str("");
-        cout << chapter << endl;
         bf.open(blktmpfile, fstream::in);
         while (getline(bf, blkhtml) && match == 0){
             if((blkhtml.find(chapter) != string::npos) == 1)
