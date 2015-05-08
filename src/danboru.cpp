@@ -3,6 +3,7 @@
 #include <fstream>
 #include <sstream>
 #include <curlcpp/curl_easy.h>
+#include <ctime>
 #include <unistd.h>
 
 using namespace std;
@@ -18,8 +19,10 @@ void danboru(string url, string name, string downdir){
     string tag;
     bool popular = 0;
     size_t found;
+    time_t now = time(0);
+    char* dt = ctime(&now);
 
-    downdir.append("/danbooru");
+    downdir.append("/Danbooru");
     downdir_check(downdir);
 
     for (j=0;j < url.length();j++){
@@ -34,8 +37,15 @@ void danboru(string url, string name, string downdir){
             if ((url.find("/popular") != string::npos) == 0){
                 found = url.find("=", url.find("tags=")) + 1;
                 tag = url.substr(found);
+                if (tag == "order:rank" || tag == "orde%3Arank")
+                    tag = "Hot";
                 downdir.append("/" + tag);
                 downdir_check(downdir);
+                if (tag == "Hot"){
+                    downdir.append("/");
+                    downdir.append(dt);
+                    downdir_check(downdir);
+                }
                 danborubulk(url, name, downdir, popular);
             }
             else{
@@ -150,7 +160,7 @@ curl::curl_easy curl(writer);
 stringstream ss;
 string blktmpfile = "/tmp/.baamanga-bulk-danbooru";
 string blkurldown = "data-large-file-url";
-string page, blkhtml, popular_folder;
+string page, blkhtml, popular_folder, pageurl;
 short unsigned i=1, j=2;
 bool pgfound = 0, err=0;
 size_t found, limit;
@@ -176,16 +186,10 @@ size_t found, limit;
                     popular_folder = blkhtml.substr(found, limit - found);
                     downdir.append("/" + popular_folder);
                     downdir_check(downdir);
-                    chdir(downdir.c_str());
                 }
             }
             fp.close();
         }
-
-        ss << j;
-        page = "http://danbooru.donmai.us/posts?page=" + ss.str();
-        ss.str("");
-
         fp.open(blktmpfile, fstream::in);
         while(getline(fp, blkhtml)){
             //find next gallery
@@ -200,15 +204,25 @@ size_t found, limit;
                 i++;
                 ss.str("");
             }
+        }
+        fp.close();
+
+        ss << j;
+        page = "/posts?page=" + ss.str();
+        ss.str("");
+
+        fp.open(blktmpfile, fstream::in);
+        while(getline(fp, blkhtml)){
             //find image
-            if ((blkhtml.find(page) != string::npos) == 1 && popular == 0){
-                found = blkhtml.find(page);
-                limit = blkhtml.find ("\"", found);
-                url = blkhtml.substr(found, limit - found);
-                pgfound = 1;
+        if ((blkhtml.find(page) != string::npos) == 1 && popular == 0){
+            found = blkhtml.find(page);
+            limit = blkhtml.find ("\"", found);
+            url = "http://danbooru.donmai.us" + blkhtml.substr(found, limit - found);
+            pgfound = 1;
             }
         }
         fp.close();
+
         if (pgfound == 0)
             err = 1;
         else
