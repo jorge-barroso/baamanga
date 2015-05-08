@@ -188,7 +188,6 @@ size_t found, limit;
 
         fp.open(blktmpfile, fstream::in);
         while(getline(fp, blkhtml)){
-                cout << blkhtml << endl;
             //find next gallery
             if ((blkhtml.find(blkurldown) != string::npos) == 1){
                 found = blkhtml.find("\"") + 1;
