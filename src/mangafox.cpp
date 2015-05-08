@@ -69,7 +69,7 @@ bool mode;
 		}
 		else
 			chapter = discr;
-		while (chapter.at(0) == 'c' || chapter.at(0) == '0')
+		while ((chapter.at(0) == 'c' || chapter.at(0) == '0') && chapter.length() > 1)
 			chapter.erase(chapter.begin());
 		cout << "\n";
 		cout << "\t" << "Name: " << name << endl;
@@ -205,7 +205,7 @@ string path="http://mangafox.me/manga/";
 string blktmpfile="/tmp/.baamanga-bulk-mangafox";
 short chapters=0, i, z;
 char yesno;
-bool match=0;
+bool match=0, zero;
 size_t found, limit;
 
     path.append (nameorig + "/");
@@ -225,13 +225,19 @@ size_t found, limit;
     while (getline(bf, blkhtml)){
             if ((blkhtml.find(path) != string::npos) == 1 && (blkhtml.find("1.html") != string::npos) == 1){
                 chapters++;
+                if ((blkhtml.find("c000") != string::npos) == 1)
+                    zero = 1;
+
             }
     }
     bf.close();
 
     //Ask for the first chapter to download for. Take 1 if not specified
     cout << "\n";
+    if (zero == 1)
+        cout << "\n" << "This manga has a \"Chapter 0\"" << endl;
     cout << "There are " << chapters << " chapters, do you want to start downloading with some chapter in particular? [y/N] ";
+
     cin.get (yesno);
 
     if(yesno == 'y' || yesno == 'Y'){
@@ -239,10 +245,16 @@ size_t found, limit;
         cin >> i;
     }
     else
-        i=1;
-    if (i > chapters)
-        cout << "The chosed chapter does not exist, downloading from chapter 1" << endl;
-
+        if (zero == 1)
+            i=0;
+        else
+            i=1;
+    if (i > chapters){
+            if (zero == 0)
+                cout << "The chosed chapter does not exist, downloading from chapter 1" << endl;
+            if (zero == 1)
+                cout << "The chosed chapter does not exist, downloading from chapter 0" << endl;
+    }
     z = i;
 
     do{
