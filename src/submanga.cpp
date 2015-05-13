@@ -123,8 +123,8 @@ size_t found, limit;
 		/* HERE WE GET THE PAGE URL */
 
 		if (i>1){
-            fp.open(tmpfile, fstream::in);
 			if (mode == 0){ //omg.submanga.com
+                fp.open(tmpfile, fstream::in);
 				while (getline(fp, html)){
 					if ((html.find(pgbaseone) != string::npos) == 1){
 						found = html.find(pgbaseone);
@@ -133,14 +133,14 @@ size_t found, limit;
 						pgfound = 1;
 					}
 				}
+                fp.close();
 			}
 
-			if (pgfound == 0 && i == 2){
+			if (pgfound == 0 && i == 2)
 				mode = 1;
-				fp.seekg(0);
-			}
 
 			if (mode == 1){ //img.submanga.com
+                fp.open(tmpfile, fstream::in);
 				while (getline(fp, html)){
 					if ((html.find(pgbasetwo) != string::npos) == 1){
 						found = html.find(pgbasetwo);
@@ -149,14 +149,14 @@ size_t found, limit;
 						pgfound = 1;
 					}
 				}
+                fp.close();
 			}
 
-			if (pgfound == 0 && i == 2){
+			if (pgfound == 0 && i == 2)
 				mode = 2;
-				fp.seekg(0);
-			}
 
 			if (mode == 2){ //amg.submanga.com
+                fp.open(tmpfile, fstream::in);
 				while (getline(fp, html)){
 					if ((html.find(pgbasethree) != string::npos) == 1){
 						found = html.find(pgbasethree);
@@ -165,14 +165,14 @@ size_t found, limit;
 						pgfound = 1;
 					}
 				}
+                fp.close();
 			}
 
-			if (pgfound == 0 && i == 2){
+			if (pgfound == 0 && i == 2)
 				mode = 3;
-				fp.seekg(0);
-			}
 
 			if (mode == 3){ //img2.submanga.com
+                fp.open(tmpfile, fstream::in);
 				while (getline(fp, html)){
 					if ((html.find(pgbasefour) != string::npos) == 1){
 						found = html.find(pgbasefour);
@@ -181,10 +181,10 @@ size_t found, limit;
 						pgfound = 1;
 					}
 				}
+            fp.close();
 			}
 		}
 
-		fp.close();
 		if (i > 1 && pgfound == 1){
 		/* Now for the image */
 		img.open(imgname);
@@ -226,9 +226,9 @@ short chapters=0, spchapters = 0, i, j;
 string blkhtml, newest;
 string blktmpfile= "/tmp/.baamanga-bulk-submanga";
 string urldown = "http://submanga.com/";
-size_t found, limit, foundspec;
-char yesno;
-bool check=0;
+size_t found, limit, foundspec = -1;
+char spask;
+bool check = 0, match = 0;
 
     urldown.append(nameorig + "/");
 
@@ -247,25 +247,31 @@ bool check=0;
     while(getline(bf, blkhtml)){
             found = 0;
         while((blkhtml.find(urldown, found) != string::npos) == 1){
+
             //delimit the found url
             found = blkhtml.find(urldown,found);
             limit = blkhtml.find("\"", found);
+
             //find the beggining of special chapters
             if ((blkhtml.find("Especiales") != string::npos) == 1)
                 foundspec = blkhtml.find("Especiales");
+
             //check if is a regular or a special chapter
-            if ((blkhtml.substr(found, limit - found).find("completa") != string::npos) == 0 && (!foundspec || found < foundspec))
+            if ((blkhtml.substr(found, limit - found).find("completa") != string::npos) == 0 && (blkhtml.substr(found, limit - found).find("scanlations") != string::npos) == 0 && (foundspec == -1 || found < foundspec))
                 chapters++;
-            else if (foundspec && found > foundspec){
+            else if (foundspec != -1 && found > foundspec){
                 spchapters++;
                 spec << blkhtml.substr(found, limit - found) << endl;
             }
+
             //check if there is chapter 0
             if ((blkhtml.substr(found, limit - found).find("/0/") != string::npos) == 1)
                 check=1;
+
             //get newest chapter url, to get the higher chapter available
             if (chapters == 1)
                 newest = blkhtml.substr(found, limit - found);
+
             //update found to continue looking for coincidences
             found=limit + 1;
             }
@@ -273,30 +279,105 @@ bool check=0;
     spec.close();
     bf.close();
     //get the latest chapter number
-    found = newest.find("/", 9) + 1;
+    found = newest.find("/", newest.find("/", 9) + 1) +1;
     limit = newest.find("/", found);
     newest = newest.substr(found, limit - found);
+
     //check whether it is complete and inform if it's not
     if(chapters < atoi(newest.c_str())){
-        cout << "There are some missing chapters.";
-        cout << "Latest chapter is " << newest << ", and there are " << chapters << " available chapters.";
+        cout << "\n" << "There are some missing chapters. ";
+        cout << "Latest chapter is " << newest << ", but there are " << chapters << " available chapters." << endl;
     }
     else
-        cout << "There are " << chapters << " available  chapters.";
+        cout << "There are " << chapters << " available chapters. ";
+
     //inform if there is a Chapter 0
     if (check == 1)
-         cout << " A \"Chapter 0\" was found." << "\n" << endl;
+         cout << "A \"Chapter 0\" was found." << "\n" << endl;
     else
         cout << "\n" << endl;
+
+    //inform of special chapters and ask to download them
+    if (spchapters > 0){
+        do{
+            cout << "\n" << spchapters << " special chapters were found, do you want to download them? [Y/n/v(view)] ";
+            cin.get(spask);
+            cin.clear(); cin.ignore(INT_MAX,'\n');
+            if (spask == 'v' || spask == 'v'){
+                spec.open("/tmp/.special_chapters", fstream::in);
+                while (getline(spec, blkhtml))
+                    cout << blkhtml << endl;
+                spec.close();
+            }
+        }while (spask != 'y' && spask != 'Y' && spask != 'n' && spask != 'N');
+        cout << "\n" << "Ok, now let's start downloading the regular chapters. ";
+    }
 
     cout << "Which chapter do you want to start for? ";
     cin >> i;
     j = i;
 
-    //inform of special chapters and ask to download them
-    if (spchapters > 0)
-        cout << spchapters << "special chapters were found, do you want to download them?";
-        cin.get(yesno);
+    if (i > atoi(newest.c_str())){
+        cout << "Introduced chapter is higher than the biggest chapter of that manga, the download will start by the first available chapter (chapter n. ";
+        if (check == 1)
+            i = 0;
+        else if (check == 0)
+            i = 1;
+        cout << i << ")"<< endl;
+        }
+//check if chosen chapter exists
+do{
+    ss << i;
+    urldown.append(ss.str() + "/");
+    ss.str("");
+    bf.open(blktmpfile, fstream::in);
+    while (getline(bf, blkhtml))
+        if ((blkhtml.find(urldown) != string::npos) == 1)
+            match = 1;
+    bf.close();
+
+    do{
+        urldown.erase(urldown.find_last_of(urldown.back()));
+    }while(urldown.back() != '/');
+
+    if (match==0)
+        i++;
+}while (match == 0);
+
+//If chosen chapter is not available, inform which chapter will be downloaded (the next available)
+if(j!=i)
+    cout << "Chapter " << j << "is not available, next available chapter will be downloaded (" << i << ")." << endl;
+
+//Start download
+for (;i<=atoi(newest.c_str());i++){
+    ss << i;
+    urldown.append(ss.str() + "/");
+    ss.str("");
+    bf.open(blktmpfile, fstream::in);
+    while (getline(bf, blkhtml)){
+        if ((blkhtml.find(urldown) != string::npos) == 1){
+            found = blkhtml.find(urldown);
+            limit = blkhtml.find("\"", found);
+            url = blkhtml.substr(found, limit - found);
+            submanga(url, name, downdir);
+        }
+    }
+    bf.close();
+    do{
+        urldown.erase(urldown.find_last_of(urldown.back()));
+    }while(urldown.back() != '/');
+}
+
+if (spask != 'n' && spask != 'N' && spask != 'v' && spask != 'V'){
+    cout << "\n" << "DOWNLOADING SPECIAL CHAPTERS:" << endl;
+    spec.open("/tmp/.special_chapters", fstream::in);
+    while(getline(spec, blkhtml)){
+        url = blkhtml;
+        submanga(url, name, downdir);
+    }
+}
+
+cout << "Every chapter has been successfully downloaded. Be back soon!" << endl;
 
 return;
 }
