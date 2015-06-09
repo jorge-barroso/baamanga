@@ -1,0 +1,402 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Baamanga 0.5.5\n"
+"POT-Creation-Date: 2015-06-02 13:38+0100\n"
+"PO-Revision-Date: 2015-06-02 13:39+0100\n"
+"Last-Translator: Jorge Barroso <jorge_barroso_11 at hotmail dot com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.1\n"
+"X-Poedit-Basepath: ../src/\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: _\n"
+"Language: fr\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: animea.cpp:37 futahentai.cpp:27 mangafox.cpp:60 mangafox.cpp:79
+#: mangahere.cpp:44 mangareader.cpp:66 mangareader.cpp:74 mangareader.cpp:81
+#: mangashare.cpp:28 submanga.cpp:44
+msgid "Name: "
+msgstr ""
+
+#: animea.cpp:38 futahentai.cpp:28 mangafox.cpp:80 mangahere.cpp:45
+#: mangareader.cpp:75 mangareader.cpp:82 mangareader.cpp:375
+#: mangareader.cpp:394 mangashare.cpp:29 submanga.cpp:45
+msgid "Chapter: "
+msgstr ""
+
+#: baamanga.cpp:49
+msgid ""
+"Configuration file does not exist. Please, wait a second and configure "
+"Baamanga."
+msgstr ""
+
+#: baamanga.cpp:70
+msgid ""
+"Welcome to Baamanga, the new manga downloader with lots of supported "
+"webpages."
+msgstr ""
+
+#: baamanga.cpp:71
+msgid ""
+"Just insert your download link and everything will be done automatically: "
+msgstr ""
+
+#: baamanga.cpp:116
+msgid ""
+"Manga from animea! I'd like to download it's anime aswell, soon maybe..."
+msgstr ""
+
+#: baamanga.cpp:120
+msgid "Ok, you are downloading Danbooru boards, let's go"
+msgstr ""
+
+#: baamanga.cpp:124
+msgid "Wow, you are downloading manga from e-hentai, enjoy it!"
+msgstr ""
+
+#: baamanga.cpp:128
+msgid "Mmm Futahentai, having fun huh? Let's download it!"
+msgstr ""
+
+#: baamanga.cpp:132
+msgid "Mangafox! Good choice! Come on"
+msgstr ""
+
+#: baamanga.cpp:136
+msgid ""
+"This is a Mangahere url isn't it? It's a very good manga site, starting "
+"download!"
+msgstr ""
+
+#: baamanga.cpp:140
+msgid "Mmm mangareader, a classic! Good and varied, let's download it!"
+msgstr ""
+
+#: baamanga.cpp:144
+msgid "Shared manga is better isn't it? Starting download"
+msgstr ""
+
+#: baamanga.cpp:148
+msgid "Yeah good pown, let's share it"
+msgstr ""
+
+#: baamanga.cpp:152
+msgid "This is Submanga! The best Spanish manga site!"
+msgstr ""
+
+#: baamanga.cpp:156
+msgid "Hey, good manga board, it is from Zerochan isn't it? Downloading!"
+msgstr ""
+
+#: baamanga.cpp:160
+msgid ""
+"Sorry, is not possible to download from this webpage, try with one bellow:\n"
+"-Submanga\n"
+"-Mcanime\n"
+"-Mangafox\n"
+"-Mangashare\n"
+"-Mangareader\n"
+"-Futahentai\n"
+"-E-hentai\n"
+"-4Chan\n"
+"-Zerochan\n"
+"-Danboru\n"
+"-Pown"
+msgstr ""
+
+#: bmhelp.cpp:9
+msgid "USAGE: baamanga [arguments] [url]"
+msgstr ""
+
+#: bmhelp.cpp:10
+msgid "Both [arguments] and [url] are optional"
+msgstr ""
+
+#: bmhelp.cpp:11
+msgid "Options are:"
+msgstr ""
+
+#: bmhelp.cpp:12
+msgid "config"
+msgstr ""
+
+#: bmhelp.cpp:12
+msgid "Show config dialog"
+msgstr ""
+
+#: bmhelp.cpp:14
+msgid "version"
+msgstr ""
+
+#: bmhelp.cpp:14
+msgid "Print version information and exit"
+msgstr ""
+
+#: bmhelp.cpp:16
+msgid "help"
+msgstr ""
+
+#: bmhelp.cpp:16
+msgid "Show this dialog"
+msgstr ""
+
+#: bmopt.cpp:21
+msgid "Where do you want your manga to be downloaded?: "
+msgstr ""
+
+#: bmopt.cpp:27
+msgid "How do you want your downloaded manga?"
+msgstr ""
+
+#: bmopt.cpp:28 bmopt.cpp:34
+msgid "1. image"
+msgstr ""
+
+#: bmopt.cpp:28 bmopt.cpp:34
+msgid "2. pdf"
+msgstr ""
+
+#: bmopt.cpp:28 bmopt.cpp:34
+msgid "3. cbz"
+msgstr ""
+
+#: bmopt.cpp:29 bmopt.cpp:35
+msgid "Introduce format number: "
+msgstr ""
+
+#: bmopt.cpp:45
+msgid ""
+"You have chosen pdf, which is not yet supported, manga format set as image."
+msgstr ""
+
+#: bmopt.cpp:49
+msgid ""
+"You have chosen cbz, which is not yet supported, manga format set as image."
+msgstr ""
+
+#: bmver.cpp:8
+msgid "Baamanga version 0.5.5 (thu may 14 2015)."
+msgstr ""
+
+#: bmver.cpp:9
+msgid "Copyright by Jorge Barroso <jorge_barroso_11 at hotmail dot com>."
+msgstr ""
+
+#: bmver.cpp:10
+msgid "Distributed under GNU General Public License 2 (GPL 2.0)"
+msgstr ""
+
+#: bmver.cpp:11
+msgid ""
+"Feel free to report any bug, issue or comment to https://github.com/jorge-"
+"barroso/baamanga"
+msgstr ""
+
+#: danboru.cpp:78
+msgid "Select a name for your downloaded file: "
+msgstr ""
+
+#: danboru.cpp:126
+msgid "Give a name to the board: "
+msgstr ""
+
+#: danboru.cpp:154
+msgid "Download of "
+msgstr ""
+
+#: danboru.cpp:154
+msgid " finished"
+msgstr ""
+
+#: danboru.cpp:206
+msgid "Downloading board n."
+msgstr ""
+
+#: dirs_check.cpp:28
+msgid "A file with the download directory already exists."
+msgstr ""
+
+#: dirs_check.cpp:29
+msgid "Do you want to overwrite with a directory? [y/N]"
+msgstr ""
+
+#: dirs_check.cpp:39
+msgid "Choose a new path to download your manga."
+msgstr ""
+
+#: dirs_check.cpp:40
+msgid "(full path): "
+msgstr ""
+
+#: dirs_check.cpp:60
+msgid "A file with the name of your manga already exists."
+msgstr ""
+
+#: dirs_check.cpp:61
+msgid "Do you want to overwrite it? [y/N]"
+msgstr ""
+
+#: dirs_check.cpp:70
+msgid "Choose a new directory to download "
+msgstr ""
+
+#: dirs_check.cpp:88
+msgid ""
+"A file with the chapter of your manga already exists.\n"
+"Do you want to overwrite it? [y/N]"
+msgstr ""
+
+#: dirs_check.cpp:98
+msgid "Choose a new directory to download the chapter."
+msgstr ""
+
+#: dirs_check.cpp:115
+msgid "A file with the download directory name already exists."
+msgstr ""
+
+#: dirs_check.cpp:116
+msgid "Saved as "
+msgstr ""
+
+#: dirs_check.cpp:116
+msgid ".backup, making config directory."
+msgstr ""
+
+#: ehentai.cpp:10
+msgid "This is ehentai"
+msgstr ""
+
+#: mangafox.cpp:171 mangareader.cpp:195 submanga.cpp:196
+msgid "Downloading page "
+msgstr ""
+
+#: mangafox.cpp:195 mangareader.cpp:215 submanga.cpp:215
+msgid " chapter "
+msgstr ""
+
+#: mangafox.cpp:195 mangareader.cpp:215 submanga.cpp:215
+msgid " downloaded."
+msgstr ""
+
+#: mangafox.cpp:242
+msgid "This manga has a \"Chapter 0\""
+msgstr ""
+
+#: mangafox.cpp:243 mangareader.cpp:276 submanga.cpp:295
+msgid "There are "
+msgstr ""
+
+#: mangafox.cpp:243 mangareader.cpp:276
+msgid ""
+" chapters, do you want to start downloading with some chapter in particular? "
+"[y/N] "
+msgstr ""
+
+#: mangafox.cpp:248 mangareader.cpp:280 submanga.cpp:319
+msgid "Which chapter do you want to start for? "
+msgstr ""
+
+#: mangafox.cpp:258
+msgid "The chosen chapter does not exist, downloading from chapter 1"
+msgstr ""
+
+#: mangafox.cpp:260
+msgid "The chosen chapter does not exist, downloading from chapter 0"
+msgstr ""
+
+#: mangafox.cpp:284 mangareader.cpp:321
+msgid ""
+"Given chapter does not exist. Download will start from next available "
+"chapter (Chapter n. "
+msgstr ""
+
+#: mangahere.cpp:51
+msgid "This is mangaheresingle (under development)"
+msgstr ""
+
+#: mangahere.cpp:56
+msgid "This is mangaherebulk (under development)"
+msgstr ""
+
+#: mangareader.cpp:287
+msgid "The chosed chapter does not exist, downloading from chapter 1"
+msgstr ""
+
+#: mangareader.cpp:407
+msgid "Download Finished"
+msgstr ""
+
+#: pown.cpp:10
+msgid "This is Pown (under development)"
+msgstr ""
+
+#: submanga.cpp:291
+msgid "There are some missing chapters. "
+msgstr ""
+
+#: submanga.cpp:292
+msgid "Latest chapter is "
+msgstr ""
+
+#: submanga.cpp:292
+msgid ", but there are "
+msgstr ""
+
+#: submanga.cpp:292
+msgid " available chapters."
+msgstr ""
+
+#: submanga.cpp:295
+msgid " available chapters. "
+msgstr ""
+
+#: submanga.cpp:299
+msgid "A \"Chapter 0\" was found."
+msgstr ""
+
+#: submanga.cpp:306
+msgid ""
+" special chapters were found, do you want to download them? [Y/n/v(view)] "
+msgstr ""
+
+#: submanga.cpp:316
+msgid "Ok, now let's start downloading the regular chapters. "
+msgstr ""
+
+#: submanga.cpp:328
+msgid ""
+"Introduced chapter is higher than the biggest chapter of that manga, the "
+"download will start by the first available chapter (chapter n. "
+msgstr ""
+
+#: submanga.cpp:351
+msgid "Chapter "
+msgstr ""
+
+#: submanga.cpp:351
+msgid "is not available, next available chapter will be downloaded ("
+msgstr ""
+
+#: submanga.cpp:374
+msgid "DOWNLOADING SPECIAL CHAPTERS:"
+msgstr ""
+
+#: submanga.cpp:382
+msgid "Every chapter has been successfully downloaded. Be back soon!"
+msgstr ""
+
+#: zerochan.cpp:32
+msgid "Please, give a name for the file you are going to download"
+msgstr ""
+
+#: zerochan.cpp:38
+msgid "This is zerochansingle (under development)"
+msgstr ""
+
+#: zerochan.cpp:44
+msgid "This is zerochanbulk(under development)"
+msgstr ""
