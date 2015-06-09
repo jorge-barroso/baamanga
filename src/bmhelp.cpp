@@ -1,17 +1,17 @@
 #include <iostream>
+#include <libintl.h>
+#include <locale.h>
 
-using namespace std;
+#define _(string) gettext (string)
 
 void help(){
 
-cout << "USAGE: baamanga [arguments] [url]" << endl;
-cout << "Both [arguments] and [url] are optional" << endl;
-cout << "Options are:" << endl;
-cout << "\t" << "config" << "\t\t\t\t" << "Show config dialog" << endl;
-cout << "\t" << "\n";
-cout << "\t" << "version" << "\t\t\t\t" << "Print version information and exit" << endl;
-cout << "\t" << "\n";
-cout << "\t" << "help" << "\t\t\t\t" << "Show this dialog" << endl;
-
-return;
+std::cout << _("USAGE: baamanga [arguments] [url]") << std::endl;
+std::cout << _("Both [arguments] and [url] are optional") << std::endl;
+std::cout << _("Options are:") << std::endl;
+std::cout << "\t" << _("config") << "\t\t\t\t" << _("Show config dialog") << std::endl;
+std::cout << "\t" <<   "\n";
+std::cout << "\t" << _("version") << "\t\t\t\t" << _("Print version information and exit") << std::endl;
+std::cout << "\t" <<   "\n";
+std::cout << "\t" << _("help") << "\t\t\t\t" << _("Show this dialog") << std::endl;
 }

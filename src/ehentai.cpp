@@ -1,9 +1,12 @@
 #include <iostream>
 #include <string>
-#include <curl/curl.h>
+#include "strings.h"
+#include "download.h"
+#include <libintl.h>
+#include <locale.h>
 
-using namespace std;
+#define _(string) gettext (string)
 
-void ehentai(string url, string name, string downdir){
-cout << "This is ehentai" << endl;
+void ehentai(std::string url, std::string name, std::string downdir){
+std::cout << _("This is ehentai") << std::endl;
 }

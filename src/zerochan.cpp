@@ -1,15 +1,16 @@
 #include <iostream>
 #include <string>
-#include <unistd.h>
-#include <ctype.h>
-#include <curl/curl.h>
+#include "strings.h"
+#include "download.h"
+#include <libintl.h>
+#include <locale.h>
 
-using namespace std;
+#define _(string) gettext (string)
 
-void zerochansingle(string, string, string);
-void zerochanbulk(string, string, string);
+void zerochansingle(std::string, std::string, std::string);
+void zerochanbulk(std::string, std::string, std::string);
 
-void zerochan(string url, string name, string downdir){
+void zerochan(std::string url, std::string name, std::string downdir){
 short unsigned int j;
 bool discr;
 
@@ -17,29 +18,25 @@ bool discr;
 
 	for(j=0;name.at(j)!='\0';j++){
 		if (name.at(j) == '+' || isalpha(name.at(j)))
-		discr = 1;
+		discr = true;
 	}
-	if (discr == 1){
-		for(j=0;name.at(j)!='\0';j++){
-			if (name.at(j) == '+' && name.at(j-1) != '\0'){
-				name.at(j) = ' ';
-				}
-			}
+	if (discr == true){
+		name = repair(name);
 		zerochanbulk(url, name, downdir);
 	}
 	else
-		cout << "Please, give a name for the file you are going to download";
-		getline(cin, name);
+		std::cout << _("Please, give a name for the file you are going to download");
+		std::getline(std::cin, name);
 		 zerochansingle(url, name, downdir);
 }
 
-void zerochansingle(string url, string name, string downdir){
-cout << "This is zerochansingle";
+void zerochansingle(std::string url, std::string name, std::string downdir){
+std::cout << _("This is zerochansingle (under development)");
 return;
 }
 
-void zerochanbulk(string url, string name, string downdir){
+void zerochanbulk(std::string url, std::string name, std::string downdir){
 
-cout << "This is zerochanbulk";
+std::cout << _("This is zerochanbulk(under development)");
 return;
 }

@@ -3,20 +3,25 @@
 #include <fstream>
 #include <sstream>
 #include <stdlib.h>
-#include <curlcpp/curl_easy.h>
-#include <unistd.h>
+#include "download.h"
+#include "strings.h"
+#include <boost/filesystem/operations.hpp>
+#include <boost/filesystem/path.hpp>
+#include <libintl.h>
+#include <locale.h>
 
-using namespace std;
+#define _(string) gettext (string)
+namespace fs = boost::filesystem;
 
-void downdir_check(string);
-void namedir_check(string, string);
-void chapdir_check(string, string);
-void mangareadersingle(string, string, string, string, string, bool);
-void mangareaderbulk(string, string, string, string, string, string, string, bool);
+void downdir_check(std::string);
+void namedir_check(std::string, std::string);
+void chapdir_check(std::string, std::string);
+void mangareadersingle(std::string, std::string, std::string, std::string, std::string, bool);
+void mangareaderbulk(std::string, std::string, std::string, std::string, std::string, std::string, std::string, bool);
 
-void mangareader(string url, string name, string downdir){
+void mangareader(std::string url, std::string name, std::string downdir){
     unsigned short j=0, len, slash = 0;
-    string chapter, nameorig,code, chapname;
+    std::string chapter, nameorig,code, chapname;
     bool mode;
     size_t found, limit;
 
@@ -27,13 +32,13 @@ void mangareader(string url, string name, string downdir){
     }
 
     if (slash == 4)
-        mode=0;
+        mode=false;
     if (slash == 5)
-        mode=1;
+        mode=true;
 		//"long" kind of URL,  extract code
 		found = url.find("/", 9) + 1;
         limit = url.find("/", found);
-    if (mode == 1 || (url.find(".html") != string::npos) == 1){
+    if (mode == true || (url.find(".html") != std::string::npos) == true){
         code = url.substr(found, limit - found);
         found = limit + 1;
         limit = url.find("/", found);
@@ -41,60 +46,50 @@ void mangareader(string url, string name, string downdir){
     name = url.substr(found, limit - found);
     nameorig = name;
 	//formating name
-	for (j=1;j<name.length();j++){
-        if(name.at(j) == '-')
-        	name.at(j) = ' ';
-        if (isalpha(name.at(j)) && name.at(j-1) == ' ')
-        name.at(j) = toupper(name.at(j));
-    }
-    if (isalpha(name.at(0)))
-        	name.at(0) = toupper(name.at(0));
+
+	name = repair(name);
 
 	//Final formating and function choose
 	len = name.length();
 
 	if (name.at(len-5) == '.' || slash == 3){	//Bulk download
-        if (mode == 0){	//remove ".html" of long, bulk URL
+        if (mode == false){	//remove ".html" of long, bulk URL
             name = name.substr(0, name.find("."));
             nameorig = nameorig.substr(0, nameorig.find("."));
         }
         //Start Bulk
-	cout << "\n\t" << "Name: " << name << endl;
+	std::cout << "\n\t" << _("Name: ") << name << std::endl;
 	mangareaderbulk(url, name, nameorig, chapname, chapter, code, downdir, mode);
 	}
   //Single chapter, long URL download
-	else if (mode == 1){
+	else if (mode == true){
         found = url.find("-", limit) + 1;
         limit = url.find(".", found);
         chapter = url.substr(found, limit - found);
-        cout << "\n\t" << "Name: " << name << endl;
-        cout << "\t" << "Chapter: " << chapter << endl;
+        std::cout << "\n\t" << _("Name: ") << name << std::endl;
+        std::cout << "\t" << _("Chapter: ") << chapter << std::endl;
         mangareadersingle(url, name, nameorig, chapter, downdir, mode);
 	}
     //Single chapter, short URL download
-    else if (mode == 0){
+    else if (mode == false){
         chapter = url.substr(limit + 1);
-        cout << "\n\t" << "Name: " << name << endl;
-        cout << "\t" << "Chapter: " << chapter << endl;
+        std::cout << "\n\t" << _("Name: ") << name << std::endl;
+        std::cout << "\t" << _("Chapter: ") << chapter << std::endl;
         mangareadersingle(url, name, nameorig, chapter, downdir,mode);
     }
 }
 
-void mangareadersingle(string url, string name, string nameorig, string chapter, string downdir, bool mode){
+void mangareadersingle(std::string url, std::string name, std::string nameorig, std::string chapter, std::string downdir, bool mode){
 
-	fstream fp;
-	ofstream img;
-curl_writer writer(fp);
-curl::curl_easy curl(writer);
-curl_writer draw(img);
-curl::curl_easy pic(draw);
+	std::fstream fp;
+	std::ofstream img;
 
-stringstream ss;
-bool err = 0, result = 0, pgfound = 0;
+std::stringstream ss;
+bool err = false, result = false, pgfound = false;
 short i=1, length;
-string urldown, code, imgname, html, pageurl;
-string tmpfile="/tmp/.html-mangareader-";
-string baseurl	="http://www.mangareader.net/";
+std::string urldown, code, imgname, html, pageurl;
+std::string tmpfile="/tmp/.html-mangareader-";
+std::string baseurl	="http://www.mangareader.net/";
 size_t found, limit;
 	//to allow multiple instances of baamanga, one file per Manga
 	tmpfile.append (name, 0, name.find(" "));
@@ -106,22 +101,22 @@ size_t found, limit;
 	downdir.append ("/" + chapter);
 
     downdir_check(downdir);
-	chdir(downdir.c_str());
+	fs::current_path(downdir);
 
     //urldown for long url system
-    if(mode == 1){
+    if(mode == true){
         found = url.find ("/", 9) + 1;
         limit = url.find ("/", found);
         code = url.substr(found, limit - found - 1);
     }
     //urldown for short url system
-    else if (mode == 0)
+    else if (mode == false)
         code = "/" + nameorig + "/" + chapter + "/";
 
-	while (err == 0){
+	while (err == false){
 		//restart "result" and "pgfound" values
-		result		= 0;
-		pgfound		= 0;
+		result		= false;
+		pgfound		= false;
 
         ss.str("");
 		ss << i;
@@ -135,28 +130,19 @@ size_t found, limit;
 		urldown = code + ss.str();
 		i--;
 		/* Download html page*/
-        fp.open(tmpfile, fstream::out);
-        curl.add(curl_pair<CURLoption,string>(CURLOPT_URL, url));
-		curl.add(curl_pair<CURLoption,long>(CURLOPT_FOLLOWLOCATION,1L));
+		url_download(url,tmpfile, fp);
 
-        try{
-            curl.perform();
-        } catch (curl_easy_exception error) {
-                error.print_traceback();
-        }
-    fp.close();
-
-    fp.open(tmpfile, fstream::in);
-    while (getline(fp, html) && result == 0){
-		if ((html.find (urldown) != string::npos) == 1){
-            if (mode == 1){
+    fp.open(tmpfile, std::fstream::in);
+    while (std::getline(fp, html) && result == false){
+		if ((html.find (urldown) != std::string::npos) == true){
+            if (mode == true){
                 found = html.find(urldown);
                 limit = html.find("\'", found);
                 url = baseurl + (html.substr(found, limit - found));
             }
 
 
-            else if (mode == 0){
+            else if (mode == false){
                 if (i > 1){
                     while(url.back() != '/'){
                         url.erase(url.find_last_of(url.back()));
@@ -166,66 +152,52 @@ size_t found, limit;
                 else
                     url.append ("/" + ss.str());
             }
-            result = 1;
+            result = true;
 	}
     }
 
 	fp.seekg(0);
 
-	if (result == 0)
-		err = 1;
+	if (result == false)
+		err = true;
 
-	while (getline(fp, html)){
-		if ((html.find("http:") != string::npos) == 1 && (html.find(nameorig) != string::npos) == 1 && (html.find(".jpg") != string::npos) == 1){
-			//cout << html << endl;
+	while (std::getline(fp, html)){
+		if ((html.find("http:") != std::string::npos) == true && (html.find(nameorig) != std::string::npos) == true && (html.find(".jpg") != std::string::npos) == true){
 			found = html.find("http:");
 			limit = html.find ("\"", found);
 			pageurl = html.substr(found, limit - found);
-			pgfound	= 1;
+			pgfound	= true;
 	    }
 	}
 
 	fp.close();
 
-	if (pgfound == 1){
-		cout << "\n\n\n";
-		cout << "Downloading page " << i << "..." << endl;
-		img.open(imgname);
-		pic.add(curl_pair<CURLoption,string>(CURLOPT_URL, pageurl));
-		pic.add(curl_pair<CURLoption,long>(CURLOPT_NOPROGRESS, 0L));
-		pic.add(curl_pair<CURLoption,long>(CURLOPT_FOLLOWLOCATION, 1L));
-
-		try{
-            pic.perform();
-		}
-		catch(curl_easy_exception error){
-            error.print_traceback();
-            }
-        img.close();
-		}
+	if (pgfound == true){
+		std::cout << "\n\n\n";
+		std::cout << _("Downloading page ") << i << "..." << std::endl;
+		pic_download(pageurl, imgname, img);
+    }
 
 	i++;
 	}
 
 	if (i > 2)
-		cout << "\n\n";
-		cout << name << " chapter " << chapter << " downloaded." << endl;
+		std::cout << "\n\n";
+		std::cout << name << _(" chapter ") << chapter << _(" downloaded.") << std::endl;
 
-	remove(tmpfile.c_str());
+	fs::remove(tmpfile);
 
 return;
 }
 
-void mangareaderbulk(string url, string name, string nameorig, string chapname, string chapter, string code, string downdir, bool mode){
-    fstream bf;
-curl_writer writer(bf);
-curl::curl_easy blkcurl(writer);
+void mangareaderbulk(std::string url, std::string name, std::string nameorig, std::string chapname, std::string chapter, std::string code, std::string downdir, bool mode){
+    std::fstream bf;
 
-stringstream ss;
+std::stringstream ss;
 short chapters=0, i=0, z=0;
-string blkhtml, path2, path, downdir_orig;
-string blktmpfile="/tmp/.baamanga-bulk-mangareader";
-bool match=0;
+std::string blkhtml, path2, path, downdir_orig;
+std::string blktmpfile="/tmp/.baamanga-bulk-mangareader";
+bool match = false;
 char yesno;
 size_t found, limit;
 
@@ -237,29 +209,19 @@ size_t found, limit;
     //Default path 2
     path2 = nameorig + "/" + "chapter-1.html\""; // adding \" to avoid i.e. "chapter-13" as first coincidence
     //Download html
-    bf.open(blktmpfile, fstream::out);
-    blkcurl.add(curl_pair<CURLoption,string>(CURLOPT_URL,url));
-    blkcurl.add(curl_pair<CURLoption,long>(CURLOPT_FOLLOWLOCATION,1L));
-
-    try{
-        blkcurl.perform();
-    }
-    catch(curl_easy_exception error){
-        error.print_traceback();
-    }
-    bf.close();
+    url_download(url, blktmpfile, bf);
     //Count Chapters
-    bf.open(blktmpfile, fstream::in);
-    while (getline(bf, blkhtml)){
+    bf.open(blktmpfile, std::fstream::in);
+    while (std::getline(bf, blkhtml)){
             //look for the path: style 1
-            if ((blkhtml.find(path) != string::npos) == 1 && (blkhtml.find("chapter") != string::npos) == 0){
+            if ((blkhtml.find(path) != std::string::npos) == true && (blkhtml.find("chapter") != std::string::npos) == false){
                 path = nameorig + "/";
                 //Default path 2
                 path2 = nameorig + "/" + "chapter-";
                 chapters++;
             }
             //Look for path style: 2
-            else if ((blkhtml.find(path2) != string::npos) == 1 && (blkhtml.find(code) != string::npos) == 1){
+            else if ((blkhtml.find(path2) != std::string::npos) == true && (blkhtml.find(code) != std::string::npos) == true){
                 path = nameorig + "/";
                 //Default path 2
                 path2 = nameorig + "/" + "chapter-";
@@ -270,23 +232,23 @@ size_t found, limit;
     bf.close();
 
     //Ask for the first chapter to download for. Take 1 if not specified
-    cout << "\n" << "There are " << chapters << " chapters, do you want to start downloading with some chapter in particular? [y/N] ";
-		cin.get(yesno);
+    std::cout << "\n" << _("There are ") << chapters << _(" chapters, do you want to start downloading with some chapter in particular? [y/N] ");
+		std::cin.get(yesno);
 
     if(yesno == 'y' || yesno == 'Y'){
-        cout << "Which chapter do you want to start for? ";
-        cin >> i;
+        std::cout << _("Which chapter do you want to start for? ");
+        std::cin >> i;
     }
     else
         i=1;
 
     if (i > chapters){
-        cout << "The chosed chapter does not exist, downloading from chapter 1" << endl;
+        std::cout << _("The chosed chapter does not exist, downloading from chapter 1") << std::endl;
         i = 1;
     }
     z = i;
     //Check if given chapter exists. Program takes next chapter in case the given one doesn't exist
-    while(match==0){
+    while(match==false){
         ss.str("");
         ss << i;
         while(path.back() != '/'){
@@ -297,17 +259,17 @@ size_t found, limit;
             path2.erase(path2.find_last_of(path2.back()));
         }
         path2.append(ss. str() + ".html\""); // adding \" to avoid i.e. "chapter-13" as first coincidence
-        bf.open(blktmpfile, fstream::in);
-        while (getline(bf, blkhtml)){
-            if ((blkhtml.find(path) != string::npos) == 1 && (blkhtml.find("chapter") != string::npos) == 0){
-                match=1;
+        bf.open(blktmpfile, std::fstream::in);
+        while (std::getline(bf, blkhtml)){
+            if ((blkhtml.find(path) != std::string::npos) == true && (blkhtml.find("chapter") != std::string::npos) == false){
+                match=true;
             }
-            if ((blkhtml.find(path2) != string::npos) == 1 && (blkhtml.find(code) != string::npos) == 1){
-                match=1;
+            if ((blkhtml.find(path2) != std::string::npos) == true && (blkhtml.find(code) != std::string::npos) == true){
+                match=true;
             }
         }
         bf.close();
-        if (match==0){
+        if (match==false){
             bf.seekg(0);
             i++;
         }
@@ -315,7 +277,7 @@ size_t found, limit;
     bf.seekg(0);
 
     if (z != i)
-        cout << "Given chapter does not exist. Download will start from next available chapter (Chapter n. " << i << ")" << endl;
+        std::cout << _("Given chapter does not exist. Download will start from next available chapter (Chapter n. ") << i << ")" << std::endl;
 
     if(i > 1){
         //Look for chapter one (avoids find the chapter on "recents" list, which will cause problems)
@@ -328,27 +290,27 @@ size_t found, limit;
         }
         path2.append("1.html\"");
 
-        match=0;
+        match = false;
 
-        bf.open(blktmpfile, fstream::in);
-        while (getline(bf, blkhtml) && match == 0){
-            if ((blkhtml.find(path) != string::npos) == 1 && (blkhtml.find("chapter") != string::npos) == 0){
+        bf.open(blktmpfile, std::fstream::in);
+        while (std::getline(bf, blkhtml) && match == false){
+            if ((blkhtml.find(path) != std::string::npos) == true && (blkhtml.find("chapter") != std::string::npos) == false){
                 while(path.back() != '/'){
                     path.erase(path.find_last_of(path.back()));
                 }
                 while(path2.back() != '-'){
                     path2.erase(path2.find_last_of(path2.back()));
                 }
-                match=1;
+                match = true;
             }
-            if ((blkhtml.find(path2) != string::npos) == 1 && (blkhtml.find(code) != string::npos) == 1){
+            if ((blkhtml.find(path2) != std::string::npos) == true && (blkhtml.find(code) != std::string::npos) == true){
                 while(path.back() != '/'){
                     path.erase(path.find_last_of(path.back()));
                 }
                 while(path2.back() != '-'){
                     path2.erase(path2.find_last_of(path2.back()));
                 }
-                match=1;
+                match = true;
             }
         }
     }
@@ -360,16 +322,16 @@ size_t found, limit;
     path2.append(ss.str() + ".html");;
     }
 
-    bf.open(blktmpfile, fstream::in);
-    while (getline(bf, blkhtml)){
-        if ((blkhtml.find(path) != string::npos) == 1 && (blkhtml.find("chapter") != string::npos) == 0){
-            mode = 0;
+    bf.open(blktmpfile, std::fstream::in);
+    while (std::getline(bf, blkhtml)){
+        if ((blkhtml.find(path) != std::string::npos) == true && (blkhtml.find("chapter") != std::string::npos) == false){
+            mode = false;
             found = blkhtml.find(path);
             limit = blkhtml.find("\"", found);
             url = "http://www.mangareader.net/" + blkhtml.substr(found, limit - found);
             chapter = url.substr(url.find_last_of("/") + 1);
             //chapter.erase(0);
-            cout << "\n\t" << "Chapter: " << chapter << endl;
+            std::cout << "\n\t" << _("Chapter: ") << chapter << std::endl;
             mangareadersingle(url, name, nameorig, chapter, downdir, mode);
             while(path.back() != '/'){
                 path.erase(path.find_last_of(path.back()));
@@ -380,15 +342,15 @@ size_t found, limit;
             downdir = downdir_orig;
 		}
 
-        if ((blkhtml.find(path2) != string::npos) == 1 && (blkhtml.find(code) != string::npos) == 1){
-            mode = 1;
+        if ((blkhtml.find(path2) != std::string::npos) == true && (blkhtml.find(code) != std::string::npos) == false){
+            mode = true;
             found = blkhtml.find("\"") + 1;
             limit = blkhtml.find("\"", found);
             url = "http://www.mangareader.net" + blkhtml.substr(found, limit - found);
             found = url.find_last_of("-") + 1;
             limit = url.find(".", found);
             chapter = url.substr(found, limit - found);
-            cout << "\n\t" << "Chapter: " << chapter << endl;
+            std::cout << "\n\t" << _("Chapter: ") << chapter << std::endl;
             mangareadersingle(url, name, nameorig, chapter, downdir, mode);
             while(path.back() != '/'){
                 path.erase(path.find_last_of(path.back()));
@@ -400,8 +362,8 @@ size_t found, limit;
         }
     }
 	bf.close();
-	remove(blktmpfile.c_str());
-    cout << "\n\t" << "Download Finished" << endl;
+	fs::remove(blktmpfile);
+    std::cout << "\n\t" << _("Download Finished") << std::endl;
 
 return;
 }

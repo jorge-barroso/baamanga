@@ -1,29 +1,29 @@
 #include <iostream>
 #include <string>
-#include <curl/curl.h>
+#include "strings.h"
+#include "download.h"
+#include <libintl.h>
+#include <locale.h>
 
-using namespace std;
+#define _(string) gettext (string)
 
-void futahentai(string url, string name, string downdir){
-short j, found, limit;
-string chapter;
+void futahentai(std::string url, std::string name, std::string downdir){
+short found, limit;
+std::string chapter;
 
     //Let's parse the name
 	found = url.find("-") + 1;
 	limit = url.find("-", found);
 	name = url.substr(found, limit - found - 1);
-	for(j=0;name.at(j)!='\0';j++){
-		if (name.at(j) == '_')
-			name.at(j) = ' ';
-}
+	name = repair(name);
 	//Parsing chapter
 	found = limit + 1;
 	limit = url.find(".", found);
 	chapter = url.substr(found, limit - found - 1);
 
-    cout << "\n";
-	cout << "\t" << "Name: " << name << endl;
-	cout << "\t" << "Chapter: " << chapter << endl;
+    std::cout << "\n";
+	std::cout << "\t" << _("Name: ") << name << std::endl;
+	std::cout << "\t" << _("Chapter: ") << chapter << std::endl;
 
 return;
 }

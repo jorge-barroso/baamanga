@@ -1,16 +1,17 @@
 #include <iostream>
 #include <string>
-#include <unistd.h>
-#include <ctype.h>
+#include "strings.h"
+#include "download.h"
+#include <libintl.h>
+#include <locale.h>
 
-using namespace std;
+#define _(string) gettext (string)
 
-void mangaheresingle(string, string, string, string);
-void mangaherebulk(string, string, string, string);
+void mangaheresingle(std::string, std::string, std::string, std::string);
+void mangaherebulk(std::string, std::string, std::string, std::string);
 
-void mangahere(string url, string name, string downdir){
-	int j;
-    string chapter;
+void mangahere(std::string url, std::string name, std::string downdir){
+	std::string chapter;
     size_t found, limit;
 
     found = url.find("/", 9) + 1;
@@ -19,15 +20,7 @@ void mangahere(string url, string name, string downdir){
 	// Parse name
 	name = url.substr(found, limit - found);
 
-	for(j=0;name.at(j)!='\0'; j++){
-		if (name.at(j) == '_'){
-			name.at(j) = ' ';
-		}
-		if (isalpha(name.at(j)) && name.at(j-1) == ' ')
-			name.at(j) = toupper(name.at(j));
-	}
-	if (isalpha(name.at(0)))
-		name.at(0) = toupper(name.at(0));
+	name = repair(name);
 
     found = limit + 1;
     limit = url.find("/", found);
@@ -40,18 +33,18 @@ void mangahere(string url, string name, string downdir){
         chapter.back() = '\0';
 		mangaheresingle(url, name, chapter, downdir);
 	}
-		cout << "\t" << "Name: " << name << endl;
-		cout << "\t" << "Chapter: " << chapter << endl;
+		std::cout << "\t" << _("Name: ") << name << std::endl;
+		std::cout << "\t" << _("Chapter: ") << chapter << std::endl;
 return;
 }
 
 
-void mangaheresingle(string url, string name, string chapter, string downdir){
-cout << "This is mangaheresingle";
+void mangaheresingle(std::string url, std::string name, std::string chapter, std::string downdir){
+std::cout << _("This is mangaheresingle (under development)");
 return;
 }
 
-void mangaherebulk(string url, string name, string chapter, string downdir){
-cout << "This is mangaherebulk";
+void mangaherebulk(std::string url, std::string name, std::string chapter, std::string downdir){
+std::cout << _("This is mangaherebulk (under development)");
 return;
 }

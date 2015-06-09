@@ -1,12 +1,12 @@
 #include <iostream>
+#include <libintl.h>
+#include <locale.h>
 
-using namespace std;
+#define _(string) gettext (string)
 
 void version(){
-cout << "Baamanga version 0.5.5 (thu may 14 2015)." << "\n" << endl;
-cout << "Copyright by Jorge Barroso <jorge_barroso_11 at hotmail dot com>." << endl;
-cout << "Distributed under GNU General Public License 2 (GPL 2.0)" << endl;
-cout << "Feel free to report any bug, issue or comment to https://github.com/jorge-barroso/baamanga" << endl;
-
-return;
+std::cout << _("Baamanga version 0.6 (DATE).") << "\n" << std::endl;
+std::cout << _("Copyright by Jorge Barroso <jorge_barroso_11 at hotmail dot com>.") << std::endl;
+std::cout << _("Distributed under GNU General Public License 2 (GPL 2.0)") << std::endl;
+std::cout << _("Feel free to report any bug, issue or comment to https://github.com/jorge-barroso/baamanga") << std::endl;
 }

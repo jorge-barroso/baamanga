@@ -2,21 +2,25 @@
 #include <string>
 #include <fstream>
 #include <sstream>
-#include <curlcpp/curl_easy.h>
 #include <ctime>
-#include <unistd.h>
+#include "download.h"
+#include <boost/filesystem/operations.hpp>
+#include <boost/filesystem/path.hpp>
+#include <libintl.h>
+#include <locale.h>
 
-using namespace std;
+#define _(string) gettext (string)
+namespace fs = boost::filesystem;
 
-void downdir_check(string);
-void danborudirect(string, string, string);
-void danborusingle(string, string, string);
-void danborubulk(string, string, string, bool);
+void downdir_check(std::string);
+void danboorudirect(std::string, std::string, std::string);
+void danboorusingle(std::string, std::string, std::string);
+void danboorubulk(std::string, std::string, std::string, bool);
 
-void danboru(string url, string name, string downdir){
+void danbooru(std::string url, std::string name, std::string downdir){
 
     short unsigned slash = 0, j;
-    string tag;
+    std::string tag;
     bool popular = 0;
     size_t found;
     time_t now = time(0);
@@ -30,11 +34,11 @@ void danboru(string url, string name, string downdir){
             slash++;
     }
 
-	if ((url.find("posts") != string::npos) == 1){
-		if ((url.find("/posts/") != string::npos) == 1 && slash == 4)
-            danborusingle(url, name, downdir);
+	if ((url.find("posts") != std::string::npos) == 1){
+		if ((url.find("/posts/") != std::string::npos) == 1 && slash == 4)
+            danboorusingle(url, name, downdir);
         else{
-            if ((url.find("/popular") != string::npos) == 0){
+            if ((url.find("/popular") != std::string::npos) == false){
                 found = url.find("=", url.find("tags=")) + 1;
                 tag = url.substr(found);
                 if (tag == "order:rank" || tag == "orde%3Arank")
@@ -46,86 +50,56 @@ void danboru(string url, string name, string downdir){
                     downdir.append(dt);
                     downdir_check(downdir);
                 }
-                danborubulk(url, name, downdir, popular);
+                danboorubulk(url, name, downdir, popular);
             }
             else{
                 downdir.append("/popular");
                 downdir_check(downdir);
-                popular = 1;
-                danborubulk(url, name, downdir, popular);
+                popular = true;
+                danboorubulk(url, name, downdir, popular);
             }
         }
     }
-	else if ((url.find("data") != string::npos) == 1)
-        danborudirect(url, name, downdir);
-
-
-
-return;
+	else if ((url.find("data") != std::string::npos) == 1)
+        danboorudirect(url, name, downdir);
 }
 
 
-void danborudirect(string url, string name, string downdir){
-    ofstream dp;
-curl_writer dwriter(dp);
-curl::curl_easy dcurl(dwriter);
+void danboorudirect(std::string url, std::string name, std::string downdir){
+    std::ofstream dp;
 
     if (name.empty()){
-        cout << "Select a name for your downloaded file: ";
-        getline (cin, name);
+        std::cout << _("Select a name for your downloaded file: ");
+        std::getline (std::cin, name);
     }
 
-    chdir(downdir.c_str());
+    fs::current_path(downdir);
 
-	dp.open(name);
-		dcurl.add(curl_pair<CURLoption,string>(CURLOPT_URL, url));
-        dcurl.add(curl_pair<CURLoption, long>(CURLOPT_NOPROGRESS, 0L));
-		dcurl.add(curl_pair<CURLoption,long>(CURLOPT_FOLLOWLOCATION,1L));
+    pic_download(url, name, dp);
 
-    try {
-        dcurl.perform();
-    } catch (curl_easy_exception error) {
-        error.print_traceback();
-    }
-
-	dp.close();
-return;
 }
 
-void danborusingle(string url, string name, string downdir){
-    fstream fp;
-    ofstream img;
-curl_writer writer(fp);
-curl::curl_easy curl(writer);
-curl_writer draw(img);
-curl::curl_easy pic(draw);
+void danboorusingle(std::string url, std::string name, std::string downdir){
+    std::fstream fp;
+    std::ofstream img;
 
-string urldown = "http://danbooru.donmai.us/data/";
-string tmpfile = "/tmp/.html-danbooru";
-string html, boardurl;
+std::string urldown = "http://danbooru.donmai.us/data/";
+std::string tmpfile = "/tmp/.html-danbooru";
+std::string html, boardurl;
 size_t found, limit;
 
-    chdir(downdir.c_str());
+    fs::current_path(downdir);
 
-    fp.open(tmpfile, fstream::out);
-    curl.add(curl_pair<CURLoption, string>(CURLOPT_URL, url));
-    curl.add(curl_pair<CURLoption, long>(CURLOPT_FOLLOWLOCATION, 1L));
-
-    try{
-        curl.perform();
-    } catch (curl_easy_exception error){
-            error.print_traceback();
-        }
-    fp.close();
+    url_download(url, tmpfile, fp);
 
     if (name.empty()){
-        cout << "Give a name to the board: ";
-        getline (cin, name);
+        std::cout << _("Give a name to the board: ");
+        std::getline (std::cin, name);
     }
 
-    fp.open(tmpfile, fstream::in);
-    while(getline(fp, html)){
-        if ((html.find(urldown) != string::npos) == 1){
+    fp.open(tmpfile, std::fstream::in);
+    while(std::getline(fp, html)){
+        if ((html.find(urldown) != std::string::npos) == 1){
             found = html.find(urldown);
             limit = html.find ("\"", found);
             boardurl = html.substr(found, limit - found);
@@ -133,54 +107,33 @@ size_t found, limit;
     }
     fp.close();
 
-        img.open(name);
-        pic.add(curl_pair<CURLoption, string>(CURLOPT_URL, boardurl));
-        pic.add(curl_pair<CURLoption, long>(CURLOPT_NOPROGRESS, 0L));
-        pic.add(curl_pair<CURLoption, long>(CURLOPT_FOLLOWLOCATION, 1L));
+        pic_download(boardurl, name, img);
 
-        try {
-            pic.perform();
-        } catch(curl_easy_exception error){
-                error.print_traceback();
-        }
-        img.close();
-
-        cout << "*******************************************";
-        cout << "*******************************************" << endl;
-        cout << "Download of " << name << " finished" << endl;
+        std::cout << "*******************************************";
+        std::cout << "*******************************************" << std::endl;
+        std::cout << _("Download of ") << name << _(" finished") << std::endl;
 
 return;
 }
 
-void danborubulk(string url, string name, string downdir, bool popular){
-    fstream fp;
-curl_writer writer(fp);
-curl::curl_easy curl(writer);
+void danboorubulk(std::string url, std::string name, std::string downdir, bool popular){
+    std::fstream fp;
 
-stringstream ss;
-string blktmpfile = "/tmp/.baamanga-bulk-danbooru";
-string blkurldown = "data-large-file-url";
-string page, blkhtml, popular_folder, pageurl;
+std::stringstream ss;
+std::string blktmpfile = "/tmp/.baamanga-bulk-danbooru";
+std::string blkurldown = "data-large-file-url";
+std::string page, blkhtml, popular_folder, pageurl;
 short unsigned i=1, j=2;
 bool pgfound = 0, err=0;
 size_t found, limit;
 
     do{
-        fp.open(blktmpfile, fstream::out);
-        curl.add(curl_pair<CURLoption, string>(CURLOPT_URL, url));
-        curl.add(curl_pair<CURLoption, long>(CURLOPT_FOLLOWLOCATION, 1L));
+        url_download(url, blktmpfile, fp);
 
-        try{
-            curl.perform();
-        } catch (curl_easy_exception error){
-                error.print_traceback();
-            }
-        fp.close();
-
-        if (popular == 1){
-            fp.open(blktmpfile, fstream::in);
-            while(getline(fp, blkhtml)){
-                if ((blkhtml.find("Popular: ") != string::npos) == 1){
+        if (popular == true){
+            fp.open(blktmpfile, std::fstream::in);
+            while(std::getline(fp, blkhtml)){
+                if ((blkhtml.find("Popular: ") != std::string::npos) == 1){
                     found = blkhtml.find("Popular: ") + 9;
                     limit = blkhtml.find ("<", found);
                     popular_folder = blkhtml.substr(found, limit - found);
@@ -190,17 +143,17 @@ size_t found, limit;
             }
             fp.close();
         }
-        fp.open(blktmpfile, fstream::in);
-        while(getline(fp, blkhtml)){
+        fp.open(blktmpfile, std::fstream::in);
+        while(std::getline(fp, blkhtml)){
             //find next gallery
-            if ((blkhtml.find(blkurldown) != string::npos) == 1){
+            if ((blkhtml.find(blkurldown) != std::string::npos) == true){
                 found = blkhtml.find("\"") + 1;
                 limit = blkhtml.find ("\"", found);
                 url = "http://danbooru.donmai.us" + blkhtml.substr(found, limit - found);
                 ss << i;
                 name = ss.str();
-                cout << "\n\n" << "Downloading board n." << name << "..." << endl;
-                danborudirect(url, name, downdir);
+                std::cout << "\n\n" << _("Downloading board n.") << name << "..." << std::endl;
+                danboorudirect(url, name, downdir);
                 i++;
                 ss.str("");
             }
@@ -211,10 +164,10 @@ size_t found, limit;
         page = "/posts?page=" + ss.str();
         ss.str("");
 
-        fp.open(blktmpfile, fstream::in);
-        while(getline(fp, blkhtml)){
+        fp.open(blktmpfile, std::fstream::in);
+        while(std::getline(fp, blkhtml)){
             //find image
-        if ((blkhtml.find(page) != string::npos) == 1 && popular == 0){
+        if ((blkhtml.find(page) != std::string::npos) == true && popular == false){
             found = blkhtml.find(page);
             limit = blkhtml.find ("\"", found);
             url = "http://danbooru.donmai.us" + blkhtml.substr(found, limit - found);
@@ -229,6 +182,6 @@ size_t found, limit;
             j++;
     }while (err==0);
 
-    remove (blktmpfile.c_str());
+    fs::remove (blktmpfile);
 return;
 }

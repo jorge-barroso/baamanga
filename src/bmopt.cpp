@@ -1,36 +1,39 @@
 #include <iostream>
 #include <string>
 #include <fstream>
-#include <unistd.h>
+#include <boost/filesystem/operations.hpp>
+#include <boost/filesystem/path.hpp>
+#include <libintl.h>
+#include <locale.h>
 
-using namespace std;
+#define _(string) gettext (string)
+namespace fs = boost::filesystem;
 
-void confdir_check(string);
+void confdir_check(fs::path);
 
-void config(string confdir){
-    ofstream conf;
-	string dfolder;
+void config(fs::path confdir){
+    std::ofstream conf;
+	std::string dfolder;
 	short formatnum;
 
-	chdir(confdir.c_str());
+	fs::current_path(confdir);
 
-	cout << "Where do you want your manga to be downloaded?: ";
-	getline(cin, dfolder);
-    if (dfolder.at(0) == '~'){
-        string home = getenv("HOME");
-        dfolder.replace(0,1, home);
+	std::cout << _("Where do you want your manga to be downloaded?: ");
+	std::getline(std::cin, dfolder);
+    if (dfolder.at(0) == '~' && dfolder.at(1) == '/'){
+            dfolder.erase(0 , 2);
     }
 
-	cout << "How do you want your downloaded manga?" << endl;
-	cout << "\t" << "1. image" << endl << "\t" << "2. pdf" << endl << "\t" << "3. cbz" << "\n" << endl;
-	cout << "\t" << "Introduce format number: ";
-	cin >> formatnum;
+	std::cout << _("How do you want your downloaded manga?") << std::endl;
+	std::cout << "\t" << _("1. image") << std::endl << "\t" << _("2. pdf") << std::endl << "\t" << _("3. cbz") << "\n" << std::endl;
+	std::cout << "\t" << _("Introduce format number: ");
+	std::cin >> formatnum;
 
     while (formatnum != 1 && formatnum != 2 && formatnum != 3){
-	cout << "Format number is incorrect, try again:" << endl;
-	cout << "\t" << "1. image" << endl << "\t" << "2. pdf" << endl << "\t" << "3. cbz" << "\n" << endl;
-	cout << "\t" << "Introduce format number: ";
-	cin >> formatnum;
+	std::cout << "Format number is incorrect, try again:" << std::endl;
+	std::cout << "\t" << _("1. image") << std::endl << "\t" << _("2. pdf") << std::endl << "\t" << _("3. cbz") << "\n" << std::endl;
+	std::cout << "\t" << _("Introduce format number: ");
+	std::cin >> formatnum;
 	}
 
     conf.open("baamanga.conf");
@@ -39,11 +42,11 @@ void config(string confdir){
 		conf << "Format=image";
 	else if (formatnum==2){
 		conf << "Format=image";
-		cout << "You have chosen pdf, which is not yet supported, manga format set as image." << endl;
+		std::cout << _("You have chosen pdf, which is not yet supported, manga format set as image.") << std::endl;
 	}
 	else if (formatnum==3){
 		conf << "Format=image";
-		cout << "You have chosen cbz, which is not yet supported, manga format set as image." << endl;
+		std::cout << _("You have chosen cbz, which is not yet supported, manga format set as image.") << std::endl;
 	}
 	conf.close();
 return;
