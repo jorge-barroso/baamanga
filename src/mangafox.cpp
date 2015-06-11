@@ -174,7 +174,7 @@ std::string path="http://mangafox.me/manga/";
 std::string blktmpfile="/tmp/.baamanga-bulk-mangafox";
 short chapters=0, i, z;
 char yesno;
-bool match=false, zero;
+bool match=false, zero=false;
 size_t found, limit;
 
     path.append (nameorig + "/");
@@ -196,8 +196,8 @@ size_t found, limit;
     std::cout << "\n";
     if (zero == 1)
         std::cout << "\n" << _("This manga has a \"Chapter 0\"") << std::endl;
-    std::cout << _("There are ") << chapters << _(" chapters, do you want to start downloading with some chapter in particular? [y/N] ");
 
+    std::cout << _("There are ") << chapters << _(" chapters, do you want to start downloading with some chapter in particular? [y/N] ");
     std::cin.get (yesno);
 
     if(yesno == 'y' || yesno == 'Y'){
