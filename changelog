@@ -1,4 +1,4 @@
-PACKAGE (0.5.5) UNRELEASED; urgency=medium
+PACKAGE (0.5.6) UNRELEASED; urgency=medium
 
   * Initial release. 0.2
     Program works on terminal, but is easy to use.
@@ -20,5 +20,11 @@ PACKAGE (0.5.5) UNRELEASED; urgency=medium
     language it was stoped working.
     Bulk function added to Submanga. So now: Submanga, Mangafox, Mangareader
     and Danbooru work with single and bulk methods
+  * 0.5.6 Debugging and improvements version.
+    Mangafox and Mangareader have been completely debuged.
+    Other minor bugs fixed.
+    Code reutilization. Some code has been put into separate functions. These
+    functions are used in every service to do specific functions so it's now
+    easier to be used.
 
- -- Jorge Barroso Barea <jorge@lainucs-desktop-2>  Thu, 14 May 2015 15:59:06 +0200
+ -- Jorge Barroso Barea <jorge@lainucs-desktop-2>  Fri, 12 Jun 2015 00:09:16 +0200
