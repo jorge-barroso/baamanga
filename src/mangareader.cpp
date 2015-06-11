@@ -322,14 +322,9 @@ size_t found, limit;
     path2.append(ss.str() + ".html");;
     }
 
-
-        std::cout << path << std::endl;
-        std::cout << path2 << std::endl;
-
     while (getline(bf, blkhtml)){
         if ((blkhtml.find(path) != std::string::npos) == true && (blkhtml.find("chapter") != std::string::npos) == false){
             mode = false;
-            std::cout << "OK" << std::endl;
             found = blkhtml.find(path);
             limit = blkhtml.find("\"", found);
             url = "http://www.mangareader.net/" + blkhtml.substr(found, limit - found);
@@ -348,7 +343,6 @@ size_t found, limit;
 
         if ((blkhtml.find(path2) != std::string::npos) == true && (blkhtml.find(code) != std::string::npos) == true){
             mode = true;
-            std::cout << "OK" << std::endl;
             found = blkhtml.find("\"") + 1;
             limit = blkhtml.find("\"", found);
             url = "http://www.mangareader.net" + blkhtml.substr(found, limit - found);
