@@ -1,3 +1,3 @@
 SUBDIRS = src
-dist_doc_DATA = README.md changelog AUTHORS
+dist_doc_DATA = README.md changelog AUTHORS COPYING
 
