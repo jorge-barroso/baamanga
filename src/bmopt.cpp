@@ -19,7 +19,7 @@ void config(fs::path confdir){
 	fs::current_path(confdir);
 
 	std::cout << _("Where do you want your manga to be downloaded?: ");
-	std::getline(std::cin, dfolder);
+	getline(std::cin, dfolder);
     if (dfolder.at(0) == '~' && dfolder.at(1) == '/'){
             dfolder.erase(0 , 2);
     }

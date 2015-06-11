@@ -26,7 +26,7 @@ bool discr;
 	}
 	else
 		std::cout << _("Please, give a name for the file you are going to download");
-		std::getline(std::cin, name);
+		getline(std::cin, name);
 		 zerochansingle(url, name, downdir);
 }
 

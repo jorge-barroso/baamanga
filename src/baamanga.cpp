@@ -41,7 +41,7 @@ std::string url, downdir;
     config_file.close();
 
     config_file.open("baamanga.conf", std::fstream::in);
-    std::getline(config_file, downdir);
+    getline(config_file, downdir);
     config_file.close();
 
     downdir = downdir.substr(downdir.find_last_of("=") +1);
@@ -57,7 +57,7 @@ std::string url, downdir;
             std::cout << _("Welcome to Baamanga, the new manga downloader with lots of supported webpages.") << std::endl;
             std::cout << _("Just insert your download link and everything will be done automatically: ");
             std::ws(std::cin);
-            std::getline(std::cin, url);
+            getline(std::cin, url);
 
         }while(url.empty());
         fs::current_path(downdir);

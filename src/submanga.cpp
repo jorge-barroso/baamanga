@@ -51,7 +51,7 @@ void submangasingle(std::string url, std::string name, std::string chapter, std:
 	std::fstream fp;
 	std::ofstream img;
 std::stringstream ss;
-bool err = 0, pgfound = 0;
+bool err = false, imgfound = false, pgfound = false;
 std::string urldown, pageurl, code;
 const std::string pgbaseone = "http://omg.submanga.com/pages";
 const std::string pgbasetwo = "http://img.submanga.com/pages";
@@ -59,7 +59,7 @@ const std::string pgbasethree = "http://amg.submanga.com/pages";
 const std::string pgbasefour = "http://img2.submanga.com/pages";
 std::string tmpfile = "/tmp/.html-submanga";
 std::string imgname, html;
-short result=0, i=1, k=0, mode = 0;
+short i=1, k=0, mode = 0;
 size_t found, limit;
 
 	tmpfile.append (name, 0, 10);
@@ -73,8 +73,8 @@ size_t found, limit;
     code = url.substr(url.find_last_of("/") + 1);
 
 	do{
-		result = 0;
 		pgfound = 0;
+		imgfound = 0;
 		ss << i;
 		urldown = "http://submanga.com/c/" + code;
         if (i > 1)
@@ -96,15 +96,15 @@ size_t found, limit;
 
 		/* Look for the next html page to download */
         fp.open(tmpfile, std::fstream::in);
-		while (std::getline(fp, html)){
+		while (getline(fp, html)){
 			if ((html.find(urldown) != std::string::npos) == 1){
                     url = urldown;
-					result++;
+					pgfound++;
 				}
 			}
         fp.close();
 
-		if (result == 0)
+		if (pgfound == 0)
 			err = 1;
 
 		/* HERE WE GET THE PAGE URL */
@@ -112,67 +112,67 @@ size_t found, limit;
 		if (i>1){
 			if (mode == 0){ //omg.submanga.com
                 fp.open(tmpfile, std::fstream::in);
-				while (std::getline(fp, html)){
+				while (getline(fp, html)){
 					if ((html.find(pgbaseone) != std::string::npos) == 1){
 						found = html.find(pgbaseone);
 						limit = html.find("\"", found);
 						pageurl = html.substr(found, limit - found);
-						pgfound = 1;
+						imgfound = 1;
 					}
 				}
                 fp.close();
 			}
 
-			if (pgfound == 0 && i == 2)
+			if (imgfound == 0 && i == 2)
 				mode = 1;
 
 			if (mode == 1){ //img.submanga.com
                 fp.open(tmpfile, std::fstream::in);
-				while (std::getline(fp, html)){
+				while (getline(fp, html)){
 					if ((html.find(pgbasetwo) != std::string::npos) == 1){
 						found = html.find(pgbasetwo);
 						limit = html.find("\"", found);
 						pageurl = html.substr(found, limit - found);
-						pgfound = 1;
+						imgfound = 1;
 					}
 				}
                 fp.close();
 			}
 
-			if (pgfound == 0 && i == 2)
+			if (imgfound == 0 && i == 2)
 				mode = 2;
 
 			if (mode == 2){ //amg.submanga.com
                 fp.open(tmpfile, std::fstream::in);
-				while (std::getline(fp, html)){
+				while (getline(fp, html)){
 					if ((html.find(pgbasethree) != std::string::npos) == 1){
 						found = html.find(pgbasethree);
 						limit = html.find("\"", found);
 						pageurl = html.substr(found, limit - found);
-						pgfound = 1;
+						imgfound = 1;
 					}
 				}
                 fp.close();
 			}
 
-			if (pgfound == 0 && i == 2)
+			if (imgfound == 0 && i == 2)
 				mode = 3;
 
 			if (mode == 3){ //img2.submanga.com
                 fp.open(tmpfile, std::fstream::in);
-				while (std::getline(fp, html)){
+				while (getline(fp, html)){
 					if ((html.find(pgbasefour) != std::string::npos) == 1){
 						found = html.find(pgbasefour);
 						limit = html.find("\"", found);
 						pageurl = html.substr(found, limit - found);
-						pgfound = 1;
+						imgfound = 1;
 					}
 				}
             fp.close();
 			}
 		}
 
-		if (i > 1 && pgfound == 1){
+		if (i > 1 && imgfound == 1){
 		/* Now for the image */
 
 		std::cout << "\n\n";
@@ -210,7 +210,7 @@ bool check = 0, match = 0;
 
     bf.open(blktmpfile, std::fstream::in);
     spec.open("/tmp/.special_chapters", std::fstream::out);
-    while(std::getline(bf, blkhtml)){
+    while(getline(bf, blkhtml)){
             found = 0;
         while((blkhtml.find(urldown, found) != std::string::npos) == 1){
 
@@ -271,7 +271,7 @@ bool check = 0, match = 0;
             std::cin.clear(); std::cin.ignore(INT_MAX,'\n');
             if (spask == 'v' || spask == 'v'){
                 spec.open("/tmp/.special_chapters", std::fstream::in);
-                while (std::getline(spec, blkhtml))
+                while (getline(spec, blkhtml))
                     std::cout << blkhtml << std::endl;
                 spec.close();
             }
@@ -296,7 +296,7 @@ do{
     urldown.append(ss.str() + "/");
     ss.str("");
     bf.open(blktmpfile, std::fstream::in);
-    while (std::getline(bf, blkhtml))
+    while (getline(bf, blkhtml))
         if ((blkhtml.find(urldown) != std::string::npos) == 1)
             match = 1;
     bf.close();
@@ -319,7 +319,7 @@ for (;i<=atoi(newest.c_str());i++){
     urldown.append(ss.str() + "/");
     ss.str("");
     bf.open(blktmpfile, std::fstream::in);
-    while (std::getline(bf, blkhtml)){
+    while (getline(bf, blkhtml)){
         if ((blkhtml.find(urldown) != std::string::npos) == 1){
             found = blkhtml.find(urldown);
             limit = blkhtml.find("\"", found);
@@ -336,7 +336,7 @@ for (;i<=atoi(newest.c_str());i++){
 if (spask != 'n' && spask != 'N' && spask != 'v' && spask != 'V'){
     std::cout << "\n" << _("DOWNLOADING SPECIAL CHAPTERS:") << std::endl;
     spec.open("/tmp/.special_chapters", std::fstream::in);
-    while(std::getline(spec, blkhtml)){
+    while(getline(spec, blkhtml)){
         url = blkhtml;
         submanga(url, name, downdir);
     }

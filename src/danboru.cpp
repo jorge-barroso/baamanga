@@ -70,7 +70,7 @@ void danboorudirect(std::string url, std::string name, std::string downdir){
 
     if (name.empty()){
         std::cout << _("Select a name for your downloaded file: ");
-        std::getline (std::cin, name);
+        getline (std::cin, name);
     }
 
     fs::current_path(downdir);
@@ -94,11 +94,11 @@ size_t found, limit;
 
     if (name.empty()){
         std::cout << _("Give a name to the board: ");
-        std::getline (std::cin, name);
+        getline (std::cin, name);
     }
 
     fp.open(tmpfile, std::fstream::in);
-    while(std::getline(fp, html)){
+    while(getline(fp, html)){
         if ((html.find(urldown) != std::string::npos) == 1){
             found = html.find(urldown);
             limit = html.find ("\"", found);
@@ -124,7 +124,7 @@ std::string blktmpfile = "/tmp/.baamanga-bulk-danbooru";
 std::string blkurldown = "data-large-file-url";
 std::string page, blkhtml, popular_folder, pageurl;
 short unsigned i=1, j=2;
-bool pgfound = 0, err=0;
+bool imgfound = 0, err=0;
 size_t found, limit;
 
     do{
@@ -132,7 +132,7 @@ size_t found, limit;
 
         if (popular == true){
             fp.open(blktmpfile, std::fstream::in);
-            while(std::getline(fp, blkhtml)){
+            while(getline(fp, blkhtml)){
                 if ((blkhtml.find("Popular: ") != std::string::npos) == 1){
                     found = blkhtml.find("Popular: ") + 9;
                     limit = blkhtml.find ("<", found);
@@ -144,7 +144,7 @@ size_t found, limit;
             fp.close();
         }
         fp.open(blktmpfile, std::fstream::in);
-        while(std::getline(fp, blkhtml)){
+        while(getline(fp, blkhtml)){
             //find next gallery
             if ((blkhtml.find(blkurldown) != std::string::npos) == true){
                 found = blkhtml.find("\"") + 1;
@@ -165,18 +165,18 @@ size_t found, limit;
         ss.str("");
 
         fp.open(blktmpfile, std::fstream::in);
-        while(std::getline(fp, blkhtml)){
+        while(getline(fp, blkhtml)){
             //find image
         if ((blkhtml.find(page) != std::string::npos) == true && popular == false){
             found = blkhtml.find(page);
             limit = blkhtml.find ("\"", found);
             url = "http://danbooru.donmai.us" + blkhtml.substr(found, limit - found);
-            pgfound = 1;
+            imgfound = 1;
             }
         }
         fp.close();
 
-        if (pgfound == 0)
+        if (imgfound == 0)
             err = 1;
         else
             j++;

@@ -38,7 +38,7 @@ void downdir_check(std::string downdir){
 			else{
 				std::cout << _("Choose a new path to download your manga.") << std::endl;
 				std::cout << _("(full path): ");
-				std::getline (std::cin, downdir);
+				getline (std::cin, downdir);
 				ok = false;
 				}
 			}
@@ -67,7 +67,7 @@ void namedir_check(std::string name, std::string downdir){
             }
             else{
                 std::cout << _("Choose a new directory to download ") << name << "." << std::endl;
-                std::getline (std::cin, name);
+                getline (std::cin, name);
             }
         }
         else ok = true;
@@ -95,7 +95,7 @@ void chapdir_check(std::string chapter, std::string downdir){
 			else{
 				std::cout << _("Choose a new directory to download the chapter.") << std::endl;
 				///std::cout << "(Use \"\" if space): ";
-				std::getline (std::cin, chapter);
+				getline (std::cin, chapter);
 				}
 			}
     else ok = true;

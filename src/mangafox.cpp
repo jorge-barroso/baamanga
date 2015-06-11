@@ -84,7 +84,7 @@ void mangafoxsingle(std::string url, std::string name, std::string chapter, std:
 std::stringstream ss;
 short i=1, k=0;
 size_t found, limit;
-bool err=false, result, pgfound;
+bool err=false, pgfound, imgfound;
 std::string urldown;
 std::string pgbase = "http://a.mfcdn.net/store/manga/";
 std::string tmpfile = "/tmp/.html-mangafox";
@@ -103,8 +103,8 @@ std::string html, imgname, pageurl;
 	fs::current_path(downdir);
 
 	do{
-		result = false;
 		pgfound = false;
+		imgfound = false;
 
         ss.str("");
         ss << ++k;
@@ -125,33 +125,33 @@ std::string html, imgname, pageurl;
 	/* HERE STARTS HTML PARSING OF THE FILE */
 	/* Look for the next html page to download */
         fp.open(tmpfile, std::fstream::in);
-        while ( std::getline(fp, html) && result == false){
+        while ( getline(fp, html) && pgfound == false){
             if ((html.find(urldown) != std::string::npos) == true){
                 url = url.substr(0, url.find_last_of("/") + 1) + urldown;
-                result++;
+                pgfound++;
             }
         }
         fp.close();
 
         /* HERE WE GET THE PAGE URL */
         fp.open(tmpfile, std::fstream::in);
-        while (std::getline(fp, html) && pgfound == false){
-            if ((html.find("") != std::string::npos) == true && (html.find("compressed") != std::string::npos) == true && pgfound == false) {
+        while (getline(fp, html) && imgfound == false){
+            if ((html.find("") != std::string::npos) == true && (html.find("compressed") != std::string::npos) == true && imgfound == false) {
                 found = html.find(pgbase);
                 limit = html.find("\"", found);
                 pageurl = html.substr(found, limit - found);
-                pgfound = true;
+                imgfound = true;
             }
         }
 
         fp.close();
-        if (pgfound == true){
+        if (imgfound == true){
             std::cout << "\n\n";
             std::cout << _("Downloading page ") << i << "..." << std::endl;
 
             pic_download(pageurl, imgname, img);
 
-        if (result == false)
+        if (pgfound == false)
             err = true;
         }
 
@@ -182,7 +182,7 @@ size_t found, limit;
     url_download(url, blktmpfile, bf);
 
     bf.open(blktmpfile, std::fstream::in);
-    while (std::getline(bf, blkhtml)){
+    while (getline(bf, blkhtml)){
             if ((blkhtml.find(path) != std::string::npos) == true && (blkhtml.find("1.html") != std::string::npos) == true){
                 chapters++;
                 if ((blkhtml.find("c000") != std::string::npos) == true)
@@ -227,7 +227,7 @@ size_t found, limit;
             chapter = ss.str() + "/1.html";
         ss.str("");
         bf.open(blktmpfile, std::fstream::in);
-        while (std::getline(bf, blkhtml) && match == false){
+        while (getline(bf, blkhtml) && match == false){
             if((blkhtml.find(chapter) != std::string::npos) == true)
                 match=1;
         }
@@ -250,7 +250,7 @@ size_t found, limit;
         ss.str("");
 
         bf.open(blktmpfile, std::fstream::in);
-        while(std::getline(bf, blkhtml)){
+        while(getline(bf, blkhtml)){
             if((blkhtml.find(chapter) != std::string::npos) == true){
                 found = blkhtml.find(path);
 				limit = blkhtml.find("\"", found);
