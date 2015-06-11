@@ -113,7 +113,7 @@ size_t found, limit;
     else if (mode == false)
         code = "/" + nameorig + "/" + chapter + "/";
 
-	while (err == false){
+	do{
 		//restart "result" and "pgfound" values
 		result		= false;
 		pgfound		= false;
@@ -133,7 +133,7 @@ size_t found, limit;
 		url_download(url,tmpfile, fp);
 
     fp.open(tmpfile, std::fstream::in);
-    while (std::getline(fp, html) && result == false){
+    while (getline(fp, html) && result == false){
 		if ((html.find (urldown) != std::string::npos) == true){
             if (mode == true){
                 found = html.find(urldown);
@@ -153,15 +153,14 @@ size_t found, limit;
                     url.append ("/" + ss.str());
             }
             result = true;
-	}
+        }
     }
-
-	fp.seekg(0);
+    fp.close();
 
 	if (result == false)
 		err = true;
-
-	while (std::getline(fp, html)){
+    fp.open (tmpfile, std::fstream::in);
+	while (getline(fp, html)){
 		if ((html.find("http:") != std::string::npos) == true && (html.find(nameorig) != std::string::npos) == true && (html.find(".jpg") != std::string::npos) == true){
 			found = html.find("http:");
 			limit = html.find ("\"", found);
@@ -179,7 +178,7 @@ size_t found, limit;
     }
 
 	i++;
-	}
+	}while (err == false);
 
 	if (i > 2)
 		std::cout << "\n\n";
@@ -212,7 +211,7 @@ size_t found, limit;
     url_download(url, blktmpfile, bf);
     //Count Chapters
     bf.open(blktmpfile, std::fstream::in);
-    while (std::getline(bf, blkhtml)){
+    while (getline(bf, blkhtml)){
             //look for the path: style 1
             if ((blkhtml.find(path) != std::string::npos) == true && (blkhtml.find("chapter") != std::string::npos) == false){
                 path = nameorig + "/";
@@ -243,24 +242,27 @@ size_t found, limit;
         i=1;
 
     if (i > chapters){
-        std::cout << _("The chosed chapter does not exist, downloading from chapter 1") << std::endl;
+        std::cout << _("The chosen chapter does not exist, downloading from chapter 1") << std::endl;
         i = 1;
     }
     z = i;
     //Check if given chapter exists. Program takes next chapter in case the given one doesn't exist
-    while(match==false){
+    do{
         ss.str("");
         ss << i;
+
         while(path.back() != '/'){
             path.erase(path.find_last_of(path.back()));
         }
         path.append(ss.str() + "\"");// adding \" to avoid i.e. "13" as first coincidence
+
         while(path2.back() != '-'){
             path2.erase(path2.find_last_of(path2.back()));
         }
         path2.append(ss. str() + ".html\""); // adding \" to avoid i.e. "chapter-13" as first coincidence
+
         bf.open(blktmpfile, std::fstream::in);
-        while (std::getline(bf, blkhtml)){
+        while (getline(bf, blkhtml)){
             if ((blkhtml.find(path) != std::string::npos) == true && (blkhtml.find("chapter") != std::string::npos) == false){
                 match=true;
             }
@@ -270,15 +272,14 @@ size_t found, limit;
         }
         bf.close();
         if (match==false){
-            bf.seekg(0);
             i++;
         }
-    }
-    bf.seekg(0);
+    }while(match==false);
 
     if (z != i)
         std::cout << _("Given chapter does not exist. Download will start from next available chapter (Chapter n. ") << i << ")" << std::endl;
 
+    bf.open(blktmpfile, std::fstream::in);
     if(i > 1){
         //Look for chapter one (avoids find the chapter on "recents" list, which will cause problems)
         while(path.back() != '/'){
@@ -292,8 +293,7 @@ size_t found, limit;
 
         match = false;
 
-        bf.open(blktmpfile, std::fstream::in);
-        while (std::getline(bf, blkhtml) && match == false){
+        while (getline(bf, blkhtml) && match == false){
             if ((blkhtml.find(path) != std::string::npos) == true && (blkhtml.find("chapter") != std::string::npos) == false){
                 while(path.back() != '/'){
                     path.erase(path.find_last_of(path.back()));
@@ -314,7 +314,7 @@ size_t found, limit;
             }
         }
     }
-    bf.close();
+    //Position of first chapter found, we don't close file here because we will continue from the position set here
 
     //Download begins
     if(i > 1){
@@ -322,10 +322,14 @@ size_t found, limit;
     path2.append(ss.str() + ".html");;
     }
 
-    bf.open(blktmpfile, std::fstream::in);
-    while (std::getline(bf, blkhtml)){
+
+        std::cout << path << std::endl;
+        std::cout << path2 << std::endl;
+
+    while (getline(bf, blkhtml)){
         if ((blkhtml.find(path) != std::string::npos) == true && (blkhtml.find("chapter") != std::string::npos) == false){
             mode = false;
+            std::cout << "OK" << std::endl;
             found = blkhtml.find(path);
             limit = blkhtml.find("\"", found);
             url = "http://www.mangareader.net/" + blkhtml.substr(found, limit - found);
@@ -342,8 +346,9 @@ size_t found, limit;
             downdir = downdir_orig;
 		}
 
-        if ((blkhtml.find(path2) != std::string::npos) == true && (blkhtml.find(code) != std::string::npos) == false){
+        if ((blkhtml.find(path2) != std::string::npos) == true && (blkhtml.find(code) != std::string::npos) == true){
             mode = true;
+            std::cout << "OK" << std::endl;
             found = blkhtml.find("\"") + 1;
             limit = blkhtml.find("\"", found);
             url = "http://www.mangareader.net" + blkhtml.substr(found, limit - found);
