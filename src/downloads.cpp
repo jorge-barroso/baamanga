@@ -3,38 +3,44 @@
 
 void url_download(std::string url, std::string tmpfile, std::basic_fstream<char, std::char_traits<char> >& file)
 {
-curl_writer writer(file);
-curl::curl_easy curl(writer);
+    file.open(tmpfile);
+    // Create a curl_ios object to handle the stream
+    curl::curl_ios<ostream> curl(tmpfile);
+    // Pass it to the easy constructor and watch the content returned in that file!
+    curl::curl_easy easy(curl);
 
-        file.open(tmpfile, std::fstream::out);
-		curl.add(curl_pair<CURLoption,std::string>(CURLOPT_URL, url));
-		curl.add(curl_pair<CURLoption,long>(CURLOPT_FOLLOWLOCATION,1L));
+    easy.add<CURLOPT_URL>(url.c_str());
+    easy.add<CURLOPT_FOLLOWLOCATION>(1L);
+    easy.add<CURLOPT_NOPROGRESS>(0L);
 
-        try {
-            curl.perform();
-        }
-        catch (curl_easy_exception error) {
-            error.print_traceback();
-        }
-        file.close();
+    try {
+        easy.perform();
+    }
+    catch (curl_easy_exception error) {
+        error.print_traceback();
+    }
+
+    file.close();
 }
 
 void pic_download(std::string url, std::string imgname, std::basic_ofstream<char, std::char_traits<char> >& image)
 {
-curl_writer draw(image);
-curl::curl_easy pic(draw);
+    image.open(imgname);
+    // Create a curl_ios object to handle the stream
+    curl::curl_ios<ostream> pic(image);
+    // Pass it to the easy constructor and watch the content returned in that file!
+    curl::curl_easy draw(pic);
 
-        image.open(imgname);
-		pic.add(curl_pair<CURLoption, std::string>(CURLOPT_URL, url));
-		pic.add(curl_pair<CURLoption, long>(CURLOPT_FOLLOWLOCATION,1L));
-		pic.add(curl_pair<CURLoption, long>(CURLOPT_NOPROGRESS, 0L));
+    draw.add<CURLOPT_URL>(url.c_str());
+    draw.add<CURLOPT_FOLLOWLOCATION>(1L);
+    draw.add<CURLOPT_NOPROGRESS>(0L);
 
-        try {
-            pic.perform();
-        }
-        catch (curl_easy_exception error) {
-            error.print_traceback();
-        }
+    try {
+        draw.perform();
+    }
+    catch (curl_easy_exception error) {
+        error.print_traceback();
+    }
 
-        image.close();
+    image.close();
 }
