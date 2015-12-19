@@ -19,14 +19,15 @@ void help();
 void version();
 
 int main(int argc, char *argv[]) {
-fs::path confdir("/home/jorge/.config/baamanga");
+fs::path confdir(getenv("HOME"));
 std::ifstream config_file;
 std::string url, downdir;
 
     setlocale (LC_ALL, "");
     textdomain ("baamanga");
     bindtextdomain ("baamanga", "/usr/share/locale");
-
+    
+    confdir.append("/.config/baamanga");
     confdir_check(confdir);
     fs::current_path(confdir);
 
