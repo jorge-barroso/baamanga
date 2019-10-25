@@ -1,9 +1,9 @@
 #include <fstream>
-#include <curlcpp/curl_easy.h>
+//#include <curlcpp/curl_easy.h>
 
-void url_download(std::string url, std::string tmpfile, std::basic_fstream<char, std::char_traits<char> >& file)
+void url_download(const std::string& url, const std::string& tmpfile, std::basic_fstream<char, std::char_traits<char> >& file)
 {
-    file.open(tmpfile);
+    /*file.open(tmpfile);
     // Create a curl_ios object to handle the stream
     curl::curl_ios<ostream> curl(file);
     // Pass it to the easy constructor and watch the content returned in that file!
@@ -19,12 +19,12 @@ void url_download(std::string url, std::string tmpfile, std::basic_fstream<char,
         error.print_traceback();
     }
 
-    file.close();
+    file.close();*/
 }
 
-void pic_download(std::string url, std::string imgname, std::basic_ofstream<char, std::char_traits<char> >& image)
+void pic_download(const std::string& url, const std::string& imgname, std::basic_ofstream<char, std::char_traits<char> >& image)
 {
-    image.open(imgname);
+    /*image.open(imgname);
     // Create a curl_ios object to handle the stream
     curl::curl_ios<ostream> pic(image);
     // Pass it to the easy constructor and watch the content returned in that file!
@@ -41,5 +41,5 @@ void pic_download(std::string url, std::string imgname, std::basic_ofstream<char
         error.print_traceback();
     }
 
-    image.close();
+    image.close();*/
 }
